@@ -23,6 +23,12 @@
   - รูปภาพสินค้าสำหรับนำมาใช้: `ลง Online/`
   - ตัวอย่างโค้ดระบบจองคิวเดิม (Apps Script & HTML): `KMO-Booking-System/project1_booking/`
 
+### คลังข้อมูลความทรงจำสะสมเอเจนต์ (Antigravity Vault):
+- **ข้อมูลส่วนตัวและการตั้งค่า:** ซิงค์ผ่าน Google Drive ที่โฟลเดอร์ `workspace/AI-Project/Vault/AGY-Vualt/`
+- **Windows Path:** `D:\AI-Workspace\agents\antigravity\AGY-Vualt\` (ทำเป็น Junction Link ชี้ไปที่ `X:\My Drive\workspace\AI-Project\Vault\AGY-Vualt\`)
+- **Mac Path (คาดการณ์):** `~/Library/CloudStorage/GoogleDrive-titazmth@gmail.com/My Drive/workspace/AI-Project/Vault/AGY-Vualt/` หรือ `/Volumes/GoogleDrive/My Drive/workspace/AI-Project/Vault/AGY-Vualt/`
+- **คำแนะนำสำหรับ Mac Agent:** โปรดอ่านไฟล์ `00_START_HERE.md` และ `AI/Memory/User_Preferences.md` ในโฟลเดอร์นี้เพื่อเข้าใจบริบทและข้อกำหนดการสื่อสารของคุณฟรีทันที
+
 ---
 
 ## 🛠️ สถาปัตยกรรมระบบ (Tech Stack)
