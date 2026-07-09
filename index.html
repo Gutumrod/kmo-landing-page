@@ -350,11 +350,19 @@
     </div>
     
     <div class="cart-footer">
-      <div class="cart-total-row">
-        <span>ยอดรวมทั้งหมด:</span>
-        <span class="cart-total-price" id="cart-total-val">฿0.00</span>
+      <div class="cart-total-row" style="margin-bottom: 8px;">
+        <span>ยอดรวมสินค้า:</span>
+        <span id="cart-total-val" style="font-family: 'Kanit', sans-serif; font-weight: 600;">฿0.00</span>
       </div>
-      <button type="button" class="btn btn-primary" id="btn-checkout-cart" style="width: 100%;" disabled>จองคิวติดตั้งด่วน</button>
+      <div class="cart-total-row" style="margin-bottom: 8px; font-size: 14px; color: var(--text-muted);">
+        <span>ชำระมัดจำออนไลน์:</span>
+        <span id="cart-deposit-val" style="font-family: 'Kanit', sans-serif; color: var(--accent-color);">฿0.00</span>
+      </div>
+      <div class="cart-total-row" style="margin-bottom: 20px; border-top: 1px dashed var(--border-color); padding-top: 10px;">
+        <span>คงเหลือชำระหน้าร้าน:</span>
+        <span class="cart-total-price" id="cart-balance-val">฿0.00</span>
+      </div>
+      <button type="button" class="btn btn-primary" id="btn-checkout-cart" style="width: 100%;" disabled>จองคิวติดตั้งหน้าร้าน</button>
     </div>
   </div>
 

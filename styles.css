@@ -1297,3 +1297,73 @@ footer {
 .toast.toast-danger {
   border-left-color: var(--color-danger);
 }
+
+/* -------------------------------------------------------------
+   V2 Product Card Footer & Dual Action Buttons
+   ------------------------------------------------------------- */
+.product-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+  width: 100%;
+}
+
+.product-price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.product-actions {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.product-actions .btn-add-cart,
+.product-actions .btn-order {
+  flex: 1;
+  font-family: 'Kanit', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 10px 8px;
+  border-radius: var(--radius-sm);
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: none;
+}
+
+.product-actions .btn-add-cart {
+  background-color: var(--surface-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+}
+
+.product-actions .btn-add-cart:hover {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: #000;
+  font-weight: 600;
+}
+
+.product-actions .btn-order {
+  background-color: rgba(232, 184, 75, 0.1);
+  border: 1px dashed var(--accent-color);
+  color: var(--accent-color);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.product-actions .btn-order:hover {
+  background-color: var(--accent-color);
+  color: #000;
+  border-style: solid;
+}

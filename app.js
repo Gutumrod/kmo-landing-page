@@ -5,22 +5,35 @@
 // ==========================================
 // 1. PRODUCT DATABASE & CONFIGURATION
 // ==========================================
-const PRODUCTS = [
+let PRODUCTS = [];
+
+// Google Sheets CSV URL - Replace this with your actual published CSV link
+// To publish: File -> Share -> Publish to web -> Select sheet -> Format CSV
+const GOOGLE_SHEETS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT5K76P35W6v3c85l4k35s0e3c8/pub?output=csv'; // Placeholder URL
+
+// Fallback products in case CSV fetch fails
+const FALLBACK_PRODUCTS = [
   {
     id: 'rear-forza',
     name: 'แร็คท้าย Forza 350 Custom',
-    price: 2500,
+    price: 2900,
     category: 'rear',
     description: 'แร็คท้ายเหล็กหนาพิเศษ พ่นสีพาวเดอร์โค้ทดำกึ่งเงา ตรงรุ่นสำหรับ Honda Forza 350',
-    image: 'assets/images/rack-rear-forza.jpg'
+    image: 'assets/images/rack-rear-forza.jpg',
+    shopee_url: '',
+    allow_booking: true,
+    allow_order: true
   },
   {
     id: 'rear-adv',
     name: 'แร็คท้าย ADV 350 Heavy Duty',
-    price: 2500,
+    price: 2900,
     category: 'rear',
     description: 'แร็คท้ายสำหรับสายลุย บรรทุกหนักได้สบาย ออกแบบรองรับการติดตั้งกล่องท้ายทุกแบรนด์',
-    image: 'assets/images/rack-rear-adv.jpg'
+    image: 'assets/images/rack-rear-adv.jpg',
+    shopee_url: '',
+    allow_booking: true,
+    allow_order: true
   },
   {
     id: 'side-adv-forza',
@@ -28,7 +41,10 @@ const PRODUCTS = [
     price: 3500,
     category: 'side',
     description: 'ชุดแร็คข้างแบบเข้ารูป บรรทุกปี๊บข้างหรือกระเป๋าข้างทัวริ่งได้อย่างมั่นคง แข็งแรงพิเศษ',
-    image: 'assets/images/rack-side.jpg'
+    image: 'assets/images/rack-side.jpg',
+    shopee_url: '',
+    allow_booking: true,
+    allow_order: true
   },
   {
     id: 'rack-giorno',
@@ -36,7 +52,10 @@ const PRODUCTS = [
     price: 1800,
     category: 'rear',
     description: 'แร็คท้ายดีไซน์คลาสสิก เข้ากับทรงรถ Honda Giorno+ แข็งแรงใช้งานได้จริง',
-    image: 'assets/images/giorno-rack.jpg'
+    image: 'assets/images/giorno-rack.jpg',
+    shopee_url: '',
+    allow_booking: true,
+    allow_order: true
   },
   {
     id: 'crashbar-adv',
@@ -44,7 +63,10 @@ const PRODUCTS = [
     price: 4500,
     category: 'crashbar',
     description: 'แครชบาร์กันล้มคัสตอม ป้องกันตัวรถรอบคัน ท่อเหล็กหนา พ่นสีกันสนิมหนาพิเศษ',
-    image: 'assets/images/crashbar.jpg'
+    image: 'assets/images/crashbar.jpg',
+    shopee_url: '',
+    allow_booking: true,
+    allow_order: true
   },
   {
     id: 'spotlight-60w',
@@ -52,7 +74,10 @@ const PRODUCTS = [
     price: 3200,
     category: 'other',
     description: 'ไฟสปอร์ตไลท์เพิ่มทัศนวิสัยเวลากลางคืน พร้อมชุดขาสแตนเลสและสวิตช์กันน้ำ',
-    image: 'assets/images/spotlight.jpg'
+    image: 'assets/images/spotlight.jpg',
+    shopee_url: '',
+    allow_booking: false,
+    allow_order: true
   },
   {
     id: 'service-installation',
@@ -60,7 +85,10 @@ const PRODUCTS = [
     price: 500,
     category: 'other',
     description: 'บริการเดินสายไฟสปอร์ตไลท์แบบซ่อนสาย ติดตั้งอุปกรณ์เสริมอื่นๆ โดยช่างมืออาชีพ',
-    image: 'assets/images/service.jpg'
+    image: 'assets/images/service.jpg',
+    shopee_url: '',
+    allow_booking: true,
+    allow_order: false
   }
 ];
 
@@ -99,10 +127,99 @@ let isCalendarLoading = false;
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
   initCart();
-  renderCatalog('all');
+  loadProductsFromCSV().then(() => {
+    renderCatalog('all');
+  });
   initEventListeners();
   loadCalendarSlots();
 });
+
+// ==========================================
+// 3.5 GOOGLE SHEETS CSV CLIENT-SIDE PARSER
+// ==========================================
+async function loadProductsFromCSV() {
+  isCalendarLoading = true;
+  toggleLoader(true, 'กำลังดึงข้อมูลแคตตาล็อกสินค้า...');
+  const startTime = performance.now();
+
+  try {
+    const response = await fetch(GOOGLE_SHEETS_CSV_URL);
+    if (!response.ok) throw new Error('Sheet network response failed');
+    const csvText = await response.text();
+    
+    const parsed = parseCSV(csvText);
+    if (parsed && parsed.length > 0) {
+      PRODUCTS = parsed;
+      const endTime = performance.now();
+      console.log(`Successfully fetched and parsed ${PRODUCTS.length} products from CSV in ${(endTime - startTime).toFixed(2)}ms`);
+    } else {
+      throw new Error('Parsed CSV resulted in 0 products');
+    }
+  } catch (error) {
+    console.warn('Failed to load products from Google Sheets CSV. Falling back to default list. Error:', error);
+    PRODUCTS = FALLBACK_PRODUCTS;
+  } finally {
+    isCalendarLoading = false;
+    toggleLoader(false);
+  }
+}
+
+function parseCSV(text) {
+  const lines = [];
+  let row = [""];
+  let inQuotes = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    const next = text[i+1];
+    if (c === '"') {
+      if (inQuotes && next === '"') {
+        row[row.length - 1] += '"';
+        i++;
+      } else {
+        inQuotes = !inQuotes;
+      }
+    } else if (c === ',' && !inQuotes) {
+      row.push("");
+    } else if ((c === '\r' || c === '\n') && !inQuotes) {
+      if (c === '\r' && next === '\n') {
+        i++;
+      }
+      lines.push(row);
+      row = [""];
+    } else {
+      row[row.length - 1] += c;
+    }
+  }
+  if (row.length > 1 || row[0] !== "") {
+    lines.push(row);
+  }
+
+  if (lines.length < 2) return [];
+  const headers = lines[0].map(h => h.trim().toLowerCase());
+  const products = [];
+
+  for (let i = 1; i < lines.length; i++) {
+    const cells = lines[i];
+    if (cells.length < headers.length) continue;
+    const p = {};
+    headers.forEach((header, index) => {
+      const val = cells[index] ? cells[index].trim() : '';
+      if (header === 'price') {
+        p[header] = parseInt(val) || 0;
+      } else if (header === 'allow_booking' || header === 'allow_order') {
+        p[header] = val.toUpperCase() === 'TRUE';
+      } else if (header === 'image_url') {
+        p[header] = val;
+        p['image'] = val; // map alias
+      } else {
+        p[header] = val;
+      }
+    });
+    products.push(p);
+  }
+  return products;
+}
 
 // ==========================================
 // 4. EVENT LISTENERS
@@ -229,6 +346,8 @@ function updateCartUI() {
   const cartItemsContainer = document.getElementById('cart-items-container');
   const cartBadgeCount = document.getElementById('cart-badge-count');
   const cartTotalVal = document.getElementById('cart-total-val');
+  const cartDepositVal = document.getElementById('cart-deposit-val');
+  const cartBalanceVal = document.getElementById('cart-balance-val');
   const checkoutCartBtn = document.getElementById('btn-checkout-cart');
   
   // Calculate total items count and subtotal price
@@ -239,6 +358,10 @@ function updateCartUI() {
     totalItems += item.quantity;
     totalPrice += item.product.price * item.quantity;
   });
+
+  // Flat deposit rate of 500 Baht if there are items, otherwise 0
+  const depositPrice = totalItems > 0 ? 500 : 0;
+  const balancePrice = Math.max(0, totalPrice - depositPrice);
 
   // Badge count updates
   if (totalItems > 0) {
@@ -251,6 +374,12 @@ function updateCartUI() {
   }
 
   cartTotalVal.textContent = `฿${totalPrice.toLocaleString('th-TH', { minimumFractionDigits: 2 })}`;
+  if (cartDepositVal) {
+    cartDepositVal.textContent = `฿${depositPrice.toLocaleString('th-TH', { minimumFractionDigits: 2 })}`;
+  }
+  if (cartBalanceVal) {
+    cartBalanceVal.textContent = `฿${balancePrice.toLocaleString('th-TH', { minimumFractionDigits: 2 })}`;
+  }
 
   // Populate Cart Items HTML
   if (cart.length === 0) {
@@ -306,17 +435,39 @@ function renderCatalog(category) {
   filteredProducts.forEach(product => {
     const cardEl = document.createElement('div');
     cardEl.className = 'product-card';
+    
+    // Determine dynamic actions buttons
+    let actionButtonsHTML = '';
+    
+    if (product.allow_booking) {
+      actionButtonsHTML += `<button class="btn-add-cart" onclick="addToCart('${product.id}')">จองติดตั้ง</button>`;
+    }
+    
+    if (product.allow_order) {
+      const orderUrl = product.shopee_url && product.shopee_url.trim() !== '' 
+        ? product.shopee_url 
+        : 'https://kmorackbarcustom.github.io/CustomerOrder.html';
+      const orderBtnLabel = product.shopee_url && product.shopee_url.trim() !== '' 
+        ? 'สั่งซื้อ Shopee' 
+        : 'สั่งผลิต';
+      actionButtonsHTML += `<a href="${orderUrl}" target="_blank" class="btn-order">${orderBtnLabel}</a>`;
+    }
+
     cardEl.innerHTML = `
       <div class="product-img-wrapper">
-        <img src="${product.image}" alt="${product.name}" class="product-img" loading="lazy">
+        <img src="${product.image}" alt="${product.name}" class="product-img" loading="lazy" onerror="this.src='assets/images/service.jpg'">
         <span class="product-tag">${getCategoryLabel(product.category)}</span>
       </div>
       <div class="product-info">
         <h3 class="product-title">${product.name}</h3>
         <p class="product-models">${product.description}</p>
         <div class="product-footer">
-          <span class="product-price">฿${product.price.toLocaleString()}</span>
-          <button class="btn-add-cart" onclick="addToCart('${product.id}')">ใส่ตะกร้า</button>
+          <div class="product-price-row">
+            <span class="product-price">฿${product.price.toLocaleString()}</span>
+          </div>
+          <div class="product-actions">
+            ${actionButtonsHTML}
+          </div>
         </div>
       </div>
     `;
@@ -481,15 +632,36 @@ function changeMonth(direction) {
 function updateIntakeFormSelectedServices() {
   const container = document.getElementById('form-items-container');
   if (cart.length === 0) {
-    container.innerHTML = '<span class="selected-item-tag">🛠️ งานคัสตอมทั่วไป (ไม่มีรายการของในตะกร้า)</span>';
+    container.innerHTML = `
+      <div style="margin-bottom: 8px;"><span class="selected-item-tag">🛠️ งานคัสตอมทั่วไป (ไม่มีรายการของในตะกร้า)</span></div>
+      <div style="border-top: 1px dashed var(--border-color); padding-top: 8px; margin-top: 8px; font-size: 13px; color: var(--text-muted);">
+        ยอดมัดจำที่ต้องชำระ: <strong class="text-gold">฿500.00</strong> (ราคาค่าติดตั้งทั้งหมดจะประเมินหน้าร้าน)
+      </div>
+    `;
   } else {
     container.innerHTML = '';
+    let totalPrice = 0;
+    let totalItems = 0;
     cart.forEach(item => {
+      totalItems += item.quantity;
+      totalPrice += item.product.price * item.quantity;
       const tag = document.createElement('span');
       tag.className = 'selected-item-tag';
-      tag.textContent = `• ${item.product.name} (x${item.quantity})`;
+      tag.textContent = `• ${item.product.name} (x${item.quantity}) - ฿${(item.product.price * item.quantity).toLocaleString()}`;
       container.appendChild(tag);
     });
+
+    const depositPrice = totalItems > 0 ? 500 : 0;
+    const balancePrice = Math.max(0, totalPrice - depositPrice);
+
+    const priceSummary = document.createElement('div');
+    priceSummary.style.cssText = 'border-top: 1px dashed var(--border-color); padding-top: 10px; margin-top: 10px; font-size: 13px; line-height: 1.6; color: var(--text-muted);';
+    priceSummary.innerHTML = `
+      <div>ยอดรวมค่าสินค้าทั้งหมด: <strong>฿${totalPrice.toLocaleString()}</strong></div>
+      <div>ชำระมัดจำออนไลน์: <strong class="text-gold">฿${depositPrice.toLocaleString()}</strong></div>
+      <div style="font-size: 14px; color: var(--text-color); margin-top: 4px;">คงเหลือชำระหน้าร้านวันติดตั้ง: <strong class="text-gold" style="font-size: 16px;">฿${balancePrice.toLocaleString()}</strong></div>
+    `;
+    container.appendChild(priceSummary);
   }
 }
 

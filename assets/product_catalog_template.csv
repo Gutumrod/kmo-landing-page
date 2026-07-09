@@ -1,0 +1,8 @@
+id,name,price,category,description,image_url,shopee_url,allow_booking,allow_order
+rear-forza-2900,แร็คท้าย Forza 350 Custom,2900,rear,แร็คท้ายเหล็กหนาพิเศษ พ่นสีพาวเดอร์โค้ทดำกึ่งเงา ตรงรุ่นสำหรับ Honda Forza 350,assets/images/rack-rear-forza.jpg,https://shopee.co.th/product-link-placeholder,TRUE,TRUE
+rear-adv-2900,แร็คท้าย ADV 350 Heavy Duty,2900,rear,แร็คท้ายสำหรับสายลุย บรรทุกหนักได้สบาย ออกแบบรองรับการติดตั้งกล่องท้ายทุกแบรนด์,assets/images/rack-rear-adv.jpg,,TRUE,TRUE
+side-adv-forza-3500,ชุดแร็คข้าง ADV350 / Forza 350,3500,side,ชุดแร็คข้างแบบเข้ารูป บรรทุกปี๊บข้างหรือกระเป๋าข้างทัวริ่งได้อย่างมั่นคง,assets/images/rack-side.jpg,,TRUE,TRUE
+rack-giorno-1800,แร็คท้าย & ตะแกรงหน้า Giorno+,1800,rear,แร็คท้ายดีไซน์คลาสสิก เข้ากับทรงรถ Honda Giorno+ แข็งแรงใช้งานได้จริง,assets/images/giorno-rack.jpg,,TRUE,TRUE
+crashbar-adv-4500,ชุดแครชบาร์ ADV350 เต็มระบบ,4500,crashbar,แครชบาร์กันล้มคัสตอม ป้องกันตัวรถรอบคัน ท่อเหล็กหนา พ่นสีกันสนิมหนาพิเศษ,assets/images/crashbar.jpg,,TRUE,TRUE
+spotlight-60w-3200,ไฟสปอร์ตไลท์คู่ Motovision (60W),3200,other,ไฟสปอร์ตไลท์เพิ่มทัศนวิสัยเวลากลางคืน พร้อมชุดขาสแตนเลสและสวิตช์กันน้ำ,assets/images/spotlight.jpg,,FALSE,TRUE
+service-installation-500,บริการติดตั้งด่วน & เซ็ตระบบไฟ,500,other,บริการเดินสายไฟสปอร์ตไลท์แบบซ่อนสาย ติดตั้งอุปกรณ์เสริมอื่นๆ โดยช่างมืออาชีพ,assets/images/service.jpg,,TRUE,FALSE
