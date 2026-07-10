@@ -92,35 +92,11 @@ const FALLBACK_PRODUCTS = [
   }
 ];
 
-// Apps Script API URLs
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxXPeVBxV4DGV_kH6omKgRzf7-f5vpgUiBxkq0fBOqAmAAVX6_Z8tDg8Zh3IHd1RFnhEA/exec';
-const CALENDAR_API_URL = 'https://script.google.com/macros/s/AKfycbywK3CGtpGqT9qrS3dRKGUbAIS-n6dNgujLQO6sJ4SV-eRDvGo7e2amj9gJ2aCgLsSi/exec';
-
-const MAX_PER_DAY = 3;
-
-// Thai Months Translation helper
-const THAI_MONTHS = [
-  'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
-  'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
-];
-
-// Special holidays list (YYYY-MM-DD)
-const SPECIAL_HOLIDAYS = [
-  '2026-04-11', '2026-04-12', '2026-04-13', '2026-04-14', '2026-04-15', '2026-04-16', // Songkran
-  '2026-05-01', // Labor Day
-  '2026-12-05', '2026-12-31'
-];
-
 // ==========================================
 // 2. STATE MANAGEMENT
 // ==========================================
 let cart = [];
-let currentYear = new Date().getFullYear();
-let currentMonth = new Date().getMonth(); // 0-based
-let bookingData = {}; // Stores slot counts { 'YYYY-MM-DD': count }
-let selectedDateStr = ''; // Stores selected date 'YYYY-MM-DD'
-let currentStep = 1;
-let isCalendarLoading = false;
+let isCatalogLoading = false;
 
 // ==========================================
 // 3. INITIALIZATION
@@ -131,14 +107,14 @@ document.addEventListener('DOMContentLoaded', () => {
     renderCatalog('all');
   });
   initEventListeners();
-  loadCalendarSlots();
 });
 
 // ==========================================
 // 3.5 GOOGLE SHEETS CSV CLIENT-SIDE PARSER
 // ==========================================
 async function loadProductsFromCSV() {
-  isCalendarLoading = true;
+  if (isCatalogLoading) return;
+  isCatalogLoading = true;
   toggleLoader(true, 'กำลังดึงข้อมูลแคตตาล็อกสินค้า...');
   const startTime = performance.now();
 
@@ -159,7 +135,7 @@ async function loadProductsFromCSV() {
     console.warn('Failed to load products from Google Sheets CSV. Falling back to default list. Error:', error);
     PRODUCTS = FALLBACK_PRODUCTS;
   } finally {
-    isCalendarLoading = false;
+    isCatalogLoading = false;
     toggleLoader(false);
   }
 }
@@ -251,31 +227,8 @@ function initEventListeners() {
   const checkoutCartBtn = document.getElementById('btn-checkout-cart');
   checkoutCartBtn.addEventListener('click', () => {
     toggleCartDrawer();
-    document.getElementById('booking').scrollIntoView({ behavior: 'smooth' });
+    window.location.href = 'booking.html';
   });
-
-  // Step 1: Calendar Navigation buttons
-  document.getElementById('cal-prev-month').addEventListener('click', () => changeMonth(-1));
-  document.getElementById('cal-next-month').addEventListener('click', () => changeMonth(1));
-
-  // Step 1: Navigation to Step 2
-  document.getElementById('btn-goto-step2').addEventListener('click', () => {
-    if (selectedDateStr) {
-      goToStep(2);
-    }
-  });
-
-  // Step 2: Form Back to Step 1 button
-  document.getElementById('btn-back-to-step1').addEventListener('click', () => {
-    goToStep(1);
-  });
-
-  // Step 2: Form Submit
-  const bookingForm = document.getElementById('booking-form');
-  bookingForm.addEventListener('submit', handleFormSubmit);
-
-  // Success Step Restart Flow Button
-  document.getElementById('btn-restart-flow').addEventListener('click', restartBookingFlow);
 }
 
 // ==========================================
@@ -485,395 +438,8 @@ function getCategoryLabel(category) {
 }
 
 // ==========================================
-// 7. BOOKING CALENDAR SYSTEM
+// 7. DEPRECATED INLINE BOOKING (MOVED TO booking.html & calendar.html)
 // ==========================================
-async function loadCalendarSlots() {
-  if (isCalendarLoading) return;
-  isCalendarLoading = true;
-  toggleLoader(true, 'กำลังดึงข้อมูลคิวที่ว่างล่าสุด...');
-
-  try {
-    const url = `${CALENDAR_API_URL}?year=${currentYear}&month=${currentMonth + 1}`;
-    const response = await fetch(url);
-    const data = await response.json();
-    bookingData = data.bookings || {};
-  } catch (error) {
-    console.error('Failed to load slots from Apps Script:', error);
-    bookingData = {};
-    showToast('ไม่สามารถเชื่อมต่อข้อมูลปฏิทินคิวว่างได้ชั่วคราว', 'danger');
-  }
-
-  isCalendarLoading = false;
-  toggleLoader(false);
-  renderCalendar();
-}
-
-function renderCalendar() {
-  const monthTitle = document.getElementById('calendar-month-title');
-  const daysGrid = document.getElementById('calendar-days-grid');
-  
-  monthTitle.textContent = `${THAI_MONTHS[currentMonth]} ${currentYear + 543}`;
-  daysGrid.innerHTML = '';
-
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  const firstDay = new Date(currentYear, currentMonth, 1);
-  const lastDay = new Date(currentYear, currentMonth + 1, 0);
-  const startDayOfWeek = firstDay.getDay(); // 0 is Sunday
-  const daysInMonth = lastDay.getDate();
-
-  // 1. Generate padding cells for previous month
-  for (let i = 0; i < startDayOfWeek; i++) {
-    const emptyCell = document.createElement('div');
-    emptyCell.className = 'calendar-day empty';
-    daysGrid.appendChild(emptyCell);
-  }
-
-  // 2. Generate actual days in the selected month
-  for (let d = 1; d <= daysInMonth; d++) {
-    const date = new Date(currentYear, currentMonth, d);
-    const dateStr = formatDateStr(date);
-    const isPast = date < today;
-    const isTuesday = date.getDay() === 2;
-    const isHoliday = SPECIAL_HOLIDAYS.includes(dateStr);
-    const slotCount = bookingData[dateStr] || 0;
-    const slotsRemaining = MAX_PER_DAY - slotCount;
-
-    const dayEl = document.createElement('div');
-    dayEl.className = 'calendar-day';
-    dayEl.dataset.date = dateStr;
-
-    // Set status state classes
-    let statusText = '';
-    let statusClass = '';
-
-    if (isPast) {
-      dayEl.classList.add('past', 'disabled');
-    } else if (isTuesday || isHoliday || slotsRemaining <= 0) {
-      dayEl.classList.add('disabled', 'status-full');
-      statusText = isTuesday ? 'ร้านหยุดประจำ' : (isHoliday ? 'วันหยุดพิเศษ' : 'เต็มโควตา');
-    } else if (slotsRemaining <= 2) {
-      statusClass = 'status-low';
-      statusText = `ว่าง ${slotsRemaining} คิว`;
-      dayEl.classList.add('status-low');
-    } else {
-      statusClass = 'status-open';
-      statusText = `ว่าง ${slotsRemaining} คิว`;
-      dayEl.classList.add('status-open');
-    }
-
-    // Today highlight
-    if (formatDateStr(today) === dateStr) {
-      dayEl.classList.add('today');
-    }
-
-    // Selection recovery
-    if (selectedDateStr === dateStr) {
-      dayEl.classList.add('selected');
-    }
-
-    // Inner layout for day cells
-    dayEl.innerHTML = `
-      <div class="day-number-circle">${d}</div>
-      <div class="day-slot-status">${statusText}</div>
-      ${(!isPast && !isTuesday && !isHoliday && slotsRemaining > 0) ? '<div class="day-dot-indicator"></div>' : ''}
-    `;
-
-    // Click handler for day cells
-    if (!isPast && !isTuesday && !isHoliday && slotsRemaining > 0) {
-      dayEl.addEventListener('click', () => {
-        // Toggle selected state
-        const allDays = daysGrid.querySelectorAll('.calendar-day');
-        allDays.forEach(day => day.classList.remove('selected'));
-        
-        selectedDateStr = dateStr;
-        dayEl.classList.add('selected');
-        document.getElementById('btn-goto-step2').disabled = false;
-        
-        // Populate dates in Form
-        const formattedThaiAppointDate = formatThaiDateStr(date);
-        document.getElementById('display-appoint-date').value = formattedThaiAppointDate;
-        
-        // Auto default pickup date to next day (or same day)
-        const nextDay = new Date(date);
-        nextDay.setDate(nextDay.getDate() + 1);
-        document.getElementById('input-pickup-date').value = formatDateStrInput(nextDay);
-        document.getElementById('input-pickup-date').min = dateStr;
-      });
-    }
-
-    daysGrid.appendChild(dayEl);
-  }
-
-  // Disable Prev month navigation button if viewing the current month
-  const currentActualDate = new Date();
-  const isViewingCurrentMonth = currentYear === currentActualDate.getFullYear() && currentMonth === currentActualDate.getMonth();
-  document.getElementById('cal-prev-month').disabled = isViewingCurrentMonth;
-}
-
-function changeMonth(direction) {
-  currentMonth += direction;
-  if (currentMonth > 11) {
-    currentMonth = 0;
-    currentYear += 1;
-  } else if (currentMonth < 0) {
-    currentMonth = 11;
-    currentYear -= 1;
-  }
-  selectedDateStr = '';
-  document.getElementById('btn-goto-step2').disabled = true;
-  loadCalendarSlots();
-}
-
-// ==========================================
-// 8. BOOKING FORM & INTAKE LOGIC
-// ==========================================
-function updateIntakeFormSelectedServices() {
-  const container = document.getElementById('form-items-container');
-  if (cart.length === 0) {
-    container.innerHTML = `
-      <div style="margin-bottom: 8px;"><span class="selected-item-tag">🛠️ งานคัสตอมทั่วไป (ไม่มีรายการของในตะกร้า)</span></div>
-      <div style="border-top: 1px dashed var(--border-color); padding-top: 8px; margin-top: 8px; font-size: 13px; color: var(--text-muted);">
-        ยอดมัดจำที่ต้องชำระ: <strong class="text-gold">฿500.00</strong> (ราคาค่าติดตั้งทั้งหมดจะประเมินหน้าร้าน)
-      </div>
-    `;
-  } else {
-    container.innerHTML = '';
-    let totalPrice = 0;
-    let totalItems = 0;
-    cart.forEach(item => {
-      totalItems += item.quantity;
-      totalPrice += item.product.price * item.quantity;
-      const tag = document.createElement('span');
-      tag.className = 'selected-item-tag';
-      tag.textContent = `• ${item.product.name} (x${item.quantity}) - ฿${(item.product.price * item.quantity).toLocaleString()}`;
-      container.appendChild(tag);
-    });
-
-    const depositPrice = totalItems > 0 ? 500 : 0;
-    const balancePrice = Math.max(0, totalPrice - depositPrice);
-
-    const priceSummary = document.createElement('div');
-    priceSummary.style.cssText = 'border-top: 1px dashed var(--border-color); padding-top: 10px; margin-top: 10px; font-size: 13px; line-height: 1.6; color: var(--text-muted);';
-    priceSummary.innerHTML = `
-      <div>ยอดรวมค่าสินค้าทั้งหมด: <strong>฿${totalPrice.toLocaleString()}</strong></div>
-      <div>ชำระมัดจำออนไลน์: <strong class="text-gold">฿${depositPrice.toLocaleString()}</strong></div>
-      <div style="font-size: 14px; color: var(--text-color); margin-top: 4px;">คงเหลือชำระหน้าร้านวันติดตั้ง: <strong class="text-gold" style="font-size: 16px;">฿${balancePrice.toLocaleString()}</strong></div>
-    `;
-    container.appendChild(priceSummary);
-  }
-}
-
-function getServicesString() {
-  if (cart.length === 0) {
-    return 'งานแร็คคัสตอมทั่วไป';
-  }
-  return cart.map(item => `${item.product.name} (x${item.quantity})`).join(', ');
-}
-
-async function handleFormSubmit(e) {
-  e.preventDefault();
-  
-  if (!validateForm()) {
-    showToast('กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน', 'danger');
-    return;
-  }
-
-  toggleLoader(true, 'กำลังส่งข้อมูลจองคิวเข้าระบบ...');
-
-  const nameVal = document.getElementById('input-name').value.trim();
-  const phoneVal = document.getElementById('input-phone').value.trim();
-  const platformVal = document.getElementById('select-platform').value;
-  const brandVal = document.getElementById('input-brand').value.trim();
-  const modelVal = document.getElementById('input-model').value.trim();
-  const colorVal = document.getElementById('input-color').value.trim() || 'ไม่ได้ระบุ';
-  const pickupDateVal = document.getElementById('input-pickup-date').value;
-
-  const payload = {
-    name: nameVal,
-    phone: phoneVal,
-    platform: platformVal,
-    brand: brandVal,
-    model: modelVal,
-    services: getServicesString(),
-    color: colorVal,
-    appointDate: selectedDateStr,
-    pickupDate: pickupDateVal
-  };
-
-  try {
-    const response = await fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      body: JSON.stringify(payload)
-    });
-    const result = await response.json();
-
-    if (result.result === 'success') {
-      showToast('ส่งคำขอจองคิวสำเร็จแล้ว!');
-      
-      // Clear LocalStorage cart on success
-      cart = [];
-      saveCart();
-
-      // Configure Line pre-filled message URL
-      setupLineMessageLink(payload);
-
-      // Navigate to step 3 (Payment Details)
-      goToStep(3);
-    } else {
-      throw new Error(result.message || 'API Error');
-    }
-  } catch (error) {
-    console.error('Submission failed:', error);
-    showToast('เกิดข้อผิดพลาดในการบันทึกคิว กรุณาลองใหม่อีกครั้ง', 'danger');
-  } finally {
-    toggleLoader(false);
-  }
-}
-
-function validateForm() {
-  let isValid = true;
-  
-  // Validate Name
-  const nameField = document.getElementById('input-name');
-  if (nameField.value.trim() === '') {
-    markFieldError('group-name', true);
-    isValid = false;
-  } else {
-    markFieldError('group-name', false);
-  }
-
-  // Validate Phone (10 digits)
-  const phoneField = document.getElementById('input-phone');
-  const phoneRegex = /^[0-9]{9,10}$/;
-  if (!phoneRegex.test(phoneField.value.trim())) {
-    markFieldError('group-phone', true);
-    isValid = false;
-  } else {
-    markFieldError('group-phone', false);
-  }
-
-  // Validate Platform selection
-  const platformField = document.getElementById('select-platform');
-  if (platformField.value === '') {
-    markFieldError('group-platform', true);
-    isValid = false;
-  } else {
-    markFieldError('group-platform', false);
-  }
-
-  // Validate Motorcycle Brand
-  const brandField = document.getElementById('input-brand');
-  if (brandField.value.trim() === '') {
-    markFieldError('group-brand', true);
-    isValid = false;
-  } else {
-    markFieldError('group-brand', false);
-  }
-
-  // Validate Motorcycle Model
-  const modelField = document.getElementById('input-model');
-  if (modelField.value.trim() === '') {
-    markFieldError('group-model', true);
-    isValid = false;
-  } else {
-    markFieldError('group-model', false);
-  }
-
-  // Validate Pickup Date
-  const pickupField = document.getElementById('input-pickup-date');
-  if (pickupField.value === '') {
-    markFieldError('group-pickup-date', true);
-    isValid = false;
-  } else {
-    markFieldError('group-pickup-date', false);
-  }
-
-  return isValid;
-}
-
-function markFieldError(groupId, hasError) {
-  const el = document.getElementById(groupId);
-  if (el) {
-    if (hasError) {
-      el.classList.add('has-error');
-    } else {
-      el.classList.remove('has-error');
-    }
-  }
-}
-
-// ==========================================
-// 9. LINE MESSAGE PROTOCOL SETUP
-// ==========================================
-function setupLineMessageLink(data) {
-  const appointDateFormatted = formatThaiDateStr(new Date(data.appointDate));
-  const pickupDateFormatted = formatThaiDateStr(new Date(data.pickupDate));
-  
-  const textMsg = `🏍️ *แจ้งจองคิวติดตั้ง KMO CUSTOM*
-ชื่อผู้จอง: ${data.name}
-เบอร์โทร: ${data.phone}
-แพลตฟอร์ม: ${data.platform}
-ยี่ห้อ: ${data.brand}
-รุ่นรถ: ${data.model}
-วันนัดติดตั้ง: ${appointDateFormatted}
-วันรับรถ: ${pickupDateFormatted}
-รายการ: ${data.services}
-สี: ${data.color}
--------------------------
-*แนบสลิปโอนเงินมัดจำ 500 บาท ที่นี่*`;
-
-  // URL Encode message parameters for Line URL
-  const encodedText = encodeURIComponent(textMsg);
-  
-  // Set link hrefs
-  const lineOfficialLink = `https://line.me/R/oaMessage/%40kmocustom/?${encodedText}`;
-  
-  document.getElementById('btn-line-confirm').href = lineOfficialLink;
-  document.getElementById('btn-success-line').href = lineOfficialLink;
-}
-
-// ==========================================
-// 10. STEP WIZARD NAVIGATION
-// ==========================================
-function goToStep(stepNum) {
-  currentStep = stepNum;
-  
-  // Update step indicators
-  const indicators = document.querySelectorAll('.step-indicator');
-  indicators.forEach((ind, index) => {
-    const indNum = index + 1;
-    ind.classList.remove('active', 'completed');
-    if (indNum === stepNum) {
-      ind.classList.add('active');
-    } else if (indNum < stepNum) {
-      ind.classList.add('completed');
-    }
-  });
-
-  // Update panels
-  const panels = document.querySelectorAll('.step-panel');
-  panels.forEach(panel => panel.classList.remove('active'));
-
-  const activePanel = document.getElementById(`step-panel-${stepNum}`);
-  if (activePanel) {
-    activePanel.classList.add('active');
-  }
-}
-
-function restartBookingFlow() {
-  selectedDateStr = '';
-  document.getElementById('btn-goto-step2').disabled = true;
-  document.getElementById('booking-form').reset();
-  
-  // Reset all validation styles
-  const formGroups = document.querySelectorAll('.form-group');
-  formGroups.forEach(group => group.classList.remove('has-error'));
-
-  loadCalendarSlots();
-  goToStep(1);
-}
 
 // ==========================================
 // 11. GENERAL UTILITY FUNCTIONS

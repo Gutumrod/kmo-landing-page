@@ -91,239 +91,59 @@
   <!-- Booking & Checkout Section -->
   <section id="booking" class="booking-section">
     <div class="container">
-      <div class="section-header">
-        <span class="section-subtitle">Queue Booking</span>
-        <h2 class="section-title-main">ระบบตรวจสอบและนัดจองคิว</h2>
-        <p class="section-desc">เลือกรุ่นรถและวันที่ต้องการเข้ามาใช้บริการติดตั้ง หรือจองทำสีงานด่วน (รับบริการจำกัดโควตาเพียง 3 คิวต่อวันเพื่อควบคุมคุณภาพงานที่ดีที่สุด)</p>
-      </div>
-      
-      <div class="booking-grid">
-        <!-- Left: Steps Navigation and Info -->
-        <div class="booking-guide">
-          <div class="booking-card">
-            <div class="step-indicators">
-              <div class="step-indicator active" id="step-ind-1">
-                <div class="step-number">1</div>
-                <div class="step-label">เลือกวันนัด</div>
-              </div>
-              <div class="step-indicator" id="step-ind-2">
-                <div class="step-number">2</div>
-                <div class="step-label">กรอกข้อมูล</div>
-              </div>
-              <div class="step-indicator" id="step-ind-3">
-                <div class="step-number">3</div>
-                <div class="step-label">ชำระมัดจำ</div>
-              </div>
+      <div class="booking-card-premium">
+        <div class="booking-card-header">
+          <span class="section-subtitle text-gold" style="display: block; margin-bottom: 8px; letter-spacing: 2px;">QUEUE BOOKING</span>
+          <h2 class="section-title-main" style="margin-bottom: 12px; font-weight: 700;">ระบบนัดหมายจองคิวติดตั้ง</h2>
+          <p class="section-desc" style="max-width: 600px; margin: 0 auto; line-height: 1.6; color: var(--text-muted);">
+            ผลิตและติดตั้งแร็คท้าย แร็คข้าง แครชบาร์ มอเตอร์ไซค์คัสตอม เพื่อความประณีตและคุณภาพสูงสุด ทางร้านเปิดรับจองจำกัดเพียง <strong>3 คิวต่อวัน</strong> เท่านั้น
+          </p>
+        </div>
+
+        <div class="booking-rules-summary">
+          <div class="rule-item">
+            <span class="rule-icon">📅</span>
+            <div class="rule-text">
+              <strong>วันทำการของร้าน</strong>
+              <span>เปิดบริการ 09:00 - 18:00 น. (หยุดทำการทุกวันอังคาร)</span>
             </div>
-            
-            <div class="booking-info-box">
-              <h3>📌 เงื่อนไขการนัดจองคิว:</h3>
-              <p style="margin-top: 8px;">• รับงานติดตั้งสูงสุด <strong>3 คิวต่อวัน</strong> เท่านั้น</p>
-              <p>• ร้านหยุดเป็นประจำทุก <strong>วันอังคาร</strong></p>
-              <p>• มีค่ามัดจองคิวล่วงหน้า <strong>500 บาท</strong> (จะนำไปหักลบออกจากยอดชำระจริงในวันเข้าใช้บริการ)</p>
-              <p>• กรุณาชำระมัดจำและส่งหลักฐานแจ้งแอดมินภายใน 24 ชั่วโมงหลังจากกดส่งข้อมูล</p>
+          </div>
+          <div class="rule-item">
+            <span class="rule-icon">💰</span>
+            <div class="rule-text">
+              <strong>เงินมัดจำจองคิว</strong>
+              <span>ชำระค่ามัดจำออนไลน์ล่วงหน้า 500 บาทถ้วนเพื่อล็อกคิวติดตั้ง</span>
+            </div>
+          </div>
+          <div class="rule-item">
+            <span class="rule-icon">⚡</span>
+            <div class="rule-text">
+              <strong>ความสะดวกรวดเร็ว</strong>
+              <span>เลือกสินค้าลงตะกร้าก่อนกดจอง ระบบจะดึงรายการสินค้าไปกรอกให้อัตโนมัติ</span>
             </div>
           </div>
         </div>
-        
-        <!-- Right: Dynamic Step Panels -->
-        <div class="booking-card" style="position: relative;">
-          <!-- Loading Overlay -->
-          <div id="booking-loading" class="loading-overlay">
-            <div class="spinner"></div>
-            <p id="loading-text">กำลังอัปเดตข้อมูลระบบ...</p>
-          </div>
 
-          <!-- STEP 1: Select Date (Calendar) -->
-          <div class="step-panel active" id="step-panel-1">
-            <h3 style="font-size: 20px; margin-bottom: 20px;">ขั้นตอนที่ 1: ตรวจสอบและเลือกวันจองคิว</h3>
-            
-            <div class="calendar-widget">
-              <div class="calendar-header">
-                <button type="button" class="calendar-nav-btn" id="cal-prev-month" aria-label="เดือนก่อนหน้า">‹</button>
-                <div class="calendar-month" id="calendar-month-title">กรกฎาคม 2569</div>
-                <button type="button" class="calendar-nav-btn" id="cal-next-month" aria-label="เดือนถัดไป">›</button>
-              </div>
-              
-              <div class="calendar-weekdays">
-                <div class="calendar-weekday">อา.</div>
-                <div class="calendar-weekday">จ.</div>
-                <div class="calendar-weekday">อ.</div>
-                <div class="calendar-weekday">พ.</div>
-                <div class="calendar-weekday">พฤ.</div>
-                <div class="calendar-weekday">ศ.</div>
-                <div class="calendar-weekday">ส.</div>
-              </div>
-              
-              <div class="calendar-days" id="calendar-days-grid">
-                <!-- Days generated by JS -->
-              </div>
-            </div>
-            
-            <div class="calendar-legend">
-              <div class="legend-item">
-                <div class="legend-color" style="background-color: var(--color-success);"></div>
-                <span>ว่าง 3 คิว</span>
-              </div>
-              <div class="legend-item">
-                <div class="legend-color" style="background-color: var(--color-warning);"></div>
-                <span>ว่าง 1-2 คิว</span>
-              </div>
-              <div class="legend-item">
-                <div class="legend-color" style="background-color: var(--color-danger);"></div>
-                <span>คิวเต็ม / ร้านปิด</span>
-              </div>
-            </div>
-            
-            <div style="text-align: right; margin-top: 24px;">
-              <button type="button" class="btn btn-primary" id="btn-goto-step2" disabled>
-                ดำเนินการต่อ
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-              </button>
-            </div>
-          </div>
-          
-          <!-- STEP 2: Fill Client Details -->
-          <div class="step-panel" id="step-panel-2">
-            <h3 style="font-size: 20px; margin-bottom: 20px;">ขั้นตอนที่ 2: ระบุข้อมูลการติดต่อและรถ</h3>
-            
-            <form id="booking-form" class="booking-form" novalidate>
-              <div class="form-row">
-                <div class="form-group" id="group-name">
-                  <label for="input-name">ชื่อผู้จอง (Line/FB/TikTok) <span class="required">*</span></label>
-                  <input type="text" id="input-name" class="form-control" placeholder="เช่น คุณฟรี CraftBike" required>
-                  <span class="error-message">กรุณากรอกชื่อผู้จอง</span>
-                </div>
-                
-                <div class="form-group" id="group-phone">
-                  <label for="input-phone">เบอร์โทรศัพท์ <span class="required">*</span></label>
-                  <input type="tel" id="input-phone" class="form-control" placeholder="เช่น 089xxxxxxx" required>
-                  <span class="error-message">กรุณากรอกเบอร์โทรศัพท์ 10 หลัก</span>
-                </div>
-              </div>
-              
-              <div class="form-row">
-                <div class="form-group" id="group-platform">
-                  <label for="select-platform">ช่องทางติดต่อหลัก <span class="required">*</span></label>
-                  <select id="select-platform" class="form-control" required>
-                    <option value="" disabled selected>เลือกช่องทางติดต่อ</option>
-                    <option value="Line">Line</option>
-                    <option value="Facebook">Facebook Messenger</option>
-                    <option value="TikTok">TikTok</option>
-                    <option value="โทรศัพท์">เบอร์โทรศัพท์โดยตรง</option>
-                  </select>
-                  <span class="error-message">กรุณาเลือกช่องทางการติดต่อหลัก</span>
-                </div>
-
-                <div class="form-group" id="group-color">
-                  <label for="input-color">สีที่ต้องการ (ถ้ามี)</label>
-                  <input type="text" id="input-color" class="form-control" placeholder="เช่น ดำกึ่งเงา, ดำด้าน, เงินชุบ">
-                </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group" id="group-brand">
-                  <label for="input-brand">ยี่ห้อมอเตอร์ไซค์ <span class="required">*</span></label>
-                  <input type="text" id="input-brand" class="form-control" placeholder="เช่น Honda, Yamaha, Vespa" required>
-                  <span class="error-message">กรุณากรอกยี่ห้อมอเตอร์ไซค์</span>
-                </div>
-                
-                <div class="form-group" id="group-model">
-                  <label for="input-model">รุ่นมอเตอร์ไซค์ <span class="required">*</span></label>
-                  <input type="text" id="input-model" class="form-control" placeholder="เช่น ADV350, Forza 350, Giorno" required>
-                  <span class="error-message">กรุณากรอกรุ่นรถที่ถูกต้อง</span>
-                </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label>วันที่นัดเข้าติดตั้ง</label>
-                  <input type="text" id="display-appoint-date" class="form-control" style="background-color: rgba(255,255,255,0.05);" readonly>
-                </div>
-                <div class="form-group" id="group-pickup-date">
-                  <label for="input-pickup-date">วันที่คาดว่าจะเข้ามารับรถ <span class="required">*</span></label>
-                  <input type="date" id="input-pickup-date" class="form-control" required>
-                  <span class="error-message">กรุณาระบุวันมารับรถนัดหมาย</span>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label>รายการบริการที่นัดทำ:</label>
-                <div id="form-items-container" class="form-selected-items">
-                  <!-- Auto filled by items in cart or 'Custom Work' if cart empty -->
-                </div>
-              </div>
-
-              <div class="form-navigation">
-                <button type="button" class="btn btn-secondary" id="btn-back-to-step1">ย้อนกลับ</button>
-                <button type="submit" class="btn btn-primary" id="btn-submit-booking">
-                  ยืนยันจองคิวติดตั้ง
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                </button>
-              </div>
-            </form>
-          </div>
-
-          <!-- STEP 3: Deposit & Checkout -->
-          <div class="step-panel" id="step-panel-3">
-            <div class="checkout-deposit-widget">
-              <h3 style="font-size: 20px; margin-bottom: 12px;">ขั้นตอนที่ 3: ชำระค่ามัดจำจองคิวล่วงหน้า</h3>
-              
-              <div class="deposit-amount-card">
-                <span class="deposit-label">ยอดที่ต้องชำระมัดจำคิว</span>
-                <div class="deposit-value">฿500.00</div>
-                <p class="deposit-hint">มัดจำนี้จะถูกนำไปหักลบเต็มจำนวนออกจากราคาสินค้าในวันที่ติดตั้ง</p>
-              </div>
-
-              <div class="payment-details-box">
-                <img src="assets/images/qr-deposit.jpg" alt="PromptPay QR Code" class="qr-code-img">
-                <div class="bank-info-grid">
-                  <div class="bank-info-row">
-                    <span class="label">ชื่อธนาคาร:</span>
-                    <span class="value">ธนาคารกสิกรไทย (K-Bank)</span>
-                  </div>
-                  <div class="bank-info-row">
-                    <span class="label">เลขบัญชี:</span>
-                    <span class="value">026-3-54714-3</span>
-                  </div>
-                  <div class="bank-info-row">
-                    <span class="label">ชื่อบัญชี:</span>
-                    <span class="value">นายกิตติคุณ มั่งมี</span>
-                  </div>
-                </div>
-              </div>
-
-              <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 24px; line-height: 1.5;">
-                ⚠️ หลังจากโอนเงินมัดจำเรียบร้อยแล้ว กรุณากดปุ่ม <strong>"ส่งสลิปเพื่อยืนยันคิวผ่าน Line"</strong> ด้านล่างนี้เพื่อส่งหลักฐานและสลิปการโอนเงินให้แอดมินยืนยันคิวในระบบ Google Calendar
-              </p>
-
-              <div class="form-navigation" style="justify-content: center;">
-                <a href="#" target="_blank" id="btn-line-confirm" class="btn btn-primary" style="background-color: #25d366; color: #000; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.25);">
-                  <!-- Line SVG Icon -->
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M21.9 10.4c.1-.4.1-.7.1-1.1c0-4.3-4.5-7.8-10-7.8s-10 3.5-10 7.8c0 3.8 3.5 7 8.3 7.6c.3.1.8.2 1 .5c.2.2.1.6 0 .8c-.1.3-.5 2-.6 2.4c-.1.4.1.6.4.4c.4-.2 2.4-1.5 3.3-2.2c.3-.2.6-.2.9-.2c5.2-.2 9.2-3.4 9.2-7.3z"/>
-                  </svg>
-                  ส่งสลิปเพื่อยืนยันคิวผ่าน Line
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <!-- SUCCESS PANEL (Overlay after step 3 completes / info sent) -->
-          <div class="step-panel" id="step-panel-success">
-            <div class="success-panel">
-              <div class="success-icon">✓</div>
-              <h3 class="success-title">ส่งข้อมูลการจองเรียบร้อย!</h3>
-              <p class="success-desc" id="success-message-text">
-                ระบบได้บันทึกคิวเบื้องต้นของคุณลงในระบบแล้ว เจ้าหน้าที่จะทำการตรวจสอบยอดโอนเงินมัดจำ 500 บาท และเปลี่ยนสถานะคิวเป็น "ยืนยัน" ในระบบ Google Sheets & Calendar ต่อไป
-              </p>
-              <div style="display: flex; gap: 12px; justify-content: center;">
-                <a href="#hero" class="btn btn-secondary" id="btn-restart-flow">กลับหน้าแรก</a>
-                <a href="#" target="_blank" id="btn-success-line" class="btn btn-primary" style="background-color: #25d366; color: #000;">แจ้งโอนมัดจำผ่าน Line</a>
-              </div>
-            </div>
-          </div>
-
+        <div class="booking-actions-group">
+          <a href="booking.html" class="btn btn-primary btn-booking-main">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon" style="margin-right: 8px;">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            กรอกข้อมูลจองคิว
+          </a>
+          <a href="calendar.html" target="_blank" class="btn btn-secondary btn-booking-sub">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon" style="margin-right: 8px;">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            ตรวจสอบคิวว่าง
+          </a>
         </div>
       </div>
     </div>
