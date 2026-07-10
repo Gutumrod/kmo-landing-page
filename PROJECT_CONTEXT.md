@@ -1,9 +1,28 @@
 # Project Context: KMO RACK BAR CUSTOM - Landing Page & Booking System
 
-**Last Updated:** 2026-07-10 13:00  
-**Current Phase:** Phase 4: Quality Assurance & Deployment  
-**Progress:** 95%  
-**Next Session:** ย้ายสิทธิ์โดเมนเนมหรือเปิดตัวโฮสติ้งจริง (GitHub Pages) เพื่อทดสอบในโปรดักชันจริงเต็มรูปแบบ
+**Last Updated:** 2026-07-10 15:53
+**Current Phase:** Phase 5: Requirements Re-Discovery & Architecture Cleanup
+**Progress:** ~60% (สโคปเปลี่ยนจากที่เข้าใจตอนแรก ต้องนับใหม่)
+**Next Session:** ทำ Discovery Interview ต่อให้จบ (ค้างหัวข้อ 4-5) แล้วเขียน `implementation_plan.md` ก่อนเริ่มโค้ดฟีเจอร์ใหม่
+
+---
+
+## 🎯 เป้าหมายโปรเจกต์ (ยืนยันแล้ว 2026-07-10 — สำคัญ อ่านก่อนแก้อะไร)
+
+**โปรเจกต์นี้ไม่ได้มาแทน production (`kmorackbarcustom.github.io`)** เป็นช่องทางขายตรงแยกต่างหาก
+เป้าหมายหลัก: สร้างช่องขายของร้านเองที่ไม่โดนหักค่าคอมจากแพลตฟอร์ม (Shopee หักเกือบ 30%/ชิ้น)
+ลูกค้าเห็นแคตตาล็อกสวยๆ แบบ Shopee, กดสั่ง/จอง, จ่ายมัดจำ, จบ — ลดเวลาคุยไปมากับร้าน
+
+**โครงสร้าง**: สินค้าแต่ละชิ้นมี 2 ปุ่มอิสระต่อกัน
+- **จองคิว (booking)** — ลูกค้าเอารถเข้ามาคัสตอมที่ร้านจริง → ลิงก์ออกไป production
+  (`https://kmorackbarcustom.github.io/booking.html`, `/calendar.html`)
+- **สั่งซื้อ (order)** — 2 ทางเลือกในตัว: (1) สั่งตรงกับร้าน (กรอกข้อมูล+มัดจำ+เลือกส่ง/มารับเอง)
+  ผ่าน `CustomerOrder.html` บน production, หรือ (2) ลิงก์ไป Shopee เดิม (ไม่ทิ้งเพราะลูกค้าบางคนติดแพลตฟอร์ม)
+
+**หลักการสำคัญ**: kmo-landing-page **ไม่ maintain ไฟล์ booking/calendar/order ของตัวเอง**
+ทุกอย่างที่เป็น transaction จริง (จอง/สั่งซื้อ) ต้องลิงก์ออกไป production ที่เดียว —
+กันปัญหาไฟล์หลุด sync (เคยเกิดมาแล้ว 2026-07-10: booking.html/calendar.html ในนี้ตกรุ่นไม่มี
+capacity model ใหม่ที่แก้ที่ production) โปรเจกต์นี้โฟกัสแค่ **แคตตาล็อก + ตะกร้า + UX หน้าแรก**
 
 ---
 
@@ -12,82 +31,74 @@
 ### เสร็จแล้ว (Completed)
 | Phase | Tasks | เสร็จเมื่อ | หมายเหตุ |
 |-------|-------|-----------|----------|
-| Phase 1 | จัดทำเอกสาร PRD และจำลองโครงสร้างไฟล์ของโปรเจกต์ | 2026-07-07 | วิเคราะห์ข้อมูลจาก Google Drive ของร้าน KMO เรียบร้อย |
-| Phase 1 | ออกแบบโครงสร้างไฟล์ (styles.css, index.html) และจัดการ Assets | 2026-07-09 | สไตล์มืดพรีเมียม (Premium Dark Theme) สวยงามสมบูรณ์ |
-| Phase 2 | เขียนโค้ดส่วน Frontend (Catalog, Cart, Manual Checkout) | 2026-07-10 | ตะกร้าและโครงระบบโปร่งใส (Transparent Pricing & Dual Routing) เสร็จสิ้น |
-| Phase 3 | พัฒนา Interactive Calendar และเชื่อมต่อ API Apps Script | 2026-07-10 | เชื่อม Google Sheets/Calendar API และส่งข้อมูลทางแชท Line สำเร็จ |
-| Phase 4 | ปรับเปลี่ยนสถาปัตยกรรมแยกหน้าและลบสไลด์ซ้อน | 2026-07-10 | แยกหน้าจอง (`booking.html`) และคิวว่าง (`calendar.html`) ลบ iframe หน้าแรกออก และเปลี่ยนเป็นแบบการ์ดปุ่มคู่ (Dual CTA) |
-| Phase 4 | แก้ไขบักรูปภาพ QR Code และคลีนอัพโค้ด | 2026-07-10 | แก้ไขพาร์ทรูปภาพ PromptPay QR Code และคลีนโค้ดเก่าออกกว่า 1,180 บรรทัด |
+| Phase 1-4 | โครงหน้าเว็บ, catalog, cart, dark theme, dual CTA | 2026-07-07~09 | ดูรายละเอียดเดิมด้านล่าง (ประวัติก่อนหน้า) |
+| Phase 5 | Discovery interview เป้าหมายโปรเจกต์ใหม่ | 2026-07-10 | พบว่าเข้าใจสโคปผิดมาตลอด (คิดว่าจะมาแทน production) แก้ความเข้าใจแล้ว |
+| Phase 5 | ลบ `booking.html`/`calendar.html` ที่ตกรุ่น เปลี่ยนเป็นลิงก์ออก production | 2026-07-10 | commit `c1c2523` push แล้ว |
 
 ### กำลังทำ (In Progress)
 | Phase | Tasks | เริ่มเมื่อ | คาดว่าเสร็จ |
 |-------|-------|----------|-------------|
-| Phase 4 | ทดสอบคุณภาพปลายทาง (QA) และเตรียมเปิดตัวขึ้นระบบจริง | 2026-07-10 | 2026-07-10 |
+| Phase 5 | Discovery interview ต่อ (หัวข้อ 4 ราคา/โปร่งใส, หัวข้อ 5 database) | 2026-07-10 | รอ session หน้า |
 
-### ยังไม่ได้ทำ (Pending)
-| Phase | Tasks | Priority | Depends On |
-|-------|-------|----------|------------|
-| - | - | - | - |
+### ยังไม่ได้ทำ (Pending — เรียงตามที่คุยไว้)
+| Task | Priority | หมายเหตุ |
+|------|----------|----------|
+| ตะกร้าแบ่ง 2 กลุ่ม (สั่งซื้อ/จองคิว) พร้อมยอดรวม+ปุ่มเช็คเอาต์แยกกัน | High | ตกลงแนวทางแล้ว (ดูหัวข้อ Open Questions) ยังไม่ได้เขียนโค้ด |
+| ต่อ Google Sheets CSV จริงเข้าแคตตาล็อก | High | `GOOGLE_SHEETS_CSV_URL` ใน `app.js` ยังเป็น placeholder — fallback ไปสินค้า 7 ชิ้น hardcode เงียบๆ ทุกครั้ง มี sheet จริงอยู่แล้วแต่สินค้ายังไม่ครบ (ค่อยๆเพิ่มได้ ไม่ต้องรอครบ) |
+| Validate ไฟล์อัปโหลด (สลิป) ฝั่ง server ไม่ใช่แค่ client JS | Medium | มาจากรีวิวความปลอดภัยรอบแรก |
+| แก้ `innerHTML` ไม่ escape ชื่อ/รายละเอียดสินค้า | Medium | เสี่ยง XSS ถ้า CSV เชื่อมจริงแล้วมีคนแก้ sheet ใส่ script ได้ |
 
 ---
 
 ## 📝 Last Session Summary
 
-**Session Date:** 2026-07-10  
-**Model Used:** Antigravity (Gemini 3.5 Pro)
+**Session Date:** 2026-07-10 (ช่วงบ่าย-เย็น)
+**Model Used:** Claude Sonnet 5
 
 ### ทำอะไรเสร็จไปบ้าง
-- ✅ สร้างไฟล์และจัดตั้งหน้า [booking.html](file:///D:/AI-Workspace/projects/landing%20page/KMO/booking.html) และ [calendar.html](file:///D:/AI-Workspace/projects/landing%20page/KMO/calendar.html) แยกอย่างเป็นอิสระ
-- ✅ ปรับปรุงหน้าแรก [index.html](file:///D:/AI-Workspace/projects/landing%20page/KMO/index.html) และ [styles.css](file:///D:/AI-Workspace/projects/landing%20page/KMO/styles.css) โดยยกเลิกการฝัง iframe และหันมาใช้การ์ดนัดจองพรีเมียมพร้อมกลุ่มปุ่มคู่ขนาน (Dual CTA) เพื่อลดปัญหาเลื่อนซ้อน
-- ✅ เพิ่มระบบอ่านสินค้าจากตะกร้า `kmo_cart` ใน `localStorage` ไปเติมลงแบบฟอร์มบริการหน้าจองให้อัตโนมัติ (UX Auto-fill)
-- ✅ คลีนอัพโค้ดใน [app.js](file:///D:/AI-Workspace/projects/landing%20page/KMO/app.js) และ [styles.css](file:///D:/AI-Workspace/projects/landing%20page/KMO/styles.css) ลบโค้ดจองเดิมที่ซ้ำซ้อนออกรวมกันกว่า 1,180 บรรทัด
-- ✅ แก้ไขบักพาร์ทรูปภาพ QR Code (PromptPay) ให้แสดงผลถาวรผ่านพาร์ท `assets/images/qr-deposit.jpg`
-- ✅ ทำการ Commit & Push โค้ดทั้งหมดขึ้นสู่ GitHub Repository หลักสำเร็จเรียบร้อย
+- ✅ รีวิวความปลอดภัยรอบแรก พบช่องโหว่ใหญ่ในระบบที่ยืมมา (RLS เปิดโล่งบน Supabase) — แก้ที่ต้นทาง (production repo) ไม่ใช่ในนี้ เพราะเป็น backend ร่วมกัน
+- ✅ ทำ Discovery Interview เป้าหมายโปรเจกต์ (5 หัวข้อตามสกิล `discovery-interview`) — ทำถึงหัวข้อ 3 ครบ, หัวข้อ 4-5 เริ่มแล้วแต่ยังไม่จบ
+- ✅ พบว่า `CustomerOrder.html` (production) ทำงานสมบูรณ์แล้วจริง ไม่ใช่ mockup อย่างที่เข้าใจตอนแรก (mockup คือแค่รายการสินค้าหน้าแรกที่รอ CSV จริง)
+- ✅ พบ gap สำคัญ: ตะกร้าที่มีราคาจริงเชื่อมแค่ booking.html เท่านั้น ไม่เชื่อมกับ CustomerOrder.html เลย — ตกลงแนวทางแก้แล้ว (ดูด้านล่าง)
+- ✅ ลบ `booking.html`/`calendar.html` ที่ตกรุ่น เปลี่ยนปุ่มในหน้าแรก+ตะกร้าให้ลิงก์ออกไป production ตรงๆ (commit `c1c2523`, pushed)
 
 ### เจอปัญหาอะไร
-- พบการระบุไฟล์ QR Code ผิดพลาดในแบบฟอร์มหน้าจอง (`payment.jpg`) แก้ไขเรียบร้อยแล้วโดยระบุหา `assets/images/qr-deposit.jpg` ที่เป็นไฟล์จริงในระบบ
+- เข้าใจผิดมาตลอดว่าโปรเจกต์นี้จะ "แทน" production — จริงๆ แค่เป็นหน้าร้านแคตตาล็อกที่ยิงปุ่มออกไปหา production
+- `booking.html`/`calendar.html` ที่ copy มาไว้ในนี้ตกรุ่น ไม่มี capacity model 2 พูลที่เพิ่งแก้ที่ production — สาเหตุคือ maintain ไฟล์ซ้ำ 2 ที่
 
 ### บทเรียนที่ได้
-- 💡 การแยกหน้าแสดงผลเดี่ยวช่วยลดภาระการโหลดของหน้าแรกและขจัดปัญหาแถบเลื่อนซ้อนทับ (Scrollbar) ได้อย่างเด็ดขาด ช่วยพัฒนา UX บนมือถือให้ราบรื่นยิ่งขึ้น
+- 💡 โปรเจกต์ที่ "ยืม" ฟีเจอร์จากระบบอื่น ควร**ลิงก์ออก ไม่ copy ไฟล์มาไว้เอง** กันปัญหาหลุด sync ตั้งแต่แรก — ใช้หลักการนี้กับปุ่มออเดอร์อยู่แล้ว (ลิงก์ไป CustomerOrder.html) แต่ตอน booking/calendar ไม่ได้ทำแบบเดียวกันตั้งแต่ต้น
 
 ---
 
 ## 🚀 Next Steps
 
 ### ต้องทำอะไรต่อ (ลำดับความสำคัญ)
-1. **High Priority:**
-   - [ ] ดำเนินการเปิดตัว (Deploy) หน้าเว็บทั้งหมดขึ้นสู่ระบบจริงผ่าน GitHub Pages ของทางร้าน
-   - [ ] ทดสอบปลายทาง (End-to-End Test) การจองและแนบรูปภาพอัปโหลดเข้า Supabase จริงในเครื่องมือถือสมาร์ทโฟน
+1. **ทำ Discovery Interview ต่อให้จบ** (หัวข้อ 4: ราคา/มัดจำแบบละเอียด, หัวข้อ 5: CSV/database ที่เหลือ) แล้วเขียน `implementation_plan.md`
+2. เขียนโค้ดตะกร้า 2 กลุ่ม (สั่งซื้อ/จองคิว แยกยอดรวม+ปุ่มเช็คเอาต์)
+3. ต่อ Google Sheets CSV จริงเข้าแคตตาล็อก
+4. ปิดช่องโหว่ upload validation + XSS ที่ค้างจากรีวิวรอบแรก
 
 ---
 
 ## ❓ Open Questions / Decisions Needed
 
-| คำถาม | ต้องตัดสินใจเมื่อ | Impact |
-|-------|------------------|--------|
-| - | - | - |
+| คำถาม | สถานะ | รายละเอียด |
+|-------|-------|-----------|
+| ตะกร้าแบ่ง 2 กลุ่มยังไง เวลามีทั้งสินค้าสั่งซื้อ+จองคิวปนกัน | ✅ ตกลงแล้ว | แบ่งเป็น 2 ส่วนในตะกร้าเดียว แต่ละส่วนมียอดรวม+ปุ่มเช็คเอาต์แยกกัน (ไปคนละหน้า production) ไม่พยายามยัดรวม flow เดียว |
+| มัดจำ/ราคาที่ลูกค้าเห็นตอนสั่งซื้อ มาจากตะกร้าหรือคุยทีหลังทาง LINE | ⏳ ค้าง | ตะกร้ามีราคาจริงอยู่แล้ว (จาก catalog) — ยังไม่ได้คุยว่าราคานี้ต้องส่งต่อเข้า CustomerOrder.html ยังไง (ตอนนี้ฟอร์มนั้นไม่รู้จักราคาเลย ใช้แค่ unit weight) |
+| CSV ต้องมีคอลัมน์อะไรบ้างให้ตรงกับที่ `parseCSV()` ใน app.js รองรับ | ⏳ ค้าง | ยังไม่ได้ดูโครงสร้าง sheet จริงเทียบกับโค้ด parser |
 
 ---
 
 ## 📁 ไฟล์สำคัญในโปรเจกต์
 
-| ไฟล์ | Path | หน้าที่ |
-|------|------|--------|
-| PRD.md | [PRD.md](file:///D:/AI-Workspace/projects/landing%20page/KMO/PRD.md) | MASTER_BLUEPRINT |
-| PROJECT_CONTEXT.md | [PROJECT_CONTEXT.md](file:///D:/AI-Workspace/projects/landing%20page/KMO/PROJECT_CONTEXT.md) | ความคืบหน้าล่าสุด |
-
-> **2026-07-10**: `booking.html`/`calendar.html` ไม่ maintain ไฟล์แยกในโปรเจกต์นี้แล้ว — ลบออกแล้ว ปุ่มจองคิว/เช็คคิวว่างในหน้าแรกลิงก์ออกไปที่ production จริง (`https://kmorackbarcustom.github.io/booking.html` และ `/calendar.html`) โดยตรง เหมือนปุ่มสั่งออเดอร์ที่ลิงก์ไป `CustomerOrder.html` อยู่แล้ว เพื่อกันไฟล์หลุด sync กับ production (เคยเกิดปัญหานี้มาแล้ว)
-
----
-
-## 📊 Progress Timeline
-
-```
-Phase 1: ████████████████████ 100%
-Phase 2: ████████████████████ 100%
-Phase 3: ████████████████████ 100%
-Phase 4: ███████████████████░  95%
-```
+| ไฟล์ | หน้าที่ |
+|------|--------|
+| PRD.md | Master blueprint เดิม (อาจต้อง revise ตามเป้าหมายที่ชัดเจนขึ้นรอบนี้) |
+| PROJECT_CONTEXT.md | ไฟล์นี้ — ความคืบหน้าล่าสุด |
+| index.html + app.js + styles.css | หน้าแรก, catalog, cart — **นี่คือขอบเขตจริงของโปรเจกต์นี้** |
+| ~~booking.html~~ / ~~calendar.html~~ | **ลบแล้ว** ลิงก์ออกไป production แทน |
 
 ---
 
@@ -96,10 +107,9 @@ Phase 4: ███████████████████░  95%
 | บทบาท | ใคร | ติดต่อ |
 |-------|-----|--------|
 | CEO / Project Owner | คุณฟรี | Telegram: @craftbikelabceo |
-| Manager / Orchestrator | Antigravity Agent | - |
-| Executor / Worker | OpenClaw | - |
+| Commander | Claude | - |
 
 ---
 
-**Template Version:** 1.0  
-**Last Edited By:** Antigravity Agent
+**Template Version:** 1.1
+**Last Edited By:** Claude Sonnet 5
