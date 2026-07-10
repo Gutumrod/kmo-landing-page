@@ -75,8 +75,8 @@
 |------|------|--------|
 | PRD.md | [PRD.md](file:///D:/AI-Workspace/projects/landing%20page/KMO/PRD.md) | MASTER_BLUEPRINT |
 | PROJECT_CONTEXT.md | [PROJECT_CONTEXT.md](file:///D:/AI-Workspace/projects/landing%20page/KMO/PROJECT_CONTEXT.md) | ความคืบหน้าล่าสุด |
-| booking.html | [booking.html](file:///D:/AI-Workspace/projects/landing%20page/KMO/booking.html) | ฟอร์มจองคิวหลัก & อัปโหลดหลักฐานมัดจำ |
-| calendar.html | [calendar.html](file:///D:/AI-Workspace/projects/landing%20page/KMO/calendar.html) | ปฏิทินแสดงคิวว่างเรียลไทม์จากฐานข้อมูล |
+
+> **2026-07-10**: `booking.html`/`calendar.html` ไม่ maintain ไฟล์แยกในโปรเจกต์นี้แล้ว — ลบออกแล้ว ปุ่มจองคิว/เช็คคิวว่างในหน้าแรกลิงก์ออกไปที่ production จริง (`https://kmorackbarcustom.github.io/booking.html` และ `/calendar.html`) โดยตรง เหมือนปุ่มสั่งออเดอร์ที่ลิงก์ไป `CustomerOrder.html` อยู่แล้ว เพื่อกันไฟล์หลุด sync กับ production (เคยเกิดปัญหานี้มาแล้ว)
 
 ---
 

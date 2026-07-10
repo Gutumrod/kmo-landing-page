@@ -227,7 +227,8 @@ function initEventListeners() {
   const checkoutCartBtn = document.getElementById('btn-checkout-cart');
   checkoutCartBtn.addEventListener('click', () => {
     toggleCartDrawer();
-    window.location.href = 'booking.html';
+    // ponytail: booking.html/calendar.html ไม่ maintain ไฟล์แยกในนี้แล้ว ลิงก์ออกไป production ที่เดียว กัน sync หลุด
+    window.location.href = 'https://kmorackbarcustom.github.io/booking.html';
   });
 }
 
