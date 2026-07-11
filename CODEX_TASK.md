@@ -1,9 +1,9 @@
-# Codex Task Brief — KMO Landing Page (Category Taxonomy ขยาย: เพิ่ม 3 หมวดใหม่)
+# Codex Task Brief — KMO Landing Page (แก้ Mobile Layout: hero text + product grid)
 
 อ่านเต็มก่อนเริ่ม: `PROJECT_CONTEXT.md`
 
-Phase 0+A+B+C+E เสร็จและ push แล้ว (`50fd0d2`, `origin/main` up to date ณ 2026-07-11).
-งานนี้ไม่ใช่ Phase D — เป็นงานคั่นกลางที่ CEO ขอเพิ่ม เพราะกำลังจะเพิ่มสินค้าจริงเข้าชีตเยอะ (บาร์เสริม/พักเท้า/ไฟ/กล่อง/กระเป๋า/น้ำมันเครื่อง/ผ้าเบรก) แล้วพบว่าปุ่มหมวดเดิมไม่พอ
+Category taxonomy เสร็จและ push แล้ว (`73dfb4c`, `ebb2caf` สำหรับ design brief docs). ตอนนี้ site live จริงที่
+`https://gutumrod.github.io/kmo-landing-page/` (เพิ่งเปิด GitHub Pages) — CEO เปิดจากมือถือแล้วเจอ 2 ปัญหา
 
 ---
 
@@ -16,81 +16,109 @@ Phase 0+A+B+C+E เสร็จและ push แล้ว (`50fd0d2`, `origin/m
 
 ---
 
-## บริบท — Taxonomy ใหม่ที่ CEO confirm แล้ว (2026-07-11)
+## บริบท — ยืนยันสาเหตุแล้วจาก computed style บนเว็บจริง (viewport 375px)
 
-เดิมมี 4 หมวด: `rear` / `side` / `crashbar` / `other` (ปุ่ม "อุปกรณ์เสริม & บริการ")
-ตอนนี้ต้องขยายเป็น 6 หมวด — **ยกเลิก `other` ไปเลย แยกเป็น 3 หมวดใหม่แทน:**
+### ปัญหา 1: "ตัวหนังสือแปลก" บนมือถือ
+`.hero-title` (`styles.css` บรรทัด 237-243) ตอนนี้:
+```css
+.hero-title {
+  font-size: 54px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 20px;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+}
+```
+**ไม่มี media query ลดขนาดบนจอแคบเลย** — 54px บนจอ 375px ทำให้ตัดคำแปลก + `line-height: 1.2` แน่นเกินไป (โปรเจกต์นี้มีกฎเรื่องวรรณยุกต์จมอยู่แล้วใน `CLAUDE.md`: ต้องใช้ line-height สูงกว่านี้กับ text ใหญ่) ทำให้วรรณยุกต์มีโอกาสซ้อนทับกัน
 
-| Slug | ปุ่มภาษาไทย | ตัวอย่างสินค้า |
-|---|---|---|
-| `rear` | แร็คท้าย | เหมือนเดิม ไม่แตะ |
-| `side` | แร็คข้าง | เหมือนเดิม ไม่แตะ |
-| `crashbar` | แครชบาร์ | เหมือนเดิม ไม่แตะ |
-| `accessory` | อุปกรณ์แต่งรถ | บาร์เสริม/ค้ำท้าย, พักเท้า |
-| `gear` | ไฟ/จอ/กล่อง/กระเป๋า | ไฟสปอร์ตไลท์, ที่ชาร์จ, กล่องหลัง/ข้าง, กระเป๋า |
-| `service` | บริการ | บริการติดตั้ง, น้ำมันเครื่อง, ผ้าเบรก |
+### ปัญหา 2: คอลัมน์สินค้าเป็น 1 แถวยาว ไม่ใช่กริดแบบ Shopee
+`.product-grid` (`styles.css` บรรทัด 393-397) ตอนนี้:
+```css
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+}
+```
+บนจอ 375px พื้นที่จริงในตะกร้า (หลังหัก `.container` padding 24px x2) เหลือ ~327px — `minmax(280px, ...)` เลยพอดี 1 คอลัมน์เท่านั้น ยืนยันแล้วจาก `getComputedStyle` บนเว็บจริง (`gridTemplateColumns: "327px"`)
 
 ---
 
 ## สิ่งที่ต้องทำ
 
-### 1. `index.html` — ปุ่ม filter
-- ลบปุ่ม `<button class="filter-btn" data-category="other">อุปกรณ์เสริม & บริการ</button>` ทิ้ง
-- เพิ่ม 3 ปุ่มใหม่ต่อจาก `crashbar` (เรียงตามตารางด้านบน):
-  ```html
-  <button class="filter-btn" data-category="accessory">อุปกรณ์แต่งรถ</button>
-  <button class="filter-btn" data-category="gear">ไฟ/จอ/กล่อง/กระเป๋า</button>
-  <button class="filter-btn" data-category="service">บริการ</button>
-  ```
-- ไม่ต้องแก้ JS ส่วน event listener — `initEventListeners()` ใช้ `querySelectorAll('.filter-btn')` แบบ generic อยู่แล้ว ปุ่มใหม่ทำงานอัตโนมัติ
+### 1. `styles.css` — `.hero-title` responsive
+เพิ่ม media query ลดขนาดลงบนจอแคบ (ใช้ pattern เดียวกับที่ไฟล์นี้มีอยู่แล้ว คือ `@media (min-width: ...)` ครอบ desktop-up แทน — เพราะ base rule ปัจจุบันไม่ใช่ mobile-first) วิธีที่ตรงกับ pattern เดิมของไฟล์นี้:
+```css
+.hero-title {
+  font-size: 32px;   /* ค่า default = มือถือ (เดิมคือ 54px ยกไปไว้ desktop) */
+  line-height: 1.5;  /* กันวรรณยุกต์จม แทน 1.2 เดิม */
+}
 
-### 2. `app.js` — `getCategoryLabel()` (บรรทัด ~667-674)
-ตอนนี้ default ทุกอย่างที่ไม่ใช่ rear/side/crashbar ไปเป็น "อุปกรณ์เสริม" หมดเลย ต้องแก้ให้ตรงหมวดจริง:
-```js
-function getCategoryLabel(category) {
-  switch (category) {
-    case 'rear': return 'แร็คท้าย';
-    case 'side': return 'แร็คข้าง';
-    case 'crashbar': return 'แครชบาร์';
-    case 'accessory': return 'อุปกรณ์แต่งรถ';
-    case 'gear': return 'ไฟ/จอ/กล่อง/กระเป๋า';
-    case 'service': return 'บริการ';
-    default: return 'อื่นๆ';
+@media (min-width: 576px) {
+  .hero-title {
+    font-size: 42px;
+    line-height: 1.3;
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-title {
+    font-size: 54px;
+    line-height: 1.2;
   }
 }
 ```
+(ปรับตัวเลขได้ตามความเหมาะสม แต่ต้องคุมหลักการ: มือถือเล็กสุด, desktop ค่อยขยับกลับไป 54px เดิม, line-height มือถือต้องหลวมกว่า desktop)
 
-### 3. `app.js` — `FALLBACK_PRODUCTS` (ต้น ๆ ไฟล์ บรรทัด ~15-95) — ย้ายหมวดของเดิม 2 ชิ้น
-สินค้าที่เคยเป็น `category: 'other'` ต้องย้ายตาม taxonomy ใหม่:
-- `spotlight-60w-3200` (ไฟสปอร์ตไลท์คู่ Motovision) → `category: 'gear'`
-- `service-installation-500` (บริการติดตั้งด่วน & เซ็ตระบบไฟ) → `category: 'service'`
-(สินค้าอื่นในนี้ไม่ต้องแตะ)
+### 2. `styles.css` — `.product-grid` บังคับ 2 คอลัมน์ขั้นต่ำบนมือถือ
+```css
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
 
-### 4. `styles.css`
-- ปุ่ม filter ใหม่ 3 ปุ่มใช้ class `.filter-btn` เดิม สไตล์อัตโนมัติตรงกันอยู่แล้ว ไม่ต้องเพิ่ม CSS ใหม่ ตรวจแค่ไม่ล้นแถวตอนมี 7 ปุ่ม (ทั้งหมด+6 หมวด) บนจอมือถือ — ถ้าล้น ให้ปรับ `.catalog-filters` เป็น wrap/scroll แนวนอนตามที่มีอยู่แล้วในไฟล์ (เช็คว่ามี `flex-wrap` หรือ `overflow-x` อยู่แล้วหรือยัง)
+@media (min-width: 576px) {
+  .product-grid {
+    gap: 20px;
+  }
+}
+
+@media (min-width: 768px) {
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+  }
+}
+```
+มือถือ = บังคับ 2 คอลัมน์เสมอ (แบบ Shopee), tablet ขึ้นไปค่อยกลับไปใช้ auto-fill เดิม
+
+### 3. `styles.css` — ปรับ card ให้พอดีกับคอลัมน์แคบบนมือถือ
+เช็คว่า `.product-info` (padding 20px เดิม), `.product-title` (font-size 18px เดิม), ปุ่ม `.product-actions .btn-add-cart`/`.btn-order` (font-size 13px เดิม) ยังพอดีไหมตอนการ์ดเหลือ ~155px กว้าง (2 คอลัมน์ - gap) ถ้าข้อความปุ่ม/ชื่อสินค้าล้น/ตัดคำแปลกๆ ให้เพิ่ม media query ลดขนาดเฉพาะช่วงมือถือ เช่น:
+```css
+@media (max-width: 575px) {
+  .product-info { padding: 12px; }
+  .product-title { font-size: 14px; }
+  .product-actions .btn-add-cart,
+  .product-actions .btn-order { font-size: 11px; padding: 8px 4px; }
+}
+```
+(ปรับตัวเลขจริงตามที่เทสแล้วดูดี ไม่ต้องตรงเป๊ะตามนี้)
 
 ---
 
 ## ทดสอบก่อนบอกว่าเสร็จ
 
-- กดปุ่มใหม่ทั้ง 3 (accessory/gear/service) → filter ทำงานถูกต้อง (ทดสอบด้วยการแก้ category สินค้าทดสอบชั่วคราวใน `FALLBACK_PRODUCTS` แล้วเช็ค แล้ว revert ก่อน commit)
-- `spotlight-60w-3200` ต้องขึ้นตอนกดปุ่ม "ไฟ/จอ/กล่อง/กระเป๋า" ไม่ใช่ปุ่มอื่น
-- `service-installation-500` ต้องขึ้นตอนกดปุ่ม "บริการ"
-- ปุ่ม "ทั้งหมด" ยังโชว์ครบทุกชิ้นเหมือนเดิม
-- 7 ปุ่มไม่ล้น/ตัดขาดบนจอมือถือ (ลอง resize แคบดู)
-- `node --check app.js` ผ่าน
+- เปิดที่ viewport 375px (iPhone SE/มาตรฐาน): hero title ต้องไม่ตัดคำแปลก, วรรณยุกต์ไม่ซ้อน, อ่านง่าย
+- Product grid ที่ 375px ต้องเห็น **2 คอลัมน์** ไม่ใช่ 1 แถวยาว
+- การ์ดสินค้าในคอลัมน์แคบ: ชื่อสินค้า/ราคา/ปุ่มยังอ่านออก ไม่ล้นกรอบ ไม่ตัดคำประหลาด
+- เช็คที่ 320px (จอเล็กสุดที่พบได้) ด้วยว่าไม่พัง
+- เช็คที่ desktop (1280px) ว่า hero-title/grid กลับไปเหมือนเดิมทุกอย่าง (ไม่มี regression)
+- `git diff --check` ผ่าน
 
 ---
 
 ## เสร็จแล้วให้ทำอะไรต่อ
 
 - Commit ไว้ local ก่อน **อย่า push** จนกว่า CEO จะสั่ง
-- อัปเดต `PROJECT_CONTEXT.md` ให้ตรงกับ taxonomy ใหม่นี้
-- **แจ้ง CEO แยกต่างหาก:** ข้อมูลสินค้าจริงในชีตต้องแก้ category ตามตารางนี้ (CEO เป็นคนแก้ชีตเอง ไม่ใช่งาน Codex):
-  - `แครชบาร์` (9 แถว) → `crashbar`
-  - `แร็คท้าย` (4 แถว) → `rear`
-  - `แร็คข้าง` (1 แถว) → `side`
-  - `บาร์เสริม/ค้ำท้าย` (6 แถว) + `พักเท้า` (3 แถว) → `accessory`
-  - สินค้ากลุ่ม ไฟ/จอ/ที่ชาร์จ/กล่องหลัง/กล่องข้าง/กระเป๋า ที่จะเพิ่มใหม่ → `gear`
-  - สินค้ากลุ่ม น้ำมันเครื่อง/ผ้าเบรก ที่จะเพิ่มใหม่ → `service`
-- Phase D1 (ส่งราคาไป production form) ยังรอคิวเหมือนเดิม
+- อัปเดต `PROJECT_CONTEXT.md` เพิ่มบรรทัด "แก้ mobile layout (hero + grid)" ในตาราง completed
