@@ -7,9 +7,9 @@
 // ==========================================
 let PRODUCTS = [];
 
-// Google Sheets CSV URL - Replace this with your actual published CSV link
-// To publish: File -> Share -> Publish to web -> Select sheet -> Format CSV
-const GOOGLE_SHEETS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT5K76P35W6v3c85l4k35s0e3c8/pub?output=csv'; // Placeholder URL
+const GOOGLE_SHEETS_CSV_URL = 'https://docs.google.com/spreadsheets/d/11vOmugedMi3GoMN-a1NriI-hIvGVOSxg07fNI6DyRLM/export?format=csv';
+const CUSTOMER_ORDER_URL = 'https://kmorackbarcustom.github.io/CustomerOrder.html';
+const FALLBACK_PRODUCT_IMAGE = 'assets/images/service.jpg';
 
 // Fallback products in case CSV fetch fails
 const FALLBACK_PRODUCTS = [
@@ -337,33 +337,21 @@ function updateCartUI() {
 
   // Populate Cart Items HTML
   if (cart.length === 0) {
-    cartItemsContainer.innerHTML = '<div class="cart-empty-message">ไม่มีสินค้าในตะกร้าของคุณ</div>';
+    const emptyMessage = document.createElement('div');
+    emptyMessage.className = 'cart-empty-message';
+    emptyMessage.textContent = 'ไม่มีสินค้าในตะกร้าของคุณ';
+    cartItemsContainer.replaceChildren(emptyMessage);
   } else {
-    cartItemsContainer.innerHTML = '';
+    cartItemsContainer.replaceChildren();
     cart.forEach(item => {
-      const itemEl = document.createElement('div');
-      itemEl.className = 'cart-item';
-      itemEl.innerHTML = `
-        <img src="${item.product.image}" alt="${item.product.name}" class="cart-item-img">
-        <div class="cart-item-details">
-          <div class="cart-item-name">${item.product.name}</div>
-          <div class="cart-item-price">฿${(item.product.price * item.quantity).toLocaleString()}</div>
-          <div class="cart-item-controls">
-            <div class="quantity-selector">
-              <button class="quantity-btn min-btn" onclick="updateItemQty('${item.product.id}', ${item.quantity - 1})">-</button>
-              <div class="quantity-val">${item.quantity}</div>
-              <button class="quantity-btn plus-btn" onclick="updateItemQty('${item.product.id}', ${item.quantity + 1})">+</button>
-            </div>
-            <button class="cart-item-remove" onclick="removeCartItem('${item.product.id}')">ลบ</button>
-          </div>
-        </div>
-      `;
-      cartItemsContainer.appendChild(itemEl);
+      cartItemsContainer.appendChild(createCartItemElement(item));
     });
   }
 
-  // Also update checkout section in Intake Form
-  updateIntakeFormSelectedServices();
+  // Keep compatibility if the old inline booking section is reintroduced.
+  if (typeof updateIntakeFormSelectedServices === 'function') {
+    updateIntakeFormSelectedServices();
+  }
 }
 
 // Global functions exposed to inline HTML event handlers
@@ -380,53 +368,173 @@ window.removeCartItem = function(productId) {
 // ==========================================
 function renderCatalog(category) {
   const productGridContainer = document.getElementById('product-grid-container');
-  productGridContainer.innerHTML = '';
+  productGridContainer.replaceChildren();
 
   const filteredProducts = category === 'all' 
     ? PRODUCTS 
     : PRODUCTS.filter(p => p.category === category);
 
   filteredProducts.forEach(product => {
-    const cardEl = document.createElement('div');
-    cardEl.className = 'product-card';
-    
-    // Determine dynamic actions buttons
-    let actionButtonsHTML = '';
-    
-    if (product.allow_booking) {
-      actionButtonsHTML += `<button class="btn-add-cart" onclick="addToCart('${product.id}')">จองติดตั้ง</button>`;
-    }
-    
-    if (product.allow_order) {
-      const orderUrl = product.shopee_url && product.shopee_url.trim() !== '' 
-        ? product.shopee_url 
-        : 'https://kmorackbarcustom.github.io/CustomerOrder.html';
-      const orderBtnLabel = product.shopee_url && product.shopee_url.trim() !== '' 
-        ? 'สั่งซื้อ Shopee' 
-        : 'สั่งผลิต';
-      actionButtonsHTML += `<a href="${orderUrl}" target="_blank" class="btn-order">${orderBtnLabel}</a>`;
-    }
-
-    cardEl.innerHTML = `
-      <div class="product-img-wrapper">
-        <img src="${product.image}" alt="${product.name}" class="product-img" loading="lazy" onerror="this.src='assets/images/service.jpg'">
-        <span class="product-tag">${getCategoryLabel(product.category)}</span>
-      </div>
-      <div class="product-info">
-        <h3 class="product-title">${product.name}</h3>
-        <p class="product-models">${product.description}</p>
-        <div class="product-footer">
-          <div class="product-price-row">
-            <span class="product-price">฿${product.price.toLocaleString()}</span>
-          </div>
-          <div class="product-actions">
-            ${actionButtonsHTML}
-          </div>
-        </div>
-      </div>
-    `;
-    productGridContainer.appendChild(cardEl);
+    productGridContainer.appendChild(createProductCardElement(product));
   });
+}
+
+function createCartItemElement(item) {
+  const itemEl = document.createElement('div');
+  itemEl.className = 'cart-item';
+
+  const product = item.product;
+  const image = document.createElement('img');
+  image.className = 'cart-item-img';
+  image.src = getSafeImageUrl(product.image);
+  image.alt = product.name || '';
+  image.addEventListener('error', () => {
+    image.src = FALLBACK_PRODUCT_IMAGE;
+  }, { once: true });
+
+  const details = document.createElement('div');
+  details.className = 'cart-item-details';
+
+  const name = document.createElement('div');
+  name.className = 'cart-item-name';
+  name.textContent = product.name || '';
+
+  const price = document.createElement('div');
+  price.className = 'cart-item-price';
+  price.textContent = `฿${(Number(product.price || 0) * item.quantity).toLocaleString()}`;
+
+  const controls = document.createElement('div');
+  controls.className = 'cart-item-controls';
+
+  const quantitySelector = document.createElement('div');
+  quantitySelector.className = 'quantity-selector';
+
+  const minusBtn = document.createElement('button');
+  minusBtn.className = 'quantity-btn min-btn';
+  minusBtn.type = 'button';
+  minusBtn.textContent = '-';
+  minusBtn.addEventListener('click', () => updateQuantity(product.id, item.quantity - 1));
+
+  const quantityVal = document.createElement('div');
+  quantityVal.className = 'quantity-val';
+  quantityVal.textContent = item.quantity;
+
+  const plusBtn = document.createElement('button');
+  plusBtn.className = 'quantity-btn plus-btn';
+  plusBtn.type = 'button';
+  plusBtn.textContent = '+';
+  plusBtn.addEventListener('click', () => updateQuantity(product.id, item.quantity + 1));
+
+  const removeBtn = document.createElement('button');
+  removeBtn.className = 'cart-item-remove';
+  removeBtn.type = 'button';
+  removeBtn.textContent = 'ลบ';
+  removeBtn.addEventListener('click', () => removeFromCart(product.id));
+
+  quantitySelector.append(minusBtn, quantityVal, plusBtn);
+  controls.append(quantitySelector, removeBtn);
+  details.append(name, price, controls);
+  itemEl.append(image, details);
+
+  return itemEl;
+}
+
+function createProductCardElement(product) {
+  const cardEl = document.createElement('div');
+  cardEl.className = 'product-card';
+
+  const imageWrapper = document.createElement('div');
+  imageWrapper.className = 'product-img-wrapper';
+
+  const image = document.createElement('img');
+  image.className = 'product-img';
+  image.loading = 'lazy';
+  image.src = getSafeImageUrl(product.image);
+  image.alt = product.name || '';
+  image.addEventListener('error', () => {
+    image.src = FALLBACK_PRODUCT_IMAGE;
+  }, { once: true });
+
+  const tag = document.createElement('span');
+  tag.className = 'product-tag';
+  tag.textContent = getCategoryLabel(product.category);
+
+  const info = document.createElement('div');
+  info.className = 'product-info';
+
+  const title = document.createElement('h3');
+  title.className = 'product-title';
+  title.textContent = product.name || '';
+
+  const description = document.createElement('p');
+  description.className = 'product-models';
+  description.textContent = product.description || '';
+
+  const footer = document.createElement('div');
+  footer.className = 'product-footer';
+
+  const priceRow = document.createElement('div');
+  priceRow.className = 'product-price-row';
+
+  const price = document.createElement('span');
+  price.className = 'product-price';
+  price.textContent = `฿${Number(product.price || 0).toLocaleString()}`;
+
+  const actions = document.createElement('div');
+  actions.className = 'product-actions';
+
+  if (product.allow_booking) {
+    const bookingBtn = document.createElement('button');
+    bookingBtn.className = 'btn-add-cart';
+    bookingBtn.type = 'button';
+    bookingBtn.textContent = 'จองติดตั้ง';
+    bookingBtn.addEventListener('click', () => addToCart(product.id));
+    actions.appendChild(bookingBtn);
+  }
+
+  if (product.allow_order) {
+    const hasShopeeUrl = product.shopee_url && product.shopee_url.trim() !== '';
+    const orderBtn = document.createElement('a');
+    orderBtn.className = 'btn-order';
+    orderBtn.target = '_blank';
+    orderBtn.rel = 'noopener noreferrer';
+    orderBtn.href = hasShopeeUrl ? getSafeExternalUrl(product.shopee_url, CUSTOMER_ORDER_URL) : CUSTOMER_ORDER_URL;
+    orderBtn.textContent = hasShopeeUrl ? 'สั่งซื้อ Shopee' : 'สั่งผลิต';
+    actions.appendChild(orderBtn);
+  }
+
+  imageWrapper.append(image, tag);
+  priceRow.appendChild(price);
+  footer.append(priceRow, actions);
+  info.append(title, description, footer);
+  cardEl.append(imageWrapper, info);
+
+  return cardEl;
+}
+
+function getSafeImageUrl(url) {
+  if (!url || url.trim() === '') {
+    return FALLBACK_PRODUCT_IMAGE;
+  }
+
+  const trimmedUrl = url.trim();
+  if (/^(javascript|data|vbscript):/i.test(trimmedUrl)) {
+    return FALLBACK_PRODUCT_IMAGE;
+  }
+
+  return trimmedUrl;
+}
+
+function getSafeExternalUrl(url, fallbackUrl) {
+  try {
+    const parsed = new URL(url, window.location.href);
+    if (parsed.protocol === 'https:' || parsed.protocol === 'http:') {
+      return parsed.href;
+    }
+  } catch (error) {
+    return fallbackUrl;
+  }
+  return fallbackUrl;
 }
 
 function getCategoryLabel(category) {
@@ -466,6 +574,8 @@ function formatThaiDateStr(date) {
 function toggleLoader(show, text = 'กำลังโหลด...') {
   const overlay = document.getElementById('booking-loading');
   const textEl = document.getElementById('loading-text');
+  if (!overlay || !textEl) return;
+
   if (show) {
     textEl.textContent = text;
     overlay.classList.add('active');
