@@ -73,7 +73,7 @@ const FALLBACK_PRODUCTS = [
     id: 'spotlight-60w',
     name: 'ไฟสปอร์ตไลท์คู่ Motovision (60W)',
     price: 3200,
-    category: 'other',
+    category: 'gear',
     description: 'ไฟสปอร์ตไลท์เพิ่มทัศนวิสัยเวลากลางคืน พร้อมชุดขาสแตนเลสและสวิตช์กันน้ำ',
     image: 'assets/images/spotlight.jpg',
     shopee_url: '',
@@ -84,7 +84,7 @@ const FALLBACK_PRODUCTS = [
     id: 'service-installation',
     name: 'บริการติดตั้งด่วน & เซ็ตระบบไฟ',
     price: 500,
-    category: 'other',
+    category: 'service',
     description: 'บริการเดินสายไฟสปอร์ตไลท์แบบซ่อนสาย ติดตั้งอุปกรณ์เสริมอื่นๆ โดยช่างมืออาชีพ',
     image: 'assets/images/service.jpg',
     shopee_url: '',
@@ -669,7 +669,10 @@ function getCategoryLabel(category) {
     case 'rear': return 'แร็คท้าย';
     case 'side': return 'แร็คข้าง';
     case 'crashbar': return 'แครชบาร์';
-    default: return 'อุปกรณ์เสริม';
+    case 'accessory': return 'อุปกรณ์แต่งรถ';
+    case 'gear': return 'ไฟ/จอ/กล่อง/กระเป๋า';
+    case 'service': return 'บริการ';
+    default: return 'อื่นๆ';
   }
 }
 
