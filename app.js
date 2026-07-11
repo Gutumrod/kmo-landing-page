@@ -8,6 +8,7 @@
 let PRODUCTS = [];
 
 const GOOGLE_SHEETS_CSV_URL = 'https://docs.google.com/spreadsheets/d/11vOmugedMi3GoMN-a1NriI-hIvGVOSxg07fNI6DyRLM/export?format=csv';
+const BOOKING_URL = 'https://kmorackbarcustom.github.io/booking.html';
 const CUSTOMER_ORDER_URL = 'https://kmorackbarcustom.github.io/CustomerOrder.html';
 const FALLBACK_PRODUCT_IMAGE = 'assets/images/service.jpg';
 
@@ -235,11 +236,16 @@ function initEventListeners() {
   cartBackdrop.addEventListener('click', toggleCartDrawer);
 
   // Checkout button in cart drawer
-  const checkoutCartBtn = document.getElementById('btn-checkout-cart');
-  checkoutCartBtn.addEventListener('click', () => {
+  const checkoutBookingBtn = document.getElementById('btn-checkout-cart');
+  const checkoutOrderBtn = document.getElementById('btn-checkout-order');
+  checkoutBookingBtn.addEventListener('click', () => {
     toggleCartDrawer();
     // ponytail: booking.html/calendar.html ไม่ maintain ไฟล์แยกในนี้แล้ว ลิงก์ออกไป production ที่เดียว กัน sync หลุด
-    window.location.href = 'https://kmorackbarcustom.github.io/booking.html';
+    window.location.href = BOOKING_URL;
+  });
+  checkoutOrderBtn.addEventListener('click', () => {
+    toggleCartDrawer();
+    window.location.href = CUSTOMER_ORDER_URL;
   });
 }
 
@@ -250,7 +256,10 @@ function initCart() {
   const savedCart = localStorage.getItem('kmo_cart');
   if (savedCart) {
     try {
-      cart = JSON.parse(savedCart);
+      cart = JSON.parse(savedCart).map(item => ({
+        ...item,
+        type: item.type === 'order' ? 'order' : 'booking'
+      }));
     } catch (e) {
       cart = [];
     }
@@ -263,35 +272,37 @@ function saveCart() {
   updateCartUI();
 }
 
-function addToCart(productId) {
+function addToCart(productId, type = 'booking') {
   const product = PRODUCTS.find(p => p.id === productId);
   if (!product) return;
 
-  const existingItem = cart.find(item => item.product.id === productId);
+  const itemType = type === 'order' ? 'order' : 'booking';
+  const existingItem = cart.find(item => item.product.id === productId && item.type === itemType);
   if (existingItem) {
     existingItem.quantity += 1;
   } else {
-    cart.push({ product, quantity: 1 });
+    cart.push({ product, quantity: 1, type: itemType });
   }
 
   saveCart();
-  showToast(`เพิ่ม "${product.name}" ลงในตะกร้าแล้ว`);
+  const actionLabel = itemType === 'order' ? 'สั่งซื้อกับทางร้าน' : 'จองคิวติดตั้ง';
+  showToast(`เพิ่ม "${product.name}" ลงในตะกร้า${actionLabel}แล้ว`);
 }
 
-function updateQuantity(productId, quantity) {
-  const item = cart.find(item => item.product.id === productId);
+function updateQuantity(productId, type, quantity) {
+  const item = cart.find(item => item.product.id === productId && item.type === type);
   if (!item) return;
 
   item.quantity = parseInt(quantity);
   if (item.quantity <= 0) {
-    removeFromCart(productId);
+    removeFromCart(productId, type);
   } else {
     saveCart();
   }
 }
 
-function removeFromCart(productId) {
-  const itemIndex = cart.findIndex(item => item.product.id === productId);
+function removeFromCart(productId, type) {
+  const itemIndex = cart.findIndex(item => item.product.id === productId && item.type === type);
   if (itemIndex > -1) {
     const itemName = cart[itemIndex].product.name;
     cart.splice(itemIndex, 1);
@@ -313,20 +324,22 @@ function updateCartUI() {
   const cartTotalVal = document.getElementById('cart-total-val');
   const cartDepositVal = document.getElementById('cart-deposit-val');
   const cartBalanceVal = document.getElementById('cart-balance-val');
+  const cartOrderTotalVal = document.getElementById('cart-order-total-val');
   const checkoutCartBtn = document.getElementById('btn-checkout-cart');
+  const checkoutOrderBtn = document.getElementById('btn-checkout-order');
+  const cartFooter = document.querySelector('.cart-footer');
+  const bookingFooter = document.getElementById('cart-booking-footer');
+  const orderFooter = document.getElementById('cart-order-footer');
   
-  // Calculate total items count and subtotal price
-  let totalItems = 0;
-  let totalPrice = 0;
-  
-  cart.forEach(item => {
-    totalItems += item.quantity;
-    totalPrice += item.product.price * item.quantity;
-  });
+  const bookingItems = cart.filter(item => item.type === 'booking');
+  const orderItems = cart.filter(item => item.type === 'order');
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const bookingTotalPrice = getCartItemsSubtotal(bookingItems);
+  const orderTotalPrice = getCartItemsSubtotal(orderItems);
 
   // Flat deposit rate of 500 Baht if there are items, otherwise 0
-  const depositPrice = totalItems > 0 ? 500 : 0;
-  const balancePrice = Math.max(0, totalPrice - depositPrice);
+  const depositPrice = bookingItems.length > 0 ? 500 : 0;
+  const balancePrice = Math.max(0, bookingTotalPrice - depositPrice);
 
   // Badge count updates
   if (totalItems > 0) {
@@ -335,15 +348,23 @@ function updateCartUI() {
     checkoutCartBtn.disabled = false;
   } else {
     cartBadgeCount.style.display = 'none';
-    checkoutCartBtn.disabled = true;
   }
 
-  cartTotalVal.textContent = `฿${totalPrice.toLocaleString('th-TH', { minimumFractionDigits: 2 })}`;
+  checkoutCartBtn.disabled = bookingItems.length === 0;
+  checkoutOrderBtn.disabled = orderItems.length === 0;
+  cartFooter.style.display = totalItems > 0 ? 'block' : 'none';
+  bookingFooter.style.display = bookingItems.length > 0 ? 'block' : 'none';
+  orderFooter.style.display = orderItems.length > 0 ? 'block' : 'none';
+
+  cartTotalVal.textContent = formatBaht(bookingTotalPrice);
   if (cartDepositVal) {
-    cartDepositVal.textContent = `฿${depositPrice.toLocaleString('th-TH', { minimumFractionDigits: 2 })}`;
+    cartDepositVal.textContent = formatBaht(depositPrice);
   }
   if (cartBalanceVal) {
-    cartBalanceVal.textContent = `฿${balancePrice.toLocaleString('th-TH', { minimumFractionDigits: 2 })}`;
+    cartBalanceVal.textContent = formatBaht(balancePrice);
+  }
+  if (cartOrderTotalVal) {
+    cartOrderTotalVal.textContent = formatBaht(orderTotalPrice);
   }
 
   // Populate Cart Items HTML
@@ -354,9 +375,12 @@ function updateCartUI() {
     cartItemsContainer.replaceChildren(emptyMessage);
   } else {
     cartItemsContainer.replaceChildren();
-    cart.forEach(item => {
-      cartItemsContainer.appendChild(createCartItemElement(item));
-    });
+    if (bookingItems.length > 0) {
+      cartItemsContainer.appendChild(createCartSectionElement('จองคิวติดตั้ง', bookingItems));
+    }
+    if (orderItems.length > 0) {
+      cartItemsContainer.appendChild(createCartSectionElement('สั่งซื้อกับทางร้าน', orderItems));
+    }
   }
 
   // Keep compatibility if the old inline booking section is reintroduced.
@@ -366,12 +390,12 @@ function updateCartUI() {
 }
 
 // Global functions exposed to inline HTML event handlers
-window.updateItemQty = function(productId, qty) {
-  updateQuantity(productId, qty);
+window.updateItemQty = function(productId, type, qty) {
+  updateQuantity(productId, type, qty);
 };
 
-window.removeCartItem = function(productId) {
-  removeFromCart(productId);
+window.removeCartItem = function(productId, type) {
+  removeFromCart(productId, type);
 };
 
 // ==========================================
@@ -449,6 +473,24 @@ function createCatalogEmptyStateElement() {
   return emptyState;
 }
 
+function createCartSectionElement(titleText, items) {
+  const section = document.createElement('section');
+  section.className = 'cart-item-section';
+
+  const title = document.createElement('h3');
+  title.className = 'cart-item-section-title';
+  title.textContent = titleText;
+
+  const list = document.createElement('div');
+  list.className = 'cart-item-section-list';
+  items.forEach(item => {
+    list.appendChild(createCartItemElement(item));
+  });
+
+  section.append(title, list);
+  return section;
+}
+
 function createCartItemElement(item) {
   const itemEl = document.createElement('div');
   itemEl.className = 'cart-item';
@@ -483,7 +525,7 @@ function createCartItemElement(item) {
   minusBtn.className = 'quantity-btn min-btn';
   minusBtn.type = 'button';
   minusBtn.textContent = '-';
-  minusBtn.addEventListener('click', () => updateQuantity(product.id, item.quantity - 1));
+  minusBtn.addEventListener('click', () => updateQuantity(product.id, item.type, item.quantity - 1));
 
   const quantityVal = document.createElement('div');
   quantityVal.className = 'quantity-val';
@@ -493,13 +535,13 @@ function createCartItemElement(item) {
   plusBtn.className = 'quantity-btn plus-btn';
   plusBtn.type = 'button';
   plusBtn.textContent = '+';
-  plusBtn.addEventListener('click', () => updateQuantity(product.id, item.quantity + 1));
+  plusBtn.addEventListener('click', () => updateQuantity(product.id, item.type, item.quantity + 1));
 
   const removeBtn = document.createElement('button');
   removeBtn.className = 'cart-item-remove';
   removeBtn.type = 'button';
   removeBtn.textContent = 'ลบ';
-  removeBtn.addEventListener('click', () => removeFromCart(product.id));
+  removeBtn.addEventListener('click', () => removeFromCart(product.id, item.type));
 
   quantitySelector.append(minusBtn, quantityVal, plusBtn);
   controls.append(quantitySelector, removeBtn);
@@ -558,18 +600,23 @@ function createProductCardElement(product) {
     bookingBtn.className = 'btn-add-cart';
     bookingBtn.type = 'button';
     bookingBtn.textContent = 'จองติดตั้ง';
-    bookingBtn.addEventListener('click', () => addToCart(product.id));
+    bookingBtn.addEventListener('click', () => addToCart(product.id, 'booking'));
     actions.appendChild(bookingBtn);
   }
 
   if (product.allow_order) {
     const hasShopeeUrl = product.shopee_url && product.shopee_url.trim() !== '';
-    const orderBtn = document.createElement('a');
+    const orderBtn = hasShopeeUrl ? document.createElement('a') : document.createElement('button');
     orderBtn.className = 'btn-order';
-    orderBtn.target = '_blank';
-    orderBtn.rel = 'noopener noreferrer';
-    orderBtn.href = hasShopeeUrl ? getSafeExternalUrl(product.shopee_url, CUSTOMER_ORDER_URL) : CUSTOMER_ORDER_URL;
     orderBtn.textContent = hasShopeeUrl ? 'สั่งซื้อ Shopee' : 'สั่งผลิต';
+    if (hasShopeeUrl) {
+      orderBtn.target = '_blank';
+      orderBtn.rel = 'noopener noreferrer';
+      orderBtn.href = getSafeExternalUrl(product.shopee_url, CUSTOMER_ORDER_URL);
+    } else {
+      orderBtn.type = 'button';
+      orderBtn.addEventListener('click', () => addToCart(product.id, 'order'));
+    }
     actions.appendChild(orderBtn);
   }
 
@@ -605,6 +652,16 @@ function getSafeExternalUrl(url, fallbackUrl) {
     return fallbackUrl;
   }
   return fallbackUrl;
+}
+
+function getCartItemsSubtotal(items) {
+  return items.reduce((sum, item) => {
+    return sum + (Number(item.product.price || 0) * item.quantity);
+  }, 0);
+}
+
+function formatBaht(amount) {
+  return `฿${amount.toLocaleString('th-TH', { minimumFractionDigits: 2 })}`;
 }
 
 function getCategoryLabel(category) {
