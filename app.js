@@ -97,6 +97,8 @@ const FALLBACK_PRODUCTS = [
 // ==========================================
 let cart = [];
 let isCatalogLoading = false;
+let activeCatalogCategory = 'all';
+let catalogSearchTerm = '';
 
 // ==========================================
 // 3. INITIALIZATION
@@ -104,7 +106,7 @@ let isCatalogLoading = false;
 document.addEventListener('DOMContentLoaded', () => {
   initCart();
   loadProductsFromCSV().then(() => {
-    renderCatalog('all');
+    renderCatalog();
   });
   initEventListeners();
 });
@@ -210,9 +212,18 @@ function initEventListeners() {
     btn.addEventListener('click', (e) => {
       filterBtns.forEach(b => b.classList.remove('active'));
       e.target.classList.add('active');
-      renderCatalog(e.target.dataset.category);
+      activeCatalogCategory = e.target.dataset.category || 'all';
+      renderCatalog();
     });
   });
+
+  const catalogSearchInput = document.getElementById('catalog-search-input');
+  if (catalogSearchInput) {
+    catalogSearchInput.addEventListener('input', (e) => {
+      catalogSearchTerm = e.target.value.trim().toLowerCase();
+      renderCatalog();
+    });
+  }
 
   // Cart Drawer open/close
   const cartToggleBtn = document.getElementById('cart-toggle');
@@ -366,17 +377,76 @@ window.removeCartItem = function(productId) {
 // ==========================================
 // 6. PRODUCT CATALOG RENDERING
 // ==========================================
-function renderCatalog(category) {
+function renderCatalog(category = activeCatalogCategory) {
   const productGridContainer = document.getElementById('product-grid-container');
   productGridContainer.replaceChildren();
 
-  const filteredProducts = category === 'all' 
-    ? PRODUCTS 
-    : PRODUCTS.filter(p => p.category === category);
+  activeCatalogCategory = category || 'all';
+  const filteredProducts = getFilteredProducts(activeCatalogCategory, catalogSearchTerm);
+
+  if (filteredProducts.length === 0) {
+    productGridContainer.appendChild(createCatalogEmptyStateElement());
+    return;
+  }
 
   filteredProducts.forEach(product => {
     productGridContainer.appendChild(createProductCardElement(product));
   });
+}
+
+function getFilteredProducts(category, searchTerm) {
+  const normalizedTerm = (searchTerm || '').trim().toLowerCase();
+
+  return PRODUCTS.filter(product => {
+    const matchesCategory = category === 'all' || product.category === category;
+    if (!matchesCategory) return false;
+
+    if (!normalizedTerm) return true;
+
+    const searchableText = [
+      product.name,
+      product.description,
+      product.category,
+      getCategoryLabel(product.category)
+    ].join(' ').toLowerCase();
+
+    return searchableText.includes(normalizedTerm);
+  });
+}
+
+function createCatalogEmptyStateElement() {
+  const emptyState = document.createElement('div');
+  emptyState.className = 'catalog-empty-state';
+
+  const title = document.createElement('h3');
+  title.className = 'catalog-empty-title';
+  title.textContent = 'ไม่พบรุ่นนี้ในแคตตาล็อก';
+
+  const description = document.createElement('p');
+  description.className = 'catalog-empty-desc';
+  description.textContent = 'ปรึกษาแอดมินได้เลย';
+
+  const actions = document.createElement('div');
+  actions.className = 'catalog-empty-actions';
+
+  const lineLink = document.createElement('a');
+  lineLink.className = 'catalog-empty-btn catalog-empty-btn-primary';
+  lineLink.href = 'https://lin.ee/qeCcYUC';
+  lineLink.target = '_blank';
+  lineLink.rel = 'noopener noreferrer';
+  lineLink.textContent = 'LINE OA';
+
+  const facebookLink = document.createElement('a');
+  facebookLink.className = 'catalog-empty-btn';
+  facebookLink.href = 'https://m.me/215552639006777';
+  facebookLink.target = '_blank';
+  facebookLink.rel = 'noopener noreferrer';
+  facebookLink.textContent = 'Facebook Inbox';
+
+  actions.append(lineLink, facebookLink);
+  emptyState.append(title, description, actions);
+
+  return emptyState;
 }
 
 function createCartItemElement(item) {

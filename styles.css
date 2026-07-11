@@ -325,6 +325,42 @@ section {
 }
 
 /* Catalog / Products Section */
+.catalog-search {
+  max-width: 620px;
+  margin: -20px auto 24px;
+}
+
+.catalog-search-label {
+  display: block;
+  margin-bottom: 8px;
+  font-family: 'Kanit', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent-color);
+}
+
+.catalog-search-input {
+  width: 100%;
+  min-height: 48px;
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-color);
+  font-family: 'Sarabun', sans-serif;
+  font-size: 16px;
+  padding: 0 16px;
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.catalog-search-input::placeholder {
+  color: var(--text-muted);
+}
+
+.catalog-search-input:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(232, 184, 75, 0.14);
+}
 .catalog-filters {
   display: flex;
   justify-content: center;
@@ -360,6 +396,58 @@ section {
   gap: 30px;
 }
 
+.catalog-empty-state {
+  grid-column: 1 / -1;
+  max-width: 560px;
+  margin: 12px auto 0;
+  padding: 28px;
+  background-color: var(--surface-color);
+  border: 1px solid rgba(232, 184, 75, 0.35);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.catalog-empty-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text-color);
+}
+
+.catalog-empty-desc {
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+.catalog-empty-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.catalog-empty-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 18px;
+  background-color: var(--surface-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-color);
+  font-family: 'Kanit', sans-serif;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.catalog-empty-btn:hover,
+.catalog-empty-btn-primary {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: #000;
+}
 .product-card {
   background-color: var(--surface-color);
   border: 1px solid var(--border-color);
