@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="th"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#e7bb01",
+                        "primary-container": "#c49f00",
+                        secondary: "#ff7350",
+                        "secondary-container": "#b42800",
+                        surface: "#0e0e0e",
+                        "surface-container-low": "#131313",
+                        "surface-container": "#1a1a1a",
+                        "surface-container-high": "#20201f",
+                        "surface-bright": "#2c2c2c",
+                        "on-surface": "#ffffff",
+                        "on-background": "#ffffff",
+                        outline: "#484847",
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        full: "9999px"
+                    },
+                    spacing: {
+                        base: "8px",
+                        margin: "32px",
+                        gutter: "24px",
+                    },
+                    fontFamily: {
+                        headline: ["Kanit", "sans-serif"],
+                        body: ["Kanit", "sans-serif"],
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Kanit', sans-serif; background-color: #0e0e0e; color: #ffffff; }
+        .font-headline { font-family: 'Kanit', sans-serif; font-weight: 500; font-style: italic; letter-spacing: -0.02em; }
+        .accent-label { font-family: 'Kanit', sans-serif; font-weight: 500; font-style: italic; }
+        .glass-nav { background: rgba(32, 32, 31, 0.6); backdrop-filter: blur(20px); }
+        .btn-primary-gradient { background: linear-gradient(135deg, #e7bb01 0%, #c49f00 100%); }
+        .btn-glow:hover { box-shadow: 0 0 20px rgba(231, 187, 1, 0.3); }
+        .asymmetric-card { border-radius: 0 0.75rem 0 0.75rem; }
+        .hero-gradient-overlay { background: radial-gradient(circle at 50% 50%, rgba(231, 187, 1, 0.1) 0%, transparent 70%); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface overflow-x-hidden">
+<header class="fixed top-0 left-0 w-full z-[100] glass-nav">
+<div class="flex justify-between items-center w-full px-base md:px-margin py-5 max-w-full mx-auto">
+<div class="font-headline text-2xl font-bold text-primary tracking-tighter uppercase italic">
+            KMO <span class="text-white">RACK BAR</span>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-primary font-bold text-sm tracking-widest transition-all duration-200 border-b-2 border-primary pb-1 accent-label" href="#">HOME</a>
+<a class="text-on-surface/70 uppercase tracking-widest font-bold text-sm hover:text-primary transition-colors duration-200 accent-label" href="#catalog">CATALOG</a>
+<a class="text-on-surface/70 uppercase tracking-widest font-bold text-sm hover:text-primary transition-colors duration-200 accent-label" href="#booking">BOOKING</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="relative p-2 text-on-surface hover:text-primary transition-colors" id="cart-toggle">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">shopping_cart</span>
+<span class="absolute -top-1 -right-1 bg-secondary text-white text-[10px] font-extrabold px-1.5 py-0.5 min-w-[1.2rem] rounded-full" id="cart-badge-count">2</span>
+</button>
+</div>
+</div>
+</header>
+<main>
+<!-- Hero Section -->
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full object-cover bg-fixed opacity-40" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD2pp4YoVeKa96KGS_BaNDvdm4x2MSnceQaxuNKMfb_u8AgciiAthAZ7aVKciKrQy1ehNHc_Ro75RShjw9Banj8lbSVR6NaX_kGB_IshTg8pe6MfBbn67zhImHbFfmqB5a3YXFACCCoUFxqcUqe1o-2bc5_08yEhuLub1PuU0ekwJJeL1Z-oA9y3rkrG_3F0VZBmWva68JUWrU4SLncGtwFh0Q3vhc_-TZKd1v985kxQqE4aHMcUbiDgg'); background-size: cover; background-position: center;"></div>
+<div class="absolute inset-0 hero-gradient-overlay"></div>
+<!-- Kinetic Shapes -->
+<div class="absolute top-1/4 -right-20 w-96 h-96 bg-primary/10 blur-[120px] rounded-full animate-pulse"></div>
+<div class="absolute bottom-1/4 -left-20 w-96 h-96 bg-secondary/10 blur-[120px] rounded-full"></div>
+</div>
+<div class="relative z-10 text-center max-w-5xl px-margin">
+<div class="inline-flex items-center gap-3 mb-6 px-4 py-1.5 bg-surface-container-high/80 backdrop-blur border-l-4 border-secondary">
+<span class="text-secondary font-bold text-xs uppercase tracking-[0.2em] accent-label">Kinetic Performance</span>
+<div class="h-px w-8 bg-secondary/30"></div>
+<span class="text-on-surface/60 font-bold text-xs uppercase tracking-[0.2em] accent-label">Premium Custom Parts</span>
+</div>
+<h1 class="font-headline text-5xl md:text-8xl mb-8 uppercase italic leading-[0.9] font-bold">
+<span class="text-on-surface block">แกร่ง ทนทาน</span>
+<span class="text-primary block drop-shadow-[0_0_30px_rgba(231,187,1,0.4)]">งานคัสตอม</span>
+</h1>
+<p class="font-body text-lg text-on-surface/70 mb-12 max-w-2xl mx-auto leading-relaxed">
+                ออกแบบและผลิตแร็คหลังคา งานเหล็ก และอุปกรณ์เสริมสำหรับสายลุยโดยเฉพาะ 
+                มั่นใจในทุกการเดินทางด้วยงานฝีมือที่เน้นความปลอดภัยและสไตล์ที่ไม่เหมือนใคร
+            </p>
+<div class="flex flex-col sm:flex-row gap-6 justify-center">
+<button class="btn-primary-gradient btn-glow text-surface font-headline text-xl py-4 px-12 uppercase font-bold rounded-DEFAULT transition-all transform hover:-translate-y-1 italic">
+                    ดูสินค้าทั้งหมด
+                </button>
+<button class="bg-transparent text-white border-2 border-on-surface/20 font-headline text-xl py-4 px-12 uppercase rounded-DEFAULT hover:border-primary hover:text-primary transition-all italic">
+                    จองคิวติดตั้ง
+                </button>
+</div>
+</div>
+</section>
+<!-- Transition Space -->
+<div class="h-24 bg-gradient-to-b from-surface to-surface-container-low"></div>
+<!-- Catalog Section -->
+<section class="py-24 bg-surface-container-low" id="catalog">
+<div class="px-margin max-w-7xl mx-auto">
+<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-10">
+<div class="w-full md:w-1/2">
+<h2 class="font-headline text-4xl md:text-5xl text-on-surface mb-6 uppercase italic font-bold">Product <span class="text-primary">Catalog</span></h2>
+<div class="relative">
+<input class="w-full bg-surface border-none focus:ring-2 focus:ring-primary text-white font-body py-5 px-8 rounded-lg placeholder:text-on-surface/30" id="catalog-search-input" placeholder="ค้นหารุ่นรถ หรือประเภทสินค้า..." type="text"/>
+<span class="material-symbols-outlined absolute right-6 top-1/2 -translate-y-1/2 text-primary">search</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-2">
+<button class="filter-btn active bg-primary text-surface px-6 py-2.5 rounded-full font-bold text-sm uppercase transition-all accent-label" data-category="all">ทั้งหมด</button>
+<button class="filter-btn bg-surface-container-high text-on-surface/70 px-6 py-2.5 rounded-full font-bold text-sm uppercase hover:text-primary transition-all accent-label" data-category="rear">แร็คท้าย</button>
+<button class="filter-btn bg-surface-container-high text-on-surface/70 px-6 py-2.5 rounded-full font-bold text-sm uppercase hover:text-primary transition-all accent-label" data-category="side">แร็คข้าง</button>
+<button class="filter-btn bg-surface-container-high text-on-surface/70 px-6 py-2.5 rounded-full font-bold text-sm uppercase hover:text-primary transition-all accent-label" data-category="crashbar">แคชบาร์</button>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8" id="product-grid-container">
+<!-- Product Card 1 -->
+<div class="asymmetric-card bg-surface overflow-hidden group hover:bg-surface-container transition-all duration-300">
+<div class="aspect-square relative overflow-hidden">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAKQ-mfz_odpCy3bQWatIPO0SSGO7bps5kEFBJB1h__QlNs322eT1YI1oem6WE6FXq0LrtqozHE8klQVBe21QB3Gfp0zsar8IS_Rue0fPPbVFcsxRfWykqumIPPymOnb0MGa6mzPhtJ10xXWQPdUkXnDgVH5y8c1u3FZnIqELBXLQToGIjIHx8xxmaYgW2QWeGSRV_9mGf9joARqDrqDKWFCbL_NKIHueMiD1UHlCgTkibqyNeX1rV1vA');"></div>
+<div class="absolute top-4 left-4">
+<span class="bg-secondary text-white text-[10px] font-black px-3 py-1 uppercase tracking-widest italic accent-label">New Arrival</span>
+</div>
+</div>
+<div class="p-6">
+<h3 class="font-headline text-xl text-on-surface mb-1 uppercase italic">REAR RACK CUSTOM v.2</h3>
+<div class="text-primary font-bold text-lg mb-4 accent-label">฿3,500</div>
+<p class="text-on-surface/50 text-sm mb-6 line-clamp-2">แร็คท้ายเหล็กหนาพิเศษ พ่นสีเพาเดอร์โค้ท กันรอยขีดข่วน รองรับน้ำหนักได้สูงสุด 50kg</p>
+<button class="w-full btn-primary-gradient text-surface font-extrabold py-3.5 uppercase flex items-center justify-center gap-2 rounded-DEFAULT transition-all active:scale-95 accent-label">
+<span class="material-symbols-outlined text-sm">add_shopping_cart</span>
+                            เพิ่มลงรถเข็น
+                        </button>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="asymmetric-card bg-surface overflow-hidden group hover:bg-surface-container transition-all duration-300">
+<div class="aspect-square relative overflow-hidden">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAAOiW3CHUJle34qpgi66WYFIefndFCyZT1gyq3IE2RjPEhQYPUiWuaRzghJ1yVCxN4mH1KeLPhRTv9MEsn_OEAQRTeJF-fikgChsGPcYxh0JfN4QbWBymKDoJDbVRbP86Oq2ygJtYOw6UeOtmjjfZcp6hYint2lF_l6HyU4BcBLHeL9V8pY_wYko63nEiOmtPxseEB6mmFy-LXNsYYiULbTw2W3KuTX7Vyn7F9sRrisP7xzN6D3tZDPg');"></div>
+</div>
+<div class="p-6">
+<h3 class="font-headline text-xl text-on-surface mb-1 uppercase italic">CRASH BAR SERIES X</h3>
+<div class="text-primary font-bold text-lg mb-4 accent-label">฿5,900</div>
+<p class="text-on-surface/50 text-sm mb-6 line-clamp-2">ชุดกันล้มรอบคัน ออกแบบเฉพาะรุ่นเพื่อการปกป้องสูงสุดในการขับขี่แบบ Off-road</p>
+<button class="w-full btn-primary-gradient text-surface font-extrabold py-3.5 uppercase flex items-center justify-center gap-2 rounded-DEFAULT transition-all active:scale-95 accent-label">
+<span class="material-symbols-outlined text-sm">add_shopping_cart</span>
+                            เพิ่มลงรถเข็น
+                        </button>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="asymmetric-card bg-surface overflow-hidden group hover:bg-surface-container transition-all duration-300">
+<div class="aspect-square relative overflow-hidden">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDxDOTSKWBHbVbk2ZJz8L7A3YNS9Zm3v9olTPNMrlC4uzwJE6M_RIeUL8O1MyuQFo_VQboYAMgcxQ8jnRhhCPY-1TLD3263WJjvzZL3-6a9-Lt01rP-ukgE7R5HjA8IfWgfuhfUqHzsly87WvjhYfJDvfLmPqd2dEKjSpvr5sRyDzMjkO-ga5f4qAd-xWOG5_X2RL9wc10ALImLwN3fMsHQJGpr6um1HlNResXAhxmkhvN7S31QX4ORUA');"></div>
+</div>
+<div class="p-6">
+<h3 class="font-headline text-xl text-on-surface mb-1 uppercase italic">SIDE RACK ADVENTURE</h3>
+<div class="text-primary font-bold text-lg mb-4 accent-label">฿4,200</div>
+<p class="text-on-surface/50 text-sm mb-6 line-clamp-2">แร็คข้างแบบถอดประกอบได้ ติดตั้งง่าย รองรับกระเป๋าและปี๊บทุกยี่ห้อ</p>
+<button class="w-full btn-primary-gradient text-surface font-extrabold py-3.5 uppercase flex items-center justify-center gap-2 rounded-DEFAULT transition-all active:scale-95 accent-label">
+<span class="material-symbols-outlined text-sm">add_shopping_cart</span>
+                            เพิ่มลงรถเข็น
+                        </button>
+</div>
+</div>
+<!-- Product Card 4-->
+<div class="asymmetric-card bg-surface overflow-hidden group hover:bg-surface-container transition-all duration-300">
+<div class="aspect-square relative overflow-hidden">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBSsmeD7EDss27Vk1yJUxUoDxU9mMC8DHHy4rDLYnbEkFT-HafhooTdZI6HOHiM0TjUrPwR8v2EW7DBxj-n6bYJgq1aL_BVS0kFxJTw7qOkc3geKzN-amcM6HUKT3rnNuxSZe2cb-SzEQw-wg7ct_B8SZarDhsmcBIXzm5cuT_B0vRo4rjGydKY-7nauE6c53TPbjU2xgehPoA3lq6A3bx76WbpFGDKMT9oFiUx4XCPymc7QS3nh8N0Hw');"></div>
+</div>
+<div class="p-6">
+<h3 class="font-headline text-xl text-on-surface mb-1 uppercase italic">TOOL CASE MOUNT</h3>
+<div class="text-primary font-bold text-lg mb-4 accent-label">฿1,800</div>
+<p class="text-on-surface/50 text-sm mb-6 line-clamp-2">ฐานยึดกล่องเครื่องมืออเนกประสงค์ วัสดุสแตนเลสแท้ ไม่เป็นสนิมตลอดอายุการใช้งาน</p>
+<button class="w-full btn-primary-gradient text-surface font-extrabold py-3.5 uppercase flex items-center justify-center gap-2 rounded-DEFAULT transition-all active:scale-95 accent-label">
+<span class="material-symbols-outlined text-sm">add_shopping_cart</span>
+                            เพิ่มลงรถเข็น
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Booking Info Section -->
+<section class="py-32 px-margin bg-surface relative" id="booking">
+<div class="max-w-7xl mx-auto relative z-10">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+<div>
+<div class="flex items-center gap-4 mb-6">
+<div class="w-12 h-1 bg-secondary"></div>
+<h2 class="font-headline text-4xl md:text-5xl text-on-surface uppercase italic font-bold">Booking &amp; <span class="text-secondary">Services</span></h2>
+</div>
+<p class="text-on-surface/70 font-body mb-10 text-xl leading-relaxed">
+                        เราเปิดรับจองคิวงานคัสตอมและติดตั้งอุปกรณ์แบบตัวต่อตัว เพื่อให้มั่นใจว่างานออกมาดีที่สุดสำหรับรถของคุณ
+                    </p>
+<ul class="space-y-8 mb-12">
+<li class="flex items-start gap-6 group">
+<div class="flex-shrink-0 w-10 h-10 rounded bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-primary text-2xl">architecture</span>
+</div>
+<div>
+<span class="font-headline text-on-surface text-xl block mb-1 uppercase italic">ปรึกษาและออกแบบฟรี</span>
+<span class="text-on-surface/50">คุยรายละเอียดงานก่อนเริ่มผลิตเพื่อให้ได้สเปคที่ต้องการ</span>
+</div>
+</li>
+<li class="flex items-start gap-6 group">
+<div class="flex-shrink-0 w-10 h-10 rounded bg-secondary/10 flex items-center justify-center group-hover:bg-secondary/20 transition-colors">
+<span class="material-symbols-outlined text-secondary text-2xl">account_balance_wallet</span>
+</div>
+<div>
+<span class="font-headline text-on-surface text-xl block mb-1 uppercase italic">มัดจำเพียง 30%</span>
+<span class="text-on-surface/50">จองคิวด้วยยอดมัดจำเริ่มต้น ส่วนที่เหลือจ่ายหน้างาน</span>
+</div>
+</li>
+<li class="flex items-start gap-6 group">
+<div class="flex-shrink-0 w-10 h-10 rounded bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-primary text-2xl">verified</span>
+</div>
+<div>
+<span class="font-headline text-on-surface text-xl block mb-1 uppercase italic">รับประกันงานโครงสร้าง 2 ปี</span>
+<span class="text-on-surface/50">ดูแลตลอดการใช้งาน หากเกิดปัญหาจากการผลิต</span>
+</div>
+</li>
+</ul>
+<button class="btn-primary-gradient btn-glow text-surface font-headline text-xl py-6 px-16 uppercase font-bold rounded-DEFAULT transform transition-all hover:-translate-y-1 italic">
+                        จองคิวตอนนี้เลย
+                    </button>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-low p-10 flex flex-col items-center justify-center text-center aspect-square rounded-xl border border-primary/5">
+<span class="material-symbols-outlined text-4xl text-primary mb-4">calendar_today</span>
+<span class="font-headline text-on-surface text-2xl italic uppercase">MON - SAT</span>
+<span class="text-on-surface/30 text-xs font-bold mt-2 accent-label">09:00 - 18:00</span>
+</div>
+<div class="bg-surface-container-high p-10 flex flex-col items-center justify-center text-center aspect-square rounded-xl transform translate-y-8 border border-secondary/5">
+<span class="material-symbols-outlined text-4xl text-secondary mb-4">engineering</span>
+<span class="font-headline text-on-surface text-2xl italic uppercase">EXPERT</span>
+<span class="text-on-surface/30 text-xs font-bold mt-2 accent-label">WELDING</span>
+</div>
+<div class="bg-surface-container-high p-10 flex flex-col items-center justify-center text-center aspect-square rounded-xl border border-primary/5">
+<span class="material-symbols-outlined text-4xl text-primary mb-4">local_shipping</span>
+<span class="font-headline text-on-surface text-2xl italic uppercase">NATIONWIDE</span>
+<span class="text-on-surface/30 text-xs font-bold mt-2 accent-label">SHIPPING</span>
+</div>
+<div class="bg-surface-container-low p-10 flex flex-col items-center justify-center text-center aspect-square rounded-xl transform translate-y-8 border border-secondary/5">
+<span class="material-symbols-outlined text-4xl text-secondary mb-4">security</span>
+<span class="font-headline text-on-surface text-2xl italic uppercase">WARRANTY</span>
+<span class="text-on-surface/30 text-xs font-bold mt-2 accent-label">STRUCTURAL</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Cart Drawer -->
+<div class="fixed inset-0 bg-surface/80 backdrop-blur-sm z-[150] hidden opacity-0 transition-opacity duration-300" id="cart-drawer-overlay"></div>
+<aside class="fixed right-0 top-0 h-full w-80 md:w-96 glass-nav z-[200] transform translate-x-full transition-transform duration-500 flex flex-col" id="cart-drawer">
+<div class="p-8 border-b border-white/5">
+<div class="flex justify-between items-center mb-1">
+<h3 class="font-headline text-3xl text-primary uppercase italic font-bold">MY CART</h3>
+<button class="text-white/40 hover:text-white transition-colors" id="cart-close">
+<span class="material-symbols-outlined text-3xl">close</span>
+</button>
+</div>
+<p class="text-on-surface/30 font-bold text-[10px] uppercase tracking-[0.3em] accent-label">Telemetry &amp; Booking Data</p>
+</div>
+<div class="flex p-2 bg-surface/50 m-4 rounded-lg">
+<button class="flex-1 bg-primary text-surface font-black p-3 rounded-md text-xs uppercase tracking-widest italic accent-label">BOOKING</button>
+<button class="flex-1 text-on-surface/40 p-3 text-xs font-black uppercase tracking-widest hover:text-on-surface transition-colors accent-label">PURCHASE</button>
+</div>
+<div class="flex-grow overflow-y-auto p-6 space-y-4 no-scrollbar" id="cart-items-container">
+<!-- Item 1 -->
+<div class="flex gap-4 p-4 bg-surface-container-low/50 rounded-lg group transition-colors">
+<div class="w-20 h-20 bg-surface-container-high rounded overflow-hidden">
+<div class="w-full h-full bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCnMTtoS2m8yD-vrQSPrWuhJz57xEcB_NO1lfPt4htYGhwOcNZDYXaBq59_OuXdIj7C7t1hvgXJtpU3pC6Qz5WYDhy_RBJR0KfVADB5MjPgz0_WglDr-_7QayQfnh7eOSR0q1I6qBs4H4pVl-nf_jYEasAF2iOMq4QRz4yHO-jkE1gIJHKdmG76-Q1e1yhJYme1elSzNMSnJX9H3aRibZD_HSNLmKCdiQPYYzCnbb-jJDnDS-79tbs2Dw');"></div>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between mb-1">
+<span class="font-headline text-white uppercase italic text-sm">REAR RACK v.2</span>
+<span class="text-primary font-bold accent-label">฿3,500</span>
+</div>
+<p class="text-[10px] text-on-surface/30 font-bold uppercase mb-4 tracking-wider accent-label">QTY: 01</p>
+<button class="text-secondary/60 text-[10px] uppercase font-black hover:text-secondary transition-colors underline decoration-secondary/30 accent-label">Remove Item</button>
+</div>
+</div>
+</div>
+<div class="p-8 bg-surface-container-high/40 border-t border-white/5">
+<div class="space-y-4 mb-8">
+<div class="flex justify-between items-center">
+<span class="uppercase text-[10px] font-extrabold text-on-surface/40 tracking-widest accent-label">Subtotal</span>
+<span class="text-white font-headline text-xl italic" id="cart-total-val">฿9,400</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="uppercase text-[10px] font-extrabold text-secondary tracking-widest accent-label">Deposit (30%)</span>
+<span class="text-secondary font-headline text-xl italic" id="cart-deposit-val">฿2,820</span>
+</div>
+<div class="h-px bg-white/5 w-full"></div>
+<div class="flex justify-between items-center text-on-surface/20 italic text-xs accent-label">
+<span>Remaining Balance</span>
+<span id="cart-balance-val">฿6,580</span>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<button class="w-full btn-primary-gradient text-surface font-headline text-xl py-5 uppercase italic font-bold rounded-DEFAULT btn-glow" id="btn-checkout-cart">CHECKOUT NOW</button>
+<button class="w-full bg-transparent text-on-surface/40 border border-on-surface/10 font-bold py-4 uppercase text-xs tracking-widest hover:text-on-surface hover:border-on-surface/30 transition-all rounded-DEFAULT accent-label" id="btn-checkout-order">GET INVOICE</button>
+</div>
+</div>
+</aside>
+<!-- Footer -->
+<footer class="bg-surface-container-low border-t border-white/5 py-16">
+<div class="px-margin max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12">
+<div class="flex items-center gap-8 group">
+<div class="w-16 h-16 bg-secondary flex items-center justify-center rounded-lg shadow-[0_0_20px_rgba(255,115,80,0.3)]">
+<span class="material-symbols-outlined text-surface text-4xl" style="font-variation-settings: 'FILL' 1;">phone_in_talk</span>
+</div>
+<div>
+<div class="text-secondary/60 font-bold uppercase text-[10px] tracking-[0.3em] mb-1 accent-label">Hotline Performance</div>
+<div class="text-white font-headline text-4xl md:text-5xl tracking-tighter leading-none italic font-bold">0625893189</div>
+</div>
+</div>
+<div class="flex flex-col items-center md:items-end gap-6 text-center md:text-right">
+<div class="font-headline text-3xl text-on-surface uppercase italic font-bold">
+                KMO <span class="text-primary">RACK BAR</span>
+</div>
+<div class="flex gap-10">
+<a class="text-on-surface/40 font-bold uppercase hover:text-primary transition-colors text-xs tracking-widest accent-label" href="#">Facebook</a>
+<a class="text-on-surface/40 font-bold uppercase hover:text-primary transition-colors text-xs tracking-widest accent-label" href="#">Instagram</a>
+<a class="text-on-surface/40 font-bold uppercase hover:text-primary transition-colors text-xs tracking-widest accent-label" href="#">Line Official</a>
+</div>
+<div class="text-on-surface/20 text-[10px] font-bold uppercase tracking-widest accent-label">
+                © 2024 KMO RACK BAR CUSTOM. THE MIDNIGHT APEX SYSTEM.
+            </div>
+</div>
+</div>
+</footer>
+<script>
+    const cartToggle = document.getElementById('cart-toggle');
+    const cartDrawer = document.getElementById('cart-drawer');
+    const cartOverlay = document.getElementById('cart-drawer-overlay');
+    const cartClose = document.getElementById('cart-close');
+
+    function openCart() {
+        cartDrawer.classList.remove('translate-x-full');
+        cartOverlay.classList.remove('hidden');
+        setTimeout(() => cartOverlay.classList.remove('opacity-0'), 10);
+        document.body.classList.add('overflow-hidden');
+    }
+
+    function closeCart() {
+        cartDrawer.classList.add('translate-x-full');
+        cartOverlay.classList.add('opacity-0');
+        setTimeout(() => {
+            cartOverlay.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }, 500);
+    }
+
+    cartToggle.addEventListener('click', openCart);
+    cartClose.addEventListener('click', closeCart);
+    cartOverlay.addEventListener('click', closeCart);
+</script>
+</body></html>
