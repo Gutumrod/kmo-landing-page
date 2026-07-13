@@ -1,91 +1,91 @@
-# Codex Task Brief — เปลี่ยนธีมทั้งหน้าตาม Stitch mockup "Industrial Kinetic" (v2)
+# Codex Task Brief — ส่งข้อมูลตะกร้าไปพรีฟิลฟอร์มจองคิว (Phase D1)
 
-อ่านเต็มก่อนเริ่ม: `PROJECT_CONTEXT.md`, `design-ref/stitch-industrial-v2/DESIGN.md`, ดูภาพ `design-ref/stitch-industrial-v2/screen.png`
+อ่านเต็มก่อนเริ่ม: `PROJECT_CONTEXT.md`, `implementation_plan.md` (บรรทัด 71-72 พูดถึงงานนี้ไว้แล้ว)
 
-CEO ดู mockup ใหม่จาก Google Stitch แล้วชอบ สั่งให้ใช้แทนธีมดำ/เหลืองที่ทำไปแล้วรอบก่อน (`bb38b14`)
-ธีมเดิมมีปัญหาที่ยังไม่ได้แก้อยู่ด้วย (ดูหัวข้อ "บั๊กเดิมที่ต้องแก้พร้อมกัน" ด้านล่าง) — รอบนี้คือ rebuild ธีมใหม่ทั้งยวง ไม่ใช่แค่ patch
+## ปัญหา
 
----
+ตอนนี้ปุ่ม "จองคิวติดตั้งหน้าร้าน" ในตะกร้า (`app.js` บรรทัด ~241-245) แค่
+`window.location.href = BOOKING_URL` เฉยๆ — ลูกค้าเลือกสินค้าไว้ในตะกร้าแล้ว แต่พอกดจองคิว
+ไปเจอฟอร์มเปล่าที่ `booking.html` ต้องพิมพ์รายการที่ต้องการทำเองใหม่หมด ข้อมูลตะกร้าหายหมด
 
-## ⚠️ Phase 0 — Gate บังคับ
-
-1. ทำงานที่ `D:\AI-Workspace\projects\kmo-landing-page\` เท่านั้น ห้ามแตะ `D:\AI-Workspace\projects\landing page\KMO\`
-2. `git remote -v` ต้องขึ้น `Gutumrod/kmo-landing-page` เท่านั้น
-3. `git status` ต้อง clean + `git pull` ก่อนแก้ไฟล์
-4. ถ้าเจอ path/remote ผิด → หยุดทันที ถามกลับก่อน
+งานนี้คือเชื่อมสองจุดนี้เข้าด้วยกัน โดยส่งชื่อสินค้า + ราคาอ้างอิง (ข้อความอย่างเดียว ไม่ผูกมัด)
+ผ่าน URL query param ไปพรีฟิลช่อง "รายการที่ต้องการทำ" ใน `booking.html`
 
 ---
 
-## ดีไซน์อ้างอิง — `design-ref/stitch-industrial-v2/`
+## ⚠️ Phase 0 — Gate บังคับ (สำคัญมาก อ่านก่อนแตะไฟล์)
 
-- `DESIGN.md` — design tokens เต็ม (สี/ฟอนต์/spacing/shape) ใช้เป็น source of truth แทน `DESIGN_BRIEF.md` เดิม
-- `screen.png` — mockup หน้าเต็ม (hero → catalog → booking → footer)
-- `code.html` — static mockup จาก Stitch **ห้าม copy วางทับตรงๆ** เพราะไม่มี cart logic/JS ผูกจริง ใช้ดูโครงสร้าง/class name เป็นไอเดียเท่านั้น
+งานนี้แตะ **2 repo คนละที่**:
 
-### สรุป design tokens หลัก (ดูละเอียดใน DESIGN.md)
-- พื้นหลัง `#121414`/`#0c0f0f`, การ์ด/container ไล่โทน `#1a1c1c` → `#282a2b` → `#333535`
-- Primary yellow `#ffcf07`, ปุ่มหลักพื้นเหลือง ตัวหนังสือดำ
-- ตัวหนังสือ: หัวข้อใหญ่ฟอนต์ **Anton** (ตัวหนา ตั้งตรง ไม่ italic ในเวอร์ชันนี้ — ต่างจาก brief เดิมที่มี `font-style: italic`) ตัวพิมพ์ใหญ่ทั้งหมด, เนื้อหาใช้ **Archivo Narrow**, label/status ใช้ **JetBrains Mono**
-- มุมเหลี่ยม 90 องศาทั้งหมด ไม่มี border-radius, ไม่มี box-shadow แบบลอย ใช้ 1-2px border แทน
-- ปุ่ม secondary = border เหลือง 2px ไม่มีพื้น hover ถึงเปลี่ยนเป็นพื้นเหลือง
+1. `D:\AI-Workspace\projects\kmo-landing-page\` — remote ต้องเป็น `Gutumrod/kmo-landing-page`
+2. `D:\AI-Workspace\projects\kmorackbarcustom.github.io\` — remote ต้องเป็น
+   `kmorackbarcustom/kmorackbarcustom.github.io` **(นี่คือ production repo จริง มีลูกค้าใช้งานอยู่)**
 
-โหลดฟอนต์ Anton / Archivo Narrow / JetBrains Mono จาก Google Fonts ใน `index.html` (`<link>` เดิมที่มีอยู่ให้เช็คว่าใช้ฟอนต์ไหน แก้ให้ตรง 3 ตัวนี้)
+ก่อนแก้ไฟล์ทั้งสอง repo:
+1. `git remote -v` เช็คให้ตรงชื่อข้างบนเป๊ะ ผิดให้หยุดถามก่อน
+2. `git status` ต้อง clean + `git pull` ก่อนแก้
+3. **ห้ามแตะ** `D:\AI-Workspace\projects\landing page\KMO\` เด็ดขาด (clone เก่าตกรุ่น)
 
----
-
-## Element ที่ห้ามเปลี่ยนชื่อ/ลบ (JS ผูกอยู่ ถ้าเปลี่ยนฟีเจอร์จะพัง) — เหมือนเดิมทุกจุด
-
-- `#product-grid-container`
-- `#catalog-search-input`
-- `.filter-btn` + attribute `data-category` (ต้องมีครบ 7 ปุ่ม: all/rear/side/crashbar/accessory/gear/service)
-- `#cart-toggle`, `#cart-drawer`, `#cart-drawer-backdrop`, `#cart-close`
-- `#cart-items-container`
-- `#cart-total-val`, `#cart-deposit-val`, `#cart-balance-val`
-- `#btn-checkout-cart`
-- `#btn-checkout-order`
-- `#cart-badge-count`
-
-ปรับได้แค่หน้าตา/สี/ฟอนต์/เลย์เอาต์รอบนอกของ element พวกนี้ ห้ามเปลี่ยนชื่อ id/class/โครงสร้าง DOM ที่ JS query อยู่
-
----
-
-## บั๊กเดิมที่ต้องแก้พร้อมกัน (ค้างจากรอบก่อน อย่าลืม)
-
-1. **Heading style ต้องไม่หลุดไปโดน element ที่ไม่ใช่หัวข้อการตลาด** — รอบก่อนมี global rule
-   `h1,h2,h3,h4,h5,h6 { text-transform: uppercase; ... }` ทำให้ `.product-title` (เป็น `<h3>`), cart section
-   title, footer heading โดน uppercase ไปด้วยทั้งที่ไม่ควร ตอน implement ธีมใหม่นี้ **อย่าตั้ง rule กว้างแบบนั้นอีก**
-   ให้ apply เฉพาะ selector ที่ตั้งใจ (เช่น `.hero-title`, `.section-title`) เท่านั้น แล้วเช็ค `getComputedStyle()`
-   ของ `.product-title`, cart footer title, footer `h3` ว่าไม่โดนไปด้วยโดยไม่ตั้งใจ
-2. **`.hazard-separator`** (ถ้ายังใช้ลายทางเฉียงคั่น section ต่อในธีมนี้) ต้องมี `aria-hidden="true"` ทุกจุด (3 จุดใน `index.html`)
-3. **ปุ่มเช็คเอาต์ (`#btn-checkout-cart`, `#btn-checkout-order`) และ cart badge (`#cart-badge-count`)**
-   ต้องโดน theme ใหม่ด้วย ไม่ใช่เหลือสีเดิม (เช็คให้ชัดเจน อย่าปล่อยผ่าน)
-4. **คำโปรย hero** — CEO ยังไม่ตัดสินใจว่าจะใช้คำไหน คงข้อความปัจจุบันไว้ก่อน (ห้ามเปลี่ยนคำเองอีก) รอ CEO สั่งแยก
+**สำคัญเรื่อง production repo:** วันนี้ (2026-07-13) เพิ่งแก้บั๊ก capacity model ของ `booking.html`
+ไป 2 รอบ (commit `6f3a716` แล้ว `cab6d9e`) — **ห้ามแตะ/ห้ามแก้ฟังก์ชัน `buildPoolUsage`,
+ตัวแปร `DAILY_CAP`/`MIN_BOOKING_DAYS`/`DENSE_THRESHOLD`, หรือ logic คำนวณคิวว่างใดๆ ทั้งสิ้น**
+งานนี้แค่ "เพิ่ม" การอ่าน query param มาพรีฟิลช่องข้อความเฉยๆ ไม่เกี่ยวกับ capacity เลย
+`git pull` ก่อนแก้เพื่อให้ชัวร์ว่าได้โค้ดล่าสุดที่มี fix วันนี้ครบ
 
 ---
 
 ## สิ่งที่ต้องทำ
 
-1. อัปเดต `styles.css` ทั้งไฟล์ตาม design tokens ใน `DESIGN.md` (สี/ฟอนต์/spacing/shape/border/hover behavior)
-2. เช็ค `index.html` ว่า class/id เดิมยังอยู่ครบ ปรับแค่ markup รอบนอก (เช่น เพิ่ม wrapper div สำหรับ layout ใหม่ได้ แต่ element ที่ระบุห้ามแตะข้างบนต้องอยู่ครบ)
-3. โหลดฟอนต์ Anton, Archivo Narrow, JetBrains Mono ผ่าน Google Fonts
-4. แก้ 3 บั๊กเดิมในหัวข้อ "บั๊กเดิมที่ต้องแก้พร้อมกัน" ไปพร้อมกันในรอบนี้
-5. เช็ค mobile responsive (375px, 320px) ตาม pattern เดิมที่เคยแก้ไว้ (`.hero-title`, `.product-grid` บังคับ 2 คอลัมน์) — **อย่าทำ regression ของ mobile fix รอบก่อน**
+### 1. `kmo-landing-page/app.js` — สร้าง query string จากตะกร้าตอนกดจองคิว
+
+ในฟังก์ชัน handler ของ `checkoutBookingBtn` (บรรทัด ~241-245 ปัจจุบัน):
+
+- ดึงเฉพาะ `bookingItems` (item ที่ `type === 'booking'`) จาก cart — **ไม่เอา order items**
+- สร้างพารามิเตอร์ 2 ตัว แล้ว `encodeURIComponent` ก่อนต่อเข้า URL:
+  - `services` = รายชื่อสินค้าคั่นด้วย comma เช่น `"แร็คท้าย Forza350 x1, แครชบาร์ ADV350 x2"`
+    (รูปแบบ `${ชื่อสินค้า}${quantity > 1 ? ' x'+quantity : ''}`)
+  - `note` = ข้อความราคาอ้างอิงรวม เช่น `"ราคาอ้างอิงจากเว็บ ~3,500 บาท (ไม่ผูกมัด ยืนยันราคาจริงหน้างาน)"`
+    (คำนวณราคารวมจาก `bookingItems` เท่านั้น ปัดเป็นข้อความ ไม่ใช่ field ราคาแยก)
+- ถ้าตะกร้า booking ว่าง (ไม่ควรเกิดเพราะปุ่มถูก disable แล้วตอนตะกร้าว่าง แต่กันไว้) ไม่ต้องใส่ query
+  string เลย ใช้ `BOOKING_URL` เปล่าเหมือนเดิม
+- ต่อ query string เข้ากับ `BOOKING_URL` แล้ว `window.location.href = ...`
+
+**ห้ามเปลี่ยน** id/class ใดๆ ที่ระบุห้ามแตะใน `DESIGN_BRIEF.md` (`#btn-checkout-cart` ฯลฯ)
+
+### 2. `kmorackbarcustom.github.io/booking.html` — อ่าน query param มาพรีฟิล
+
+หาโค้ด `getDateFromQuery()` (ประมาณบรรทัด 1013) เป็นตัวอย่าง pattern การอ่าน query param ที่มีอยู่แล้ว
+เพิ่ม logic ข้าง ๆ กัน (ไม่ต้องเปลี่ยนฟังก์ชันเดิม เพิ่มฟังก์ชันใหม่หรือ inline ใน
+`DOMContentLoaded` handler เดิมได้):
+
+- อ่าน `services` param → ถ้ามีค่า ให้ `decodeURIComponent` แล้วใส่ใน
+  `document.getElementById('services').value` (ช่อง textarea "รายการที่ต้องการทำ")
+- อ่าน `note` param → ถ้ามีค่า ให้แสดงเป็นข้อความเล็กๆ ใต้ช่อง services (เช่น `<small>` หรือ
+  `<div class="form-hint">`) — **ไม่ใส่ในฟิลด์ราคา ไม่บันทึกลง DB เป็นตัวเลข ไม่ auto-fill มัดจำ**
+  แค่ข้อความอ้างอิงให้ลูกค้า/แอดมินเห็นเฉยๆ
+- ทั้งสอง param เป็น optional — ถ้าไม่มีใน URL (เช่น ลูกค้าเข้าตรงจาก `calendar.html` หรือ URL เปล่า)
+  ฟอร์มต้องว่างเหมือนเดิมทุกอย่าง ไม่ error
 
 ---
 
 ## ทดสอบก่อนบอกว่าเสร็จ
 
-- เปิดเว็บจริง desktop (1280px) เทียบกับ `screen.png` — โทนสี/ฟอนต์/เลย์เอาต์ต้องใกล้เคียง
-- เปิดที่ 375px และ 320px — hero title ไม่ตัดคำแปลก, product grid ยังเป็น 2 คอลัมน์, การ์ดอ่านง่าย
-- `getComputedStyle()` เช็ค `.product-title`, cart section title, footer `h3` ว่า**ไม่**โดน uppercase/italic จาก global heading rule
-- เช็ค `#btn-checkout-cart`, `#btn-checkout-order`, `#cart-badge-count` ว่าใช้สี/ฟอนต์ธีมใหม่แล้ว
-- เช็ค `.hazard-separator` ทุกจุด (ถ้ามี) มี `aria-hidden="true"`
-- Filter ปุ่มหมวดหมู่ยังทำงานถูก (data-category ครบ 7), ค้นหายังทำงาน, ตะกร้ายัง add/remove/checkout ได้ปกติ
-- `git diff --check` ผ่าน
+1. เปิด `kmo-landing-page` จริง เพิ่มสินค้า 2 ชิ้นลงตะกร้าฝั่ง "จองคิวติดตั้ง" กดปุ่มจองคิว
+2. เช็ค URL ที่ redirect ไปว่ามี `?services=...&note=...` เข้ารหัสถูกต้อง (เปิด URL ตรงๆ ต้องอ่านออก)
+3. เปิด `booking.html` ด้วย URL นั้น เช็คว่าช่อง "รายการที่ต้องการทำ" มีข้อความสินค้าขึ้นมาให้แล้ว
+   และมีข้อความราคาอ้างอิงโชว์อยู่ใกล้ๆ (ไม่ใช่ในฟิลด์ราคา)
+4. เปิด `booking.html` เปล่าๆ ไม่มี query param เลย (พิมพ์ URL ตรงๆ) — ฟอร์มต้องว่างปกติเหมือนเดิม
+5. เช็คว่าปฏิทิน/ปุ่มยืนยันจอง/checkQueueDensity ยังทำงานปกติ **ไม่มี regression** จากการแก้วันนี้
+   (ลองจองจริง 1 รอบดูว่า insert เข้า Supabase สำเร็จ ไม่ error)
+6. เช็คปุ่ม "สั่งซื้อกับทางร้าน" (`btn-checkout-order` → `CustomerOrder.html`) ว่ายังทำงานปกติ
+   ไม่กระทบจากการแก้รอบนี้ (ไม่ใช่ scope งานนี้ ไม่ต้องแก้)
+7. `git diff --check` ผ่านทั้งสอง repo
 
 ---
 
 ## เสร็จแล้วให้ทำอะไรต่อ
 
-- Commit ไว้ local ก่อน **อย่า push** จนกว่า CEO จะสั่ง
-- อัปเดต `PROJECT_CONTEXT.md`: เพิ่มบรรทัด "rebuild ธีมตาม Stitch mockup v2 (Industrial Kinetic)" ในตาราง completed พร้อมระบุว่าบั๊กเดิม 3 ข้อแก้ไปด้วยหรือยัง
+- Commit ไว้ local ก่อนใน**ทั้งสอง repo** — **ห้าม push** ทั้งคู่จนกว่า CEO จะสั่ง
+  (โดยเฉพาะ `kmorackbarcustom.github.io` เป็น production ลูกค้าใช้งานจริง)
+- อัปเดต `PROJECT_CONTEXT.md` ใน `kmo-landing-page`: mark Phase D1 ว่าเสร็จแล้ว (เดิมค้างมาตั้งแต่ 07-11)
+- รายงานกลับว่า diff ทั้งสอง repo มีอะไรบ้าง ให้ CEO/Commander รีวิวก่อน push
