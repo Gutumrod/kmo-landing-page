@@ -241,7 +241,7 @@ function initEventListeners() {
   checkoutBookingBtn.addEventListener('click', () => {
     toggleCartDrawer();
     // ponytail: booking.html/calendar.html ไม่ maintain ไฟล์แยกในนี้แล้ว ลิงก์ออกไป production ที่เดียว กัน sync หลุด
-    window.location.href = BOOKING_URL;
+    window.location.href = buildBookingCheckoutUrl();
   });
   checkoutOrderBtn.addEventListener('click', () => {
     toggleCartDrawer();
@@ -662,6 +662,27 @@ function getCartItemsSubtotal(items) {
 
 function formatBaht(amount) {
   return `฿${amount.toLocaleString('th-TH', { minimumFractionDigits: 2 })}`;
+}
+
+function buildBookingCheckoutUrl() {
+  const bookingItems = cart.filter(item => item.type === 'booking');
+  if (bookingItems.length === 0) return BOOKING_URL;
+
+  const services = bookingItems
+    .map(item => {
+      const quantityText = item.quantity > 1 ? ` x${item.quantity}` : '';
+      return `${item.product.name}${quantityText}`;
+    })
+    .join(', ');
+
+  const totalPrice = getCartItemsSubtotal(bookingItems);
+  const note = `ราคาอ้างอิงจากเว็บ ~${totalPrice.toLocaleString('th-TH')} บาท (ไม่ผูกมัด ยืนยันราคาจริงหน้างาน)`;
+  const params = new URLSearchParams({
+    services,
+    note
+  });
+
+  return `${BOOKING_URL}?${params.toString()}`;
 }
 
 function getCategoryLabel(category) {
