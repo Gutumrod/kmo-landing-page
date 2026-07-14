@@ -428,6 +428,8 @@ function getFilteredProducts(category, searchTerm) {
     if (!normalizedTerm) return true;
 
     const searchableText = [
+      product.brand,
+      product.model,
       product.name,
       product.description,
       product.category,
@@ -581,7 +583,10 @@ function createProductCardElement(product) {
 
   const description = document.createElement('p');
   description.className = 'product-models';
-  description.textContent = product.description || '';
+  const vehicleLabel = getVehicleLabel(product);
+  description.textContent = vehicleLabel
+    ? `${vehicleLabel} • ${product.description || ''}`
+    : product.description || '';
 
   const footer = document.createElement('div');
   footer.className = 'product-footer';
@@ -661,6 +666,34 @@ function getCartItemsSubtotal(items) {
   }, 0);
 }
 
+function getVehicleLabel(product) {
+  return [product.brand, product.model].filter(Boolean).join(' ').trim();
+}
+
+function getProductDisplayName(product) {
+  const vehicleLabel = getVehicleLabel(product);
+  return vehicleLabel ? `${product.name} - ${vehicleLabel}` : product.name || '';
+}
+
+function getSharedVehiclePrefill(items) {
+  const vehicles = items
+    .map(item => ({
+      brand: (item.product.brand || '').trim(),
+      model: (item.product.model || '').trim()
+    }))
+    .filter(vehicle => vehicle.brand || vehicle.model);
+
+  if (vehicles.length === 0) return null;
+
+  const first = vehicles[0];
+  const sameVehicle = vehicles.every(vehicle =>
+    vehicle.brand.toLowerCase() === first.brand.toLowerCase()
+    && vehicle.model.toLowerCase() === first.model.toLowerCase()
+  );
+
+  return sameVehicle ? first : null;
+}
+
 function formatBaht(amount) {
   return `฿${amount.toLocaleString('th-TH', { minimumFractionDigits: 2 })}`;
 }
@@ -681,6 +714,8 @@ function encodeCartMeta(cartItems, flow) {
     items: cartItems.map(item => ({
       id: item.product.id,
       name: item.product.name,
+      brand: item.product.brand || '',
+      model: item.product.model || '',
       category: item.product.category,
       type: item.type,
       quantity: item.quantity,
@@ -704,7 +739,7 @@ function buildBookingCheckoutUrl() {
   const services = bookingItems
     .map(item => {
       const quantityText = item.quantity > 1 ? ` x${item.quantity}` : '';
-      return `${item.product.name}${quantityText}`;
+      return `${getProductDisplayName(item.product)}${quantityText}`;
     })
     .join(', ');
 
@@ -714,6 +749,11 @@ function buildBookingCheckoutUrl() {
     services,
     note
   });
+  const vehiclePrefill = getSharedVehiclePrefill(bookingItems);
+  if (vehiclePrefill) {
+    if (vehiclePrefill.brand) params.set('brand', vehiclePrefill.brand);
+    if (vehiclePrefill.model) params.set('model', vehiclePrefill.model);
+  }
   const cartMeta = encodeCartMeta(bookingItems, 'booking');
   if (cartMeta) params.set('cart_meta', cartMeta);
 
@@ -743,7 +783,8 @@ function buildOrderCheckoutUrl() {
     .map(item => {
       const quantityText = `x${item.quantity}`;
       const itemPrice = Number(item.product.price || 0) * item.quantity;
-      return `${item.product.name} ${quantityText} (${itemPrice.toLocaleString('th-TH')} บาท)`;
+      const priceText = itemPrice > 0 ? `${itemPrice.toLocaleString('th-TH')} บาท` : 'สอบถามราคา';
+      return `${getProductDisplayName(item.product)} ${quantityText} (${priceText})`;
     })
     .join(', ');
 
@@ -753,6 +794,11 @@ function buildOrderCheckoutUrl() {
     products: Array.from(productIds).join(','),
     other_text: otherText
   });
+  const vehiclePrefill = getSharedVehiclePrefill(orderItems);
+  if (vehiclePrefill) {
+    if (vehiclePrefill.brand) params.set('brand', vehiclePrefill.brand);
+    if (vehiclePrefill.model) params.set('model', vehiclePrefill.model);
+  }
   const cartMeta = encodeCartMeta(orderItems, 'order');
   if (cartMeta) params.set('cart_meta', cartMeta);
 
