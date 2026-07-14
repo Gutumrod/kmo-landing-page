@@ -611,19 +611,23 @@ function createProductCardElement(product) {
   }
 
   if (product.allow_order) {
-    const hasShopeeUrl = product.shopee_url && product.shopee_url.trim() !== '';
-    const orderBtn = hasShopeeUrl ? document.createElement('a') : document.createElement('button');
+    const orderBtn = document.createElement('button');
     orderBtn.className = 'btn-order';
-    orderBtn.textContent = hasShopeeUrl ? 'สั่งซื้อ Shopee' : 'สั่งผลิต';
-    if (hasShopeeUrl) {
-      orderBtn.target = '_blank';
-      orderBtn.rel = 'noopener noreferrer';
-      orderBtn.href = getSafeExternalUrl(product.shopee_url, CUSTOMER_ORDER_URL);
-    } else {
-      orderBtn.type = 'button';
-      orderBtn.addEventListener('click', () => addToCart(product.id, 'order'));
-    }
+    orderBtn.type = 'button';
+    orderBtn.textContent = 'สั่งตรงกับร้าน';
+    orderBtn.addEventListener('click', () => addToCart(product.id, 'order'));
     actions.appendChild(orderBtn);
+  }
+
+  const hasShopeeUrl = product.shopee_url && product.shopee_url.trim() !== '';
+  if (hasShopeeUrl) {
+    const shopeeBtn = document.createElement('a');
+    shopeeBtn.className = 'btn-shopee';
+    shopeeBtn.textContent = 'ซื้อผ่าน Shopee';
+    shopeeBtn.target = '_blank';
+    shopeeBtn.rel = 'noopener noreferrer';
+    shopeeBtn.href = getSafeExternalUrl(product.shopee_url, CUSTOMER_ORDER_URL);
+    actions.appendChild(shopeeBtn);
   }
 
   imageWrapper.append(image, tag);

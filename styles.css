@@ -1310,13 +1310,16 @@ footer {
 
 .product-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   width: 100%;
 }
 
 .product-actions .btn-add-cart,
-.product-actions .btn-order {
+.product-actions .btn-order,
+.product-actions .btn-shopee {
   flex: 1;
+  min-width: 118px;
   font-family: var(--font-body);
   font-size: 13px; /* ขยายจาก 11px ขึ้น 20% */
   font-weight: 500;
@@ -1357,6 +1360,23 @@ footer {
   background-color: var(--accent-color);
   color: #000;
   border-style: solid;
+}
+
+.product-actions .btn-shopee {
+  appearance: none;
+  background-color: #ee4d2d;
+  border: 1px solid #ee4d2d;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.product-actions .btn-shopee:hover {
+  background-color: #ff6b45;
+  border-color: #ff6b45;
+  color: #fff;
 }
 
 /* Cart checkout buttons + badge — explicitly themed (was left ambiguous
