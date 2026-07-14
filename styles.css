@@ -102,6 +102,10 @@ a {
   color: var(--accent-color);
 }
 
+.nowrap {
+  white-space: nowrap;
+}
+
 .bg-blur {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -400,6 +404,121 @@ header {
 .hero-actions {
   display: flex;
   gap: 16px;
+}
+
+@media (max-width: 767px) {
+  header {
+    background-color: rgba(11, 13, 13, 0.92);
+  }
+
+  .container {
+    padding: 0 18px;
+  }
+
+  .navbar {
+    height: 68px;
+  }
+
+  .logo {
+    min-width: 0;
+    gap: 8px;
+  }
+
+  .logo-img {
+    height: 42px;
+    flex: 0 0 auto;
+  }
+
+  .logo-text {
+    min-width: 0;
+  }
+
+  .logo-main {
+    font-size: 14px;
+    letter-spacing: 0.02em;
+    line-height: 1.15;
+    white-space: nowrap;
+  }
+
+  .logo-sub {
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    line-height: 1.2;
+  }
+
+  header nav {
+    display: none;
+  }
+
+  .nav-actions {
+    margin-left: 10px;
+    flex: 0 0 auto;
+  }
+
+  .cart-toggle-btn {
+    width: 42px;
+    height: 42px;
+  }
+
+  .hero-section {
+    min-height: auto;
+    padding: 98px 0 56px;
+    align-items: flex-start;
+  }
+
+  .hero-section .container {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+
+  .hero-content {
+    max-width: 100%;
+  }
+
+  .hero-tag {
+    font-size: 11px;
+    padding: 6px 12px;
+    margin-bottom: 18px;
+  }
+
+  .hero-title {
+    font-size: clamp(30px, 9vw, 40px);
+    line-height: 1.28;
+    letter-spacing: 0;
+    margin-bottom: 16px;
+    text-wrap: balance;
+    word-break: keep-all;
+  }
+
+  .hero-desc {
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: 28px;
+    max-width: 100%;
+  }
+
+  .hero-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .hero-actions .btn {
+    min-height: 78px;
+    padding: 12px 14px;
+    font-size: 14px;
+    line-height: 1.35;
+  }
+
+  section {
+    padding: 72px 0;
+  }
+
+  .section-title-main {
+    font-size: clamp(34px, 11vw, 48px);
+    line-height: 1.18;
+    word-break: keep-all;
+  }
 }
 
 /* Sections General */
