@@ -245,7 +245,7 @@ function initEventListeners() {
   });
   checkoutOrderBtn.addEventListener('click', () => {
     toggleCartDrawer();
-    window.location.href = CUSTOMER_ORDER_URL;
+    window.location.href = buildOrderCheckoutUrl();
   });
 }
 
@@ -683,6 +683,43 @@ function buildBookingCheckoutUrl() {
   });
 
   return `${BOOKING_URL}?${params.toString()}`;
+}
+
+function buildOrderCheckoutUrl() {
+  const orderItems = cart.filter(item => item.type === 'order');
+  if (orderItems.length === 0) return CUSTOMER_ORDER_URL;
+
+  const categoryMap = {
+    rear: 'rear_rack',
+    side: 'side_rack',
+    crashbar: 'crash_bar',
+    accessory: 'bar',
+    gear: 'other',
+    service: 'other'
+  };
+
+  const productIds = new Set();
+  orderItems.forEach(item => {
+    const mappedProductId = categoryMap[item.product.category] || 'other';
+    productIds.add(mappedProductId);
+  });
+
+  const itemsText = orderItems
+    .map(item => {
+      const quantityText = `x${item.quantity}`;
+      const itemPrice = Number(item.product.price || 0) * item.quantity;
+      return `${item.product.name} ${quantityText} (${itemPrice.toLocaleString('th-TH')} บาท)`;
+    })
+    .join(', ');
+
+  const totalPrice = getCartItemsSubtotal(orderItems);
+  const otherText = `อ้างอิงจากเว็บ: ${itemsText} | รวมประมาณ ${totalPrice.toLocaleString('th-TH')} บาท (ไม่ผูกมัด ยืนยันราคาจริงกับแอดมิน)`;
+  const params = new URLSearchParams({
+    products: Array.from(productIds).join(','),
+    other_text: otherText
+  });
+
+  return `${CUSTOMER_ORDER_URL}?${params.toString()}`;
 }
 
 function getCategoryLabel(category) {
