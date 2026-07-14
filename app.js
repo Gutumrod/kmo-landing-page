@@ -7,7 +7,7 @@
 // ==========================================
 let PRODUCTS = [];
 
-const GOOGLE_SHEETS_CSV_URL = 'https://docs.google.com/spreadsheets/d/11vOmugedMi3GoMN-a1NriI-hIvGVOSxg07fNI6DyRLM/export?format=csv';
+const PRODUCT_CATALOG_CSV_URL = 'assets/product_catalog_template.csv';
 const BOOKING_URL = 'https://kmorackbarcustom.github.io/booking.html';
 const CUSTOMER_ORDER_URL = 'https://kmorackbarcustom.github.io/CustomerOrder.html';
 const FALLBACK_PRODUCT_IMAGE = 'assets/images/service.jpg';
@@ -122,8 +122,8 @@ async function loadProductsFromCSV() {
   const startTime = performance.now();
 
   try {
-    const response = await fetch(GOOGLE_SHEETS_CSV_URL);
-    if (!response.ok) throw new Error('Sheet network response failed');
+    const response = await fetch(PRODUCT_CATALOG_CSV_URL);
+    if (!response.ok) throw new Error('Local catalog response failed');
     const csvText = await response.text();
     
     const parsed = parseCSV(csvText);
@@ -135,7 +135,7 @@ async function loadProductsFromCSV() {
       throw new Error('Parsed CSV resulted in 0 products');
     }
   } catch (error) {
-    console.warn('Failed to load products from Google Sheets CSV. Falling back to default list. Error:', error);
+    console.warn('Failed to load products from local catalog CSV. Falling back to default list. Error:', error);
     PRODUCTS = FALLBACK_PRODUCTS;
   } finally {
     isCatalogLoading = false;
@@ -513,7 +513,8 @@ function createCartItemElement(item) {
 
   const price = document.createElement('div');
   price.className = 'cart-item-price';
-  price.textContent = `฿${(Number(product.price || 0) * item.quantity).toLocaleString()}`;
+  const cartLinePrice = Number(product.price || 0) * item.quantity;
+  price.textContent = cartLinePrice > 0 ? formatProductPrice(cartLinePrice) : 'สอบถามราคา';
 
   const controls = document.createElement('div');
   controls.className = 'cart-item-controls';
@@ -590,7 +591,7 @@ function createProductCardElement(product) {
 
   const price = document.createElement('span');
   price.className = 'product-price';
-  price.textContent = `฿${Number(product.price || 0).toLocaleString()}`;
+  price.textContent = formatProductPrice(product.price);
 
   const actions = document.createElement('div');
   actions.className = 'product-actions';
@@ -662,6 +663,11 @@ function getCartItemsSubtotal(items) {
 
 function formatBaht(amount) {
   return `฿${amount.toLocaleString('th-TH', { minimumFractionDigits: 2 })}`;
+}
+
+function formatProductPrice(price) {
+  const amount = Number(price || 0);
+  return amount > 0 ? `฿${amount.toLocaleString('th-TH')}` : 'สอบถามราคา';
 }
 
 function encodeCartMeta(cartItems, flow) {

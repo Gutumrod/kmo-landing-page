@@ -1,8 +1,196 @@
 id,name,price,category,description,image_url,shopee_url,allow_booking,allow_order
-rear-forza-2900,แร็คท้าย Forza 350 Custom,2900,rear,แร็คท้ายเหล็กหนาพิเศษ พ่นสีพาวเดอร์โค้ทดำกึ่งเงา ตรงรุ่นสำหรับ Honda Forza 350,assets/images/rack-rear-forza.jpg,https://shopee.co.th/product-link-placeholder,TRUE,TRUE
-rear-adv-2900,แร็คท้าย ADV 350 Heavy Duty,2900,rear,แร็คท้ายสำหรับสายลุย บรรทุกหนักได้สบาย ออกแบบรองรับการติดตั้งกล่องท้ายทุกแบรนด์,assets/images/rack-rear-adv.jpg,,TRUE,TRUE
-side-adv-forza-3500,ชุดแร็คข้าง ADV350 / Forza 350,3500,side,ชุดแร็คข้างแบบเข้ารูป บรรทุกปี๊บข้างหรือกระเป๋าข้างทัวริ่งได้อย่างมั่นคง,assets/images/rack-side.jpg,,TRUE,TRUE
-rack-giorno-1800,แร็คท้าย & ตะแกรงหน้า Giorno+,1800,rear,แร็คท้ายดีไซน์คลาสสิก เข้ากับทรงรถ Honda Giorno+ แข็งแรงใช้งานได้จริง,assets/images/giorno-rack.jpg,,TRUE,TRUE
-crashbar-adv-4500,ชุดแครชบาร์ ADV350 เต็มระบบ,4500,crashbar,แครชบาร์กันล้มคัสตอม ป้องกันตัวรถรอบคัน ท่อเหล็กหนา พ่นสีกันสนิมหนาพิเศษ,assets/images/crashbar.jpg,,TRUE,TRUE
-spotlight-60w-3200,ไฟสปอร์ตไลท์คู่ Motovision (60W),3200,other,ไฟสปอร์ตไลท์เพิ่มทัศนวิสัยเวลากลางคืน พร้อมชุดขาสแตนเลสและสวิตช์กันน้ำ,assets/images/spotlight.jpg,,FALSE,TRUE
-service-installation-500,บริการติดตั้งด่วน & เซ็ตระบบไฟ,500,other,บริการเดินสายไฟสปอร์ตไลท์แบบซ่อนสาย ติดตั้งอุปกรณ์เสริมอื่นๆ โดยช่างมืออาชีพ,assets/images/service.jpg,,TRUE,FALSE
+kmo-001,แคสบาร์ล่าง+แล็คใส่ปี๊ป - Africa Twin 2020,0,crashbar,งานคัสตอม KMO สำหรับ Africa Twin 2020 รายการ: แคสบาร์ล่าง+แล็คใส่ปี๊ป,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-002,เสริมความแข็งแรงแร็คท้ายเพื่อรับน้ำหนัก และแรงกระแทก - Aprilia Sr gt200,0,rear,งานคัสตอม KMO สำหรับ Aprilia Sr gt200 รายการ: เสริมความแข็งแรงแร็คท้ายเพื่อรับน้ำหนัก และแรงกระแทก,assets/images/rack-rear-adv.jpg,,TRUE,TRUE
+kmo-003,แคสบาร์ - Aprilia SRGT200,0,crashbar,งานคัสตอม KMO สำหรับ Aprilia SRGT200 รายการ: แคสบาร์,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-004,แร็คท้าย - BAJAJ Dominar400,0,rear,งานคัสตอม KMO สำหรับ BAJAJ Dominar400 รายการ: แร็คท้าย,assets/images/rack-rear-adv.jpg,,TRUE,TRUE
+kmo-005,แร็คท้าย + แร็คข้าง - Bajaj Dominar400 touring,0,side,งานคัสตอม KMO สำหรับ Bajaj Dominar400 touring รายการ: แร็คท้าย + แร็คข้าง,assets/images/rack-side.jpg,,TRUE,TRUE
+kmo-006,แร็คท้ายสีดำ - Bajaj Dominar 400,0,rear,งานคัสตอม KMO สำหรับ Bajaj Dominar 400 รายการ: แร็คท้ายสีดำ,assets/images/rack-rear-adv.jpg,,TRUE,TRUE
+kmo-007,แร็คท้าย แข็งแรง แบบ 40 กิโล ทุกวัน ขอมีมือจับด้วย - benelli tnt300,0,rear,งานคัสตอม KMO สำหรับ benelli tnt300 รายการ: แร็คท้าย แข็งแรง แบบ 40 กิโล ทุกวัน ขอมีมือจับด้วย,assets/images/rack-rear-adv.jpg,,TRUE,TRUE
+kmo-008,แคชบาร์ - BMW F700GS 2013,0,crashbar,งานคัสตอม KMO สำหรับ BMW F700GS 2013 รายการ: แคชบาร์,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-009,แร็คท้าย - BMW F900,0,rear,งานคัสตอม KMO สำหรับ BMW F900 รายการ: แร็คท้าย,assets/images/rack-rear-adv.jpg,,TRUE,TRUE
+kmo-010,แก้ไขแร็คข้าง ทรงshad 3p - BMW F900xr,0,side,งานคัสตอม KMO สำหรับ BMW F900xr รายการ: แก้ไขแร็คข้าง ทรงshad 3p,assets/images/rack-side.jpg,,TRUE,TRUE
+kmo-011,แร็คข้าง - BMW K1300s,0,side,งานคัสตอม KMO สำหรับ BMW K1300s รายการ: แร็คข้าง,assets/images/rack-side.jpg,,TRUE,TRUE
+kmo-012,crash bar / สีแดง - bmw r12 ninet/2024,0,crashbar,งานคัสตอม KMO สำหรับ bmw r12 ninet/2024 รายการ: crash bar / สีแดง,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-013,ซ่อมแร็คปี๊บข้าง และเสริมความแข็งแรงแร็ค - BMW R1200GSA 2015,0,side,งานคัสตอม KMO สำหรับ BMW R1200GSA 2015 รายการ: ซ่อมแร็คปี๊บข้าง และเสริมความแข็งแรงแร็ค,assets/images/rack-side.jpg,,TRUE,TRUE
+kmo-014,แร็คท้าย - Cb 150 r 2018,0,rear,งานคัสตอม KMO สำหรับ Cb 150 r 2018 รายการ: แร็คท้าย,assets/images/rack-rear-adv.jpg,,TRUE,TRUE
+kmo-015,ติดเเคชบาร์รอบคัน และ แร็คท้ายกับแร็คข้าง +ไฟสปอดไลด์ 1ชุดครับ - Cb150r,0,side,งานคัสตอม KMO สำหรับ Cb150r รายการ: ติดเเคชบาร์รอบคัน และ แร็คท้ายกับแร็คข้าง +ไฟสปอดไลด์ 1ชุดครับ,assets/images/rack-side.jpg,,TRUE,TRUE
+kmo-016,แร็คท้าย + แร็คข้าง สี ขอไปเลือกที่ร้านครับ - CBR 650 r ปี 2023,0,side,งานคัสตอม KMO สำหรับ CBR 650 r ปี 2023 รายการ: แร็คท้าย + แร็คข้าง สี ขอไปเลือกที่ร้านครับ,assets/images/rack-side.jpg,,TRUE,TRUE
+kmo-017,แปลง cbr500 เป็นไฟกลม / แปลงขาจับไฟหน้า / จัดสายไฟ - CBR500 / 2020,0,accessory,งานคัสตอม KMO สำหรับ CBR500 / 2020 รายการ: แปลง cbr500 เป็นไฟกลม / แปลงขาจับไฟหน้า / จัดสายไฟ,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-018,"แร็คท้าย แร็คข้างซ้าย,ขวา สีดำ ไม่ยื่นออกจากตัวรถมากเกิน - CBR500R สีดำ 2024",0,side,"งานคัสตอม KMO สำหรับ CBR500R สีดำ 2024 รายการ: แร็คท้าย แร็คข้างซ้าย,ขวา สีดำ ไม่ยื่นออกจากตัวรถมากเกิน",assets/images/rack-side.jpg,,TRUE,TRUE
+kmo-019,แคชบาร์สีดำด้านขึ้นงานกับรถ - CLICK125,0,crashbar,งานคัสตอม KMO สำหรับ CLICK125 รายการ: แคชบาร์สีดำด้านขึ้นงานกับรถ,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-020,ทำ cashbar - CRF 250 rally 2018,0,crashbar,งานคัสตอม KMO สำหรับ CRF 250 rally 2018 รายการ: ทำ cashbar,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-021,แคชบาร์ แร๊คท้าย - Crf250 rally 2017,0,rear,งานคัสตอม KMO สำหรับ Crf250 rally 2017 รายการ: แคชบาร์ แร๊คท้าย,assets/images/rack-rear-adv.jpg,,TRUE,TRUE
+kmo-022,แร็คท้าย - Ducati Hypermotard 950,0,rear,งานคัสตอม KMO สำหรับ Ducati Hypermotard 950 รายการ: แร็คท้าย,assets/images/rack-rear-adv.jpg,,TRUE,TRUE
+kmo-023,ซ่อมแคชบาร์ - Ducati Muti,0,crashbar,งานคัสตอม KMO สำหรับ Ducati Muti รายการ: ซ่อมแคชบาร์,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-024,ทำจุดยึดพักเท้าเสริม - Harley Davidson 1250 Revolution Max,0,accessory,งานคัสตอม KMO สำหรับ Harley Davidson 1250 Revolution Max รายการ: ทำจุดยึดพักเท้าเสริม,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-025,2025 - Honda addv3500,0,accessory,งานคัสตอม KMO สำหรับ Honda addv3500 รายการ: 2025,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-026,ดำ - Honda Adv160,0,accessory,งานคัสตอม KMO สำหรับ Honda Adv160 รายการ: ดำ,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-027,บาร์เสริม ติดตุ๊กตาแฮนด์แบบสั้น - Honda Adv350,0,accessory,งานคัสตอม KMO สำหรับ Honda Adv350 รายการ: บาร์เสริม ติดตุ๊กตาแฮนด์แบบสั้น,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-028,บาร์เสริมติดตุ๊กตาแฮนด์ แบบยาว - Honda Adv350,0,accessory,งานคัสตอม KMO สำหรับ Honda Adv350 รายการ: บาร์เสริมติดตุ๊กตาแฮนด์ แบบยาว,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-029,แคชบาร์ท้าย ADV350 - Honda ADV350,0,crashbar,งานคัสตอม KMO สำหรับ Honda ADV350 รายการ: แคชบาร์ท้าย ADV350,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-030,แคลชบาร์ - Honda Africa twin 1000L ตัว 2018 ไตรคัลเลอ,0,accessory,งานคัสตอม KMO สำหรับ Honda Africa twin 1000L ตัว 2018 ไตรคัลเลอ รายการ: แคลชบาร์,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-031,แคทบาร์ 1ข้างซ้าย ขอ น็อตใหม่ด้วย - Honda C b 650r,0,accessory,งานคัสตอม KMO สำหรับ Honda C b 650r รายการ: แคทบาร์ 1ข้างซ้าย ขอ น็อตใหม่ด้วย,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-032,Crash cage - Honda CB 750 Hornet,0,accessory,งานคัสตอม KMO สำหรับ Honda CB 750 Hornet รายการ: Crash cage,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-033,แร็คท้ายติดปี๊บ 65 ลิตร +แร็คข้าง กระเป๋า motowolf 30ลิตร - Honda CB300F,0,side,งานคัสตอม KMO สำหรับ Honda CB300F รายการ: แร็คท้ายติดปี๊บ 65 ลิตร +แร็คข้าง กระเป๋า motowolf 30ลิตร,assets/images/rack-side.jpg,,TRUE,TRUE
+kmo-034,ติดตั้ง n1go - Honda Cb500x,0,accessory,งานคัสตอม KMO สำหรับ Honda Cb500x รายการ: ติดตั้ง n1go,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-035,"ดัดแคชบาร์ด้านขวาให้เท่ากัน, เสริมห่วงใต้รถเพื่อเกี่ยวสปริงขาตั้งคู่ - Honda CB500X 2019",0,crashbar,"งานคัสตอม KMO สำหรับ Honda CB500X 2019 รายการ: ดัดแคชบาร์ด้านขวาให้เท่ากัน, เสริมห่วงใต้รถเพื่อเกี่ยวสปริงขาตั้งคู่",assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-036,Crash bars (for stunt / gymkhana) - Honda CB750 Hornet,0,crashbar,งานคัสตอม KMO สำหรับ Honda CB750 Hornet รายการ: Crash bars (for stunt / gymkhana),assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-037,แร็คท้าย+ข้าง เคชบาร์ (ถอดประกอบง่าย) - Honda CBR1000RR-R SP Fireblade,0,rear,งานคัสตอม KMO สำหรับ Honda CBR1000RR-R SP Fireblade รายการ: แร็คท้าย+ข้าง เคชบาร์ (ถอดประกอบง่าย),assets/images/rack-rear-adv.jpg,,TRUE,TRUE
+kmo-038,แครชบาร์ - Honda CBR500R,0,crashbar,งานคัสตอม KMO สำหรับ Honda CBR500R รายการ: แครชบาร์,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-039,แคชบาร์ - Honda Cl300,0,crashbar,งานคัสตอม KMO สำหรับ Honda Cl300 รายการ: แคชบาร์,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-040,แก้งาน ทำสีใหม่ + แคชบาร์หน้าใหม่ - Honda Click 160,0,crashbar,งานคัสตอม KMO สำหรับ Honda Click 160 รายการ: แก้งาน ทำสีใหม่ + แคชบาร์หน้าใหม่,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-041,แคชบาร์ - Honda Click 160 abs,0,crashbar,งานคัสตอม KMO สำหรับ Honda Click 160 abs รายการ: แคชบาร์,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-042,แคชบาร์มีที่พักเท้า - HONDA CLICK160,0,crashbar,งานคัสตอม KMO สำหรับ HONDA CLICK160 รายการ: แคชบาร์มีที่พักเท้า,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-043,แร็คท้าย - Honda Click160,0,rear,งานคัสตอม KMO สำหรับ Honda Click160 รายการ: แร็คท้าย,assets/images/rack-rear-adv.jpg,,TRUE,TRUE
+kmo-044,แคชบาร์ ถ่วงน้ำหนัก เหล็ก 27 มม - Honda Cluck160,0,crashbar,งานคัสตอม KMO สำหรับ Honda Cluck160 รายการ: แคชบาร์ ถ่วงน้ำหนัก เหล็ก 27 มม,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-045,แร็คข้างใส่กล่องข้างShad38ลิตรแบบหลบท่อ - Honda CRF Aficatwin 1100ปี2026,0,side,งานคัสตอม KMO สำหรับ Honda CRF Aficatwin 1100ปี2026 รายการ: แร็คข้างใส่กล่องข้างShad38ลิตรแบบหลบท่อ,assets/images/rack-side.jpg,,TRUE,TRUE
+kmo-046,แคสบาร์ - honda Crf แอฟริกาทวิน1000 L,0,crashbar,งานคัสตอม KMO สำหรับ honda Crf แอฟริกาทวิน1000 L รายการ: แคสบาร์,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-047,แคชบาร์ - Honda CRF250แรลลี่่,0,crashbar,งานคัสตอม KMO สำหรับ Honda CRF250แรลลี่่ รายการ: แคชบาร์,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-048,แคชบาร์+แคชด้านบน ติดบัวหลัง+ย่านพับกับ+X80 - Honda CRF300,0,crashbar,งานคัสตอม KMO สำหรับ Honda CRF300 รายการ: แคชบาร์+แคชด้านบน ติดบัวหลัง+ย่านพับกับ+X80,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-049,แคชบาร์ - Honda Crf300l,0,crashbar,งานคัสตอม KMO สำหรับ Honda Crf300l รายการ: แคชบาร์,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-050,เชื่อมแกนพักเท้า - Honda Ct125,0,accessory,งานคัสตอม KMO สำหรับ Honda Ct125 รายการ: เชื่อมแกนพักเท้า,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-051,แร็คข้าง 35 ลิตร - Honda Forza,0,side,งานคัสตอม KMO สำหรับ Honda Forza รายการ: แร็คข้าง 35 ลิตร,assets/images/rack-side.jpg,,TRUE,TRUE
+kmo-052,แคชบาร์งานคัสตอม Forza(หน้าเล็ก) - Honda Forza 300/350,0,crashbar,งานคัสตอม KMO สำหรับ Honda Forza 300/350 รายการ: แคชบาร์งานคัสตอม Forza(หน้าเล็ก),assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-053,Forza 750 บาร์เสริมตรงรุ่น - Honda Forza 750,0,accessory,งานคัสตอม KMO สำหรับ Honda Forza 750 รายการ: Forza 750 บาร์เสริมตรงรุ่น,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-054,บาร์เสริม Forza750 - Honda Forza 750,0,accessory,งานคัสตอม KMO สำหรับ Honda Forza 750 รายการ: บาร์เสริม Forza750,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-055,จอติดๆดับๆmotovision x1 - Honda Forza350,0,accessory,งานคัสตอม KMO สำหรับ Honda Forza350 รายการ: จอติดๆดับๆmotovision x1,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-056,แคลชบาร์ - Honda Forza350,0,accessory,งานคัสตอม KMO สำหรับ Honda Forza350 รายการ: แคลชบาร์,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-057,Forza 750 บาร์เสริมตรงรุ่น - Honda Forza750,0,accessory,งานคัสตอม KMO สำหรับ Honda Forza750 รายการ: Forza 750 บาร์เสริมตรงรุ่น,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-058,บาร์เสริม - Honda Forza750,0,accessory,งานคัสตอม KMO สำหรับ Honda Forza750 รายการ: บาร์เสริม,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-059,บาร์เสริม forza750 - Honda Forza750,0,accessory,งานคัสตอม KMO สำหรับ Honda Forza750 รายการ: บาร์เสริม forza750,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-060,ทำสีแครชบาร์ - HONDA Froza 350,0,crashbar,งานคัสตอม KMO สำหรับ HONDA Froza 350 รายการ: ทำสีแครชบาร์,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-061,ชุดแร็คท้าย แร็คข้าง - Honda Giorno,0,side,งานคัสตอม KMO สำหรับ Honda Giorno รายการ: ชุดแร็คท้าย แร็คข้าง,assets/images/rack-side.jpg,,TRUE,TRUE
+kmo-062,บาร์เสริม Giorno+ ใส่กับชิวแต่ง - Honda Giorno,0,accessory,งานคัสตอม KMO สำหรับ Honda Giorno รายการ: บาร์เสริม Giorno+ ใส่กับชิวแต่ง,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-063,บาร์เสริม Giorno+ใส่กับชิวแต่ง - Honda Giorno,0,accessory,งานคัสตอม KMO สำหรับ Honda Giorno รายการ: บาร์เสริม Giorno+ใส่กับชิวแต่ง,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-064,บาร์เสริม จีออโน่ *2 อัน* ใส่กับชิวครับ - Honda Giorno,0,accessory,งานคัสตอม KMO สำหรับ Honda Giorno รายการ: บาร์เสริม จีออโน่ *2 อัน* ใส่กับชิวครับ,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-065,บาร์เสริมใส่กับขิว - Honda Giorno,0,accessory,งานคัสตอม KMO สำหรับ Honda Giorno รายการ: บาร์เสริมใส่กับขิว,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-066,"แคชบาร์, การ์ดแฮนด์ (เข้าไปคุยอีกที) - Honda Giorno",0,crashbar,"งานคัสตอม KMO สำหรับ Honda Giorno รายการ: แคชบาร์, การ์ดแฮนด์ (เข้าไปคุยอีกที)",assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-067,บาร์เสริม Giorno+ ใส่กับชิวแต่ง - Honda Giorno+,0,accessory,งานคัสตอม KMO สำหรับ Honda Giorno+ รายการ: บาร์เสริม Giorno+ ใส่กับชิวแต่ง,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-068,แคชบาร์สั้น จับไฟสปอตส์ไลต์ - Honda Lead125 2026,0,crashbar,งานคัสตอม KMO สำหรับ Honda Lead125 2026 รายการ: แคชบาร์สั้น จับไฟสปอตส์ไลต์,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-069,แร็คติดปี๊บแบบมีถาดสไลด์ - Honda Monkey,0,accessory,งานคัสตอม KMO สำหรับ Honda Monkey รายการ: แร็คติดปี๊บแบบมีถาดสไลด์,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-070,ทำแคชบาร์ใหม่ - Honda NC750,0,crashbar,งานคัสตอม KMO สำหรับ Honda NC750 รายการ: ทำแคชบาร์ใหม่,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-071,คำท้าย เอ็นเอ็ก500 แบบใหม่ - Honda NX500,0,accessory,งานคัสตอม KMO สำหรับ Honda NX500 รายการ: คำท้าย เอ็นเอ็ก500 แบบใหม่,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-072,ค้ำท้าย - Honda NX500,0,accessory,งานคัสตอม KMO สำหรับ Honda NX500 รายการ: ค้ำท้าย,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-073,ค้ำท้าย NX500 - Honda Nx500,0,accessory,งานคัสตอม KMO สำหรับ Honda Nx500 รายการ: ค้ำท้าย NX500,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-074,ค้ำท้าย Nx500 แบบใหม่ - Honda Nx500,0,accessory,งานคัสตอม KMO สำหรับ Honda Nx500 รายการ: ค้ำท้าย Nx500 แบบใหม่,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-075,ค้ำท้าย nx500 ใหม่ - Honda Nx500,0,accessory,งานคัสตอม KMO สำหรับ Honda Nx500 รายการ: ค้ำท้าย nx500 ใหม่,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-076,ค้ำท้าย แบบใหม่ - Honda NX500,0,accessory,งานคัสตอม KMO สำหรับ Honda NX500 รายการ: ค้ำท้าย แบบใหม่,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-077,ค้ำท้ายแบบใหม่ - Honda Nx500,0,accessory,งานคัสตอม KMO สำหรับ Honda Nx500 รายการ: ค้ำท้ายแบบใหม่,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-078,ค้ำท้ายใหม่ - Honda Nx500,0,accessory,งานคัสตอม KMO สำหรับ Honda Nx500 รายการ: ค้ำท้ายใหม่,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-079,บาร์ค้ำท้าย กันแร็คหัก NX500 (แบบเก่า) - Honda Nx500,0,accessory,งานคัสตอม KMO สำหรับ Honda Nx500 รายการ: บาร์ค้ำท้าย กันแร็คหัก NX500 (แบบเก่า),assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-080,แบบเก่า - Honda Nx500,0,accessory,งานคัสตอม KMO สำหรับ Honda Nx500 รายการ: แบบเก่า,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-081,แคชบาร์ สีส้ม - Honda Pcx160 2026,0,crashbar,งานคัสตอม KMO สำหรับ Honda Pcx160 2026 รายการ: แคชบาร์ สีส้ม,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-082,Double seat & rear fender - Honda Rebel 300,0,accessory,งานคัสตอม KMO สำหรับ Honda Rebel 300 รายการ: Double seat & rear fender,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-083,แร็คข้าง - Honda Rebel500,0,side,งานคัสตอม KMO สำหรับ Honda Rebel500 รายการ: แร็คข้าง,assets/images/rack-side.jpg,,TRUE,TRUE
+kmo-084,แร็คท้าย - Honda Super cub110,0,rear,งานคัสตอม KMO สำหรับ Honda Super cub110 รายการ: แร็คท้าย,assets/images/rack-rear-adv.jpg,,TRUE,TRUE
+kmo-085,แร็คท้าย - Honda Supercud110,0,rear,งานคัสตอม KMO สำหรับ Honda Supercud110 รายการ: แร็คท้าย,assets/images/rack-rear-adv.jpg,,TRUE,TRUE
+kmo-086,แร็คข้าง - Honda Wave 125i 2024,0,side,งานคัสตอม KMO สำหรับ Honda Wave 125i 2024 รายการ: แร็คข้าง,assets/images/rack-side.jpg,,TRUE,TRUE
+kmo-087,พักเท้าหน้าเสริม - HONDA WAVE110i,0,accessory,งานคัสตอม KMO สำหรับ HONDA WAVE110i รายการ: พักเท้าหน้าเสริม,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-088,ติดตั้งจอN1Go - Honda X-ADV750,0,accessory,งานคัสตอม KMO สำหรับ Honda X-ADV750 รายการ: ติดตั้งจอN1Go,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-089,"แฮนด์, ตุ๊กตาแฮนด์, หัวโช้ค, ก้านเบรก,ตีนเป็ด - Honda X-adv750",0,accessory,"งานคัสตอม KMO สำหรับ Honda X-adv750 รายการ: แฮนด์, ตุ๊กตาแฮนด์, หัวโช้ค, ก้านเบรก,ตีนเป็ด",assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-090,บาร์เสริมกระจกเดิม - Honda จีออโน่,0,accessory,งานคัสตอม KMO สำหรับ Honda จีออโน่ รายการ: บาร์เสริมกระจกเดิม,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-091,บาร์เสริมติดชิว - Honda จีออโน่,0,accessory,งานคัสตอม KMO สำหรับ Honda จีออโน่ รายการ: บาร์เสริมติดชิว,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-092,บาร์เสริมใส่ชิว - Honda จีออโน่,0,accessory,งานคัสตอม KMO สำหรับ Honda จีออโน่ รายการ: บาร์เสริมใส่ชิว,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-093,บาร์เสริมใส่รูกระจก (รูนอกของจิ๊ก) - Honda จีออโน่,0,accessory,งานคัสตอม KMO สำหรับ Honda จีออโน่ รายการ: บาร์เสริมใส่รูกระจก (รูนอกของจิ๊ก),assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-094,ใส่กับชิว (รูในจิ๊ก) - Honda จีออโน่,0,accessory,งานคัสตอม KMO สำหรับ Honda จีออโน่ รายการ: ใส่กับชิว (รูในจิ๊ก),assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-095,ใส่กับชิว รูใน - Honda จีออโน่,0,accessory,งานคัสตอม KMO สำหรับ Honda จีออโน่ รายการ: ใส่กับชิว รูใน,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-096,บาร์เสริม - Honda ฟอซ่า 750,0,accessory,งานคัสตอม KMO สำหรับ Honda ฟอซ่า 750 รายการ: บาร์เสริม,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-097,บาร์เสริม ฟอซ่า750 แบบสั้น ตามรู้ที่ส่งให้ - Honda ฟอซ่า 750,0,accessory,งานคัสตอม KMO สำหรับ Honda ฟอซ่า 750 รายการ: บาร์เสริม ฟอซ่า750 แบบสั้น ตามรู้ที่ส่งให้,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-098,บาร์เสริมฟอซ่า750 - Honda ฟอซ่า 750,0,accessory,งานคัสตอม KMO สำหรับ Honda ฟอซ่า 750 รายการ: บาร์เสริมฟอซ่า750,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-099,บาร์เสริม - Honda ฟอซ่า750,0,accessory,งานคัสตอม KMO สำหรับ Honda ฟอซ่า750 รายการ: บาร์เสริม,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-100,บาร์เสริม ฟอซ่า750 - Honda ฟอซ่า750,0,accessory,งานคัสตอม KMO สำหรับ Honda ฟอซ่า750 รายการ: บาร์เสริม ฟอซ่า750,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-101,บาร์เสริมฟอซ่า750 - Honda ฟอซ่า750,0,accessory,งานคัสตอม KMO สำหรับ Honda ฟอซ่า750 รายการ: บาร์เสริมฟอซ่า750,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-102,ทำแร็คท้าย - Honda เวฟ125i,0,rear,งานคัสตอม KMO สำหรับ Honda เวฟ125i รายการ: ทำแร็คท้าย,assets/images/rack-rear-adv.jpg,,TRUE,TRUE
+kmo-103,ขึ้นแร็คข้างใหม่ สีดำ - Honda ADV150 ปี2020,0,side,งานคัสตอม KMO สำหรับ Honda ADV150 ปี2020 รายการ: ขึ้นแร็คข้างใหม่ สีดำ,assets/images/rack-side.jpg,,TRUE,TRUE
+kmo-104,บาร์จับ - Honda Giorno ABS 125,0,accessory,งานคัสตอม KMO สำหรับ Honda Giorno ABS 125 รายการ: บาร์จับ,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-105,แร๊คท้ายใส่จักรยานพับ - Honds Adv160,0,rear,งานคัสตอม KMO สำหรับ Honds Adv160 รายการ: แร๊คท้ายใส่จักรยานพับ,assets/images/rack-rear-adv.jpg,,TRUE,TRUE
+kmo-106,แคลชบาร์ - Husqvarna Norden 901,0,accessory,งานคัสตอม KMO สำหรับ Husqvarna Norden 901 รายการ: แคลชบาร์,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-107,แคชบาร์ - Kawachi KLR650 2025,0,crashbar,งานคัสตอม KMO สำหรับ Kawachi KLR650 2025 รายการ: แคชบาร์,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-108,crash bars - Kawasaki versys 100,0,crashbar,งานคัสตอม KMO สำหรับ Kawasaki versys 100 รายการ: crash bars,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-109,Crash bars - Kawasaki Versys 1000,0,crashbar,งานคัสตอม KMO สำหรับ Kawasaki Versys 1000 รายการ: Crash bars,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-110,Versys650 แคชบาร์หน้าใหม่ (ปี 24-25) - Kawasaki Versys650 (ปี 24-25),0,crashbar,งานคัสตอม KMO สำหรับ Kawasaki Versys650 (ปี 24-25) รายการ: Versys650 แคชบาร์หน้าใหม่ (ปี 24-25),assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-111,แคชบ่ร์ - Kawasaki Versys650 2017,0,accessory,งานคัสตอม KMO สำหรับ Kawasaki Versys650 2017 รายการ: แคชบ่ร์,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-112,เวอร์ซิสปี 26 - Kawasaki เวอร์ซิส 650,0,accessory,งานคัสตอม KMO สำหรับ Kawasaki เวอร์ซิส 650 รายการ: เวอร์ซิสปี 26,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-113,เสริมตัวยึดแร็คข้าง สีดำ - Kawasaki Eliminator 400/2024,0,side,งานคัสตอม KMO สำหรับ Kawasaki Eliminator 400/2024 รายการ: เสริมตัวยึดแร็คข้าง สีดำ,assets/images/rack-side.jpg,,TRUE,TRUE
+kmo-114,สร้างแคชบาร์(ขึ้นงานใหม่) ดัด ซ่อมแร็คท้าย - Kawasaki versys650 2017,0,rear,งานคัสตอม KMO สำหรับ Kawasaki versys650 2017 รายการ: สร้างแคชบาร์(ขึ้นงานใหม่) ดัด ซ่อมแร็คท้าย,assets/images/rack-rear-adv.jpg,,TRUE,TRUE
+kmo-115,ขึ้นแร็คท้ายใส่กระเป๋าปั้มลมLoboo - KTM 1290 ADV,0,rear,งานคัสตอม KMO สำหรับ KTM 1290 ADV รายการ: ขึ้นแร็คท้ายใส่กระเป๋าปั้มลมLoboo,assets/images/rack-rear-adv.jpg,,TRUE,TRUE
+kmo-116,"แคชบาร์บนต่อเติม, ตัดขาตั้งเดี่ยว, ขาตั้งคู่, สปอร์ตไลท์, GPS X1S, ท่อ - Ktm 790 advปี2024",0,crashbar,"งานคัสตอม KMO สำหรับ Ktm 790 advปี2024 รายการ: แคชบาร์บนต่อเติม, ตัดขาตั้งเดี่ยว, ขาตั้งคู่, สปอร์ตไลท์, GPS X1S, ท่อ",assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-117,แคชบาร์ - Ktm790 790 adventure r,0,crashbar,งานคัสตอม KMO สำหรับ Ktm790 790 adventure r รายการ: แคชบาร์,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-118,แคชบาร์ แร็คท้าย แคชบาร์ท้าย - Nmax Nmax2025,0,rear,งานคัสตอม KMO สำหรับ Nmax Nmax2025 รายการ: แคชบาร์ แร็คท้าย แคชบาร์ท้าย,assets/images/rack-rear-adv.jpg,,TRUE,TRUE
+kmo-119,บาร์เสริมเบิกแมน 400 - Suzuki Burg man 400,0,accessory,งานคัสตอม KMO สำหรับ Suzuki Burg man 400 รายการ: บาร์เสริมเบิกแมน 400,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-120,แคชบาร์ชุดเต็ม (อาจมีแร็คท้าย แร็คข้าง กล่อง Shad23) - Suzuki Burgman 400,0,side,งานคัสตอม KMO สำหรับ Suzuki Burgman 400 รายการ: แคชบาร์ชุดเต็ม (อาจมีแร็คท้าย แร็คข้าง กล่อง Shad23),assets/images/rack-side.jpg,,TRUE,TRUE
+kmo-121,บาร์เสริม เรือนไมล์ - Suzuki Burgman400,0,accessory,งานคัสตอม KMO สำหรับ Suzuki Burgman400 รายการ: บาร์เสริม เรือนไมล์,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-122,บาร์เสริมเบิกแมน - Suzuki Burgman400,0,accessory,งานคัสตอม KMO สำหรับ Suzuki Burgman400 รายการ: บาร์เสริมเบิกแมน,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-123,บาร์เสริมเบิกแมนด่วนจี๋ - Suzuki Burgman400,0,accessory,งานคัสตอม KMO สำหรับ Suzuki Burgman400 รายการ: บาร์เสริมเบิกแมนด่วนจี๋,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-124,แคชบาร์ - suzuki suzuki v-strom 800 de,0,crashbar,งานคัสตอม KMO สำหรับ suzuki suzuki v-strom 800 de รายการ: แคชบาร์,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-125,แร็คข้างท้าย - Suzuki V-Strom800DE,0,side,งานคัสตอม KMO สำหรับ Suzuki V-Strom800DE รายการ: แร็คข้างท้าย,assets/images/rack-side.jpg,,TRUE,TRUE
+kmo-126,ซ่อมแคชบาร์ - Suzuki Vstrom1000,0,crashbar,งานคัสตอม KMO สำหรับ Suzuki Vstrom1000 รายการ: ซ่อมแคชบาร์,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-127,แรคท้าย แรคข้าง - suzuki vstrom650,0,accessory,งานคัสตอม KMO สำหรับ suzuki vstrom650 รายการ: แรคท้าย แรคข้าง,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-128,บาร์เสริมบนจอ - Suzuki เบิกแมน,0,accessory,งานคัสตอม KMO สำหรับ Suzuki เบิกแมน รายการ: บาร์เสริมบนจอ,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-129,บาร์เสริมหลังจอ - Suzuki เบิกแมน,0,accessory,งานคัสตอม KMO สำหรับ Suzuki เบิกแมน รายการ: บาร์เสริมหลังจอ,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-130,บาร์เสริมบนจอ - Suzuki เบิกแมน 400,0,accessory,งานคัสตอม KMO สำหรับ Suzuki เบิกแมน 400 รายการ: บาร์เสริมบนจอ,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-131,ชุดเต็ม - Suzuki เบิกแมน400,0,accessory,งานคัสตอม KMO สำหรับ Suzuki เบิกแมน400 รายการ: ชุดเต็ม,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-132,บาร์เสริมเรือนไมล์ - Suzuki เบิกแมน400,0,accessory,งานคัสตอม KMO สำหรับ Suzuki เบิกแมน400 รายการ: บาร์เสริมเรือนไมล์,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-133,แคชบาร์ สีฟ้า - Suzuki GSX 8s 2022,0,crashbar,งานคัสตอม KMO สำหรับ Suzuki GSX 8s 2022 รายการ: แคชบาร์ สีฟ้า,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-134,แร็คท้าย - suzuki vstrom 250 sx ปี 2026,0,rear,งานคัสตอม KMO สำหรับ suzuki vstrom 250 sx ปี 2026 รายการ: แร็คท้าย,assets/images/rack-rear-adv.jpg,,TRUE,TRUE
+kmo-135,เข้าไปแก้ไข บาร์เสริมกลางแฮนด์ - SUZUKU BURGMAN400,0,accessory,งานคัสตอม KMO สำหรับ SUZUKU BURGMAN400 รายการ: เข้าไปแก้ไข บาร์เสริมกลางแฮนด์,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-136,แร็คข้างติดปี๊บ สีดำ - Tiger sport 660,0,side,งานคัสตอม KMO สำหรับ Tiger sport 660 รายการ: แร็คข้างติดปี๊บ สีดำ,assets/images/rack-side.jpg,,TRUE,TRUE
+kmo-137,ซ่อมเคสบาร์/ทำสี ดำ - Tnt 600gt / ทัวริ่ง,0,service,งานคัสตอม KMO สำหรับ Tnt 600gt / ทัวริ่ง รายการ: ซ่อมเคสบาร์/ทำสี ดำ,assets/images/service.jpg,,TRUE,TRUE
+kmo-138,ทำแร็คข้าง แคชบาร์ - triumph scrambler 1200,0,side,งานคัสตอม KMO สำหรับ triumph scrambler 1200 รายการ: ทำแร็คข้าง แคชบาร์,assets/images/rack-side.jpg,,TRUE,TRUE
+kmo-139,แร็คท้าย - triumph thruxton r 1200,0,rear,งานคัสตอม KMO สำหรับ triumph thruxton r 1200 รายการ: แร็คท้าย,assets/images/rack-rear-adv.jpg,,TRUE,TRUE
+kmo-140,"แคชบาร์, แร็คท้าย - triumph trident 660",0,rear,"งานคัสตอม KMO สำหรับ triumph trident 660 รายการ: แคชบาร์, แร็คท้าย",assets/images/rack-rear-adv.jpg,,TRUE,TRUE
+kmo-141,แร็คท้าย - Triumph Trident 660,0,rear,งานคัสตอม KMO สำหรับ Triumph Trident 660 รายการ: แร็คท้าย,assets/images/rack-rear-adv.jpg,,TRUE,TRUE
+kmo-142,แร็คท้าย - Vespa GTS300,0,rear,งานคัสตอม KMO สำหรับ Vespa GTS300 รายการ: แร็คท้าย,assets/images/rack-rear-adv.jpg,,TRUE,TRUE
+kmo-143,ทำแร็คท้ายแบบสไลด์เข้าออกได้ - Vespa primavera 150,0,rear,งานคัสตอม KMO สำหรับ Vespa primavera 150 รายการ: ทำแร็คท้ายแบบสไลด์เข้าออกได้,assets/images/rack-rear-adv.jpg,,TRUE,TRUE
+kmo-144,แร็คท้ายพับได้ + แร็คข้าง - Xsr155/ 2025,0,side,งานคัสตอม KMO สำหรับ Xsr155/ 2025 รายการ: แร็คท้ายพับได้ + แร็คข้าง,assets/images/rack-side.jpg,,TRUE,TRUE
+kmo-145,แคชบาร์ + ไฟสปอร์ตไลท์ Future eyes X80 - Yadea GT80,0,crashbar,งานคัสตอม KMO สำหรับ Yadea GT80 รายการ: แคชบาร์ + ไฟสปอร์ตไลท์ Future eyes X80,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-146,แคชบาร์ - Yamaha Bolt r 950,0,crashbar,งานคัสตอม KMO สำหรับ Yamaha Bolt r 950 รายการ: แคชบาร์,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-147,ติดตั้งแร็คข้าง กล่องข้าง และกล่องท้าย - yamaha exciter abs 2024,0,side,งานคัสตอม KMO สำหรับ yamaha exciter abs 2024 รายการ: ติดตั้งแร็คข้าง กล่องข้าง และกล่องท้าย,assets/images/rack-side.jpg,,TRUE,TRUE
+kmo-148,แก้ไขจุดยึดแร็คท้าย เซอร์วิสแคชบาร์ - Yamaha MT-03,0,rear,งานคัสตอม KMO สำหรับ Yamaha MT-03 รายการ: แก้ไขจุดยึดแร็คท้าย เซอร์วิสแคชบาร์,assets/images/rack-rear-adv.jpg,,TRUE,TRUE
+kmo-149,แร็คท้าย - Yamaha Mt-09,0,rear,งานคัสตอม KMO สำหรับ Yamaha Mt-09 รายการ: แร็คท้าย,assets/images/rack-rear-adv.jpg,,TRUE,TRUE
+kmo-150,แร็คท้าย - Yamaha RXK,0,rear,งานคัสตอม KMO สำหรับ Yamaha RXK รายการ: แร็คท้าย,assets/images/rack-rear-adv.jpg,,TRUE,TRUE
+kmo-151,ทั้ง3อย่าง - Yamaha Tracer 9gt 2026,0,accessory,งานคัสตอม KMO สำหรับ Yamaha Tracer 9gt 2026 รายการ: ทั้ง3อย่าง,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-152,แคชบาร์ - Yamaha Tracer900gt,0,crashbar,งานคัสตอม KMO สำหรับ Yamaha Tracer900gt รายการ: แคชบาร์,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-153,บาร์เสริมยาว ตรงรุ่น Xmax - Yamaha Xmax,0,accessory,งานคัสตอม KMO สำหรับ Yamaha Xmax รายการ: บาร์เสริมยาว ตรงรุ่น Xmax,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-154,แคชบาร์ v1 - Yamaha Xmax,0,crashbar,งานคัสตอม KMO สำหรับ Yamaha Xmax รายการ: แคชบาร์ v1,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-155,แคชบาร์ Xmax V.2 - Yamaha Xmax,0,crashbar,งานคัสตอม KMO สำหรับ Yamaha Xmax รายการ: แคชบาร์ Xmax V.2,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-156,แคชบาร์หน้างอ - Yamaha Xmax,0,crashbar,งานคัสตอม KMO สำหรับ Yamaha Xmax รายการ: แคชบาร์หน้างอ,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-157,เอ็กแม็ก วี1 - Yamaha Xmax300,0,accessory,งานคัสตอม KMO สำหรับ Yamaha Xmax300 รายการ: เอ็กแม็ก วี1,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-158,แร็คข้าง - Yamaha Xmax300,0,side,งานคัสตอม KMO สำหรับ Yamaha Xmax300 รายการ: แร็คข้าง,assets/images/rack-side.jpg,,TRUE,TRUE
+kmo-159,บาร์เสริมสำหรับติด จอgps - Yamaha Xsr900,0,accessory,งานคัสตอม KMO สำหรับ Yamaha Xsr900 รายการ: บาร์เสริมสำหรับติด จอgps,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-160,v1 - Yamaha เอ็กแม็ก300,0,accessory,งานคัสตอม KMO สำหรับ Yamaha เอ็กแม็ก300 รายการ: v1,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-161,แร็คท้าย - ZONGSHEN Cyclone mini panda,0,rear,งานคัสตอม KMO สำหรับ ZONGSHEN Cyclone mini panda รายการ: แร็คท้าย,assets/images/rack-rear-adv.jpg,,TRUE,TRUE
+kmo-162,บังท่อ - Zontes 350E,0,accessory,งานคัสตอม KMO สำหรับ Zontes 350E รายการ: บังท่อ,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-163,แคชบาร์ - Zontes 350E,0,crashbar,งานคัสตอม KMO สำหรับ Zontes 350E รายการ: แคชบาร์,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-164,"แร็คท้าย,แร็คข้าง - Zontes 350E",0,side,"งานคัสตอม KMO สำหรับ Zontes 350E รายการ: แร็คท้าย,แร็คข้าง",assets/images/rack-side.jpg,,TRUE,TRUE
+kmo-165,เเคชบาร์หน้า - Zontes 368d,0,accessory,งานคัสตอม KMO สำหรับ Zontes 368d รายการ: เเคชบาร์หน้า,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-166,n1go 2610+บาร์เสริม 690+ปลั๊ก 250 - Zontes 368G,0,accessory,งานคัสตอม KMO สำหรับ Zontes 368G รายการ: n1go 2610+บาร์เสริม 690+ปลั๊ก 250,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-167,ดัดแครชบาร์ - Zontes 368G,0,crashbar,งานคัสตอม KMO สำหรับ Zontes 368G รายการ: ดัดแครชบาร์,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-168,แร็คข้าง - zontes 368g,0,side,งานคัสตอม KMO สำหรับ zontes 368g รายการ: แร็คข้าง,assets/images/rack-side.jpg,,TRUE,TRUE
+kmo-169,แร็คทัาย + แร็คข้าง - Zontes 368g,0,side,งานคัสตอม KMO สำหรับ Zontes 368g รายการ: แร็คทัาย + แร็คข้าง,assets/images/rack-side.jpg,,TRUE,TRUE
+kmo-170,เเร็คท้าย เเร็คข้าง ตัวค้ำโช๊คเเร็คท้าย - Zontes 368G V2 2026 Zontes 368G V2 2026,0,rear,งานคัสตอม KMO สำหรับ Zontes 368G V2 2026 Zontes 368G V2 2026 รายการ: เเร็คท้าย เเร็คข้าง ตัวค้ำโช๊คเเร็คท้าย,assets/images/rack-rear-adv.jpg,,TRUE,TRUE
+kmo-171,ที่ค้ำแร็คหลัง /สีเหมือนบาร์ด้านหน้า - Zontes368G,0,rear,งานคัสตอม KMO สำหรับ Zontes368G รายการ: ที่ค้ำแร็คหลัง /สีเหมือนบาร์ด้านหน้า,assets/images/rack-rear-adv.jpg,,TRUE,TRUE
+kmo-172,แคชบาร์หน้า - คาวาซากิ คาวาซากิKLR650,0,crashbar,งานคัสตอม KMO สำหรับ คาวาซากิ คาวาซากิKLR650 รายการ: แคชบาร์หน้า,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-173,ดำ - อื่นๆ ซอนเทส368จี,0,accessory,งานคัสตอม KMO สำหรับ อื่นๆ ซอนเทส368จี รายการ: ดำ,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-174,ปี๊บ 38 - อื่นๆ ซอนเทส368จี,0,accessory,งานคัสตอม KMO สำหรับ อื่นๆ ซอนเทส368จี รายการ: ปี๊บ 38,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-175,ค้ำแร็คท้าย - เวฟ125x ปี2007,0,rear,งานคัสตอม KMO สำหรับ เวฟ125x ปี2007 รายการ: ค้ำแร็คท้าย,assets/images/rack-rear-adv.jpg,,TRUE,TRUE
+kmo-other-001,แคชบาร์ท้าย ADV 350 - Honda ADV 350,0,crashbar,งานคัสตอม KMO สำหรับ Honda ADV 350 รายการ: แคชบาร์ท้าย ADV 350,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-other-002,แคชบาร์ท้าย ADV350 ดำเงา - Honda ADV 350,0,crashbar,งานคัสตอม KMO สำหรับ Honda ADV 350 รายการ: แคชบาร์ท้าย ADV350 ดำเงา,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-other-003,อื่นๆ (จอ Motovision x1s ) - Honda ADV350,0,accessory,งานคัสตอม KMO สำหรับ Honda ADV350 รายการ: อื่นๆ (จอ Motovision x1s ),assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-other-004,แคชบาร์หน้า + แคชบาร์ท้าย ADV350 - Honda ADV350,0,crashbar,งานคัสตอม KMO สำหรับ Honda ADV350 รายการ: แคชบาร์หน้า + แคชบาร์ท้าย ADV350,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-other-005,น็อตชิว - Honda Adv350,0,accessory,งานคัสตอม KMO สำหรับ Honda Adv350 รายการ: น็อตชิว,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-other-006,แคชบาร์ท้าย - Honda Adv350,0,crashbar,งานคัสตอม KMO สำหรับ Honda Adv350 รายการ: แคชบาร์ท้าย,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-other-007,แคชบาร์ท้ายเอดีวี350 - Honda Adv350,0,crashbar,งานคัสตอม KMO สำหรับ Honda Adv350 รายการ: แคชบาร์ท้ายเอดีวี350,assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-other-008,พักเท้าcrf - Honda CRF 300R,0,accessory,งานคัสตอม KMO สำหรับ Honda CRF 300R รายการ: พักเท้าcrf,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-other-009,พักเท้าCRF - Honda CRF300,0,accessory,งานคัสตอม KMO สำหรับ Honda CRF300 รายการ: พักเท้าCRF,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-other-010,อื่นๆ (กระเป๋าหลัง Shad tr50) - Honda CRF300RALLY,0,accessory,งานคัสตอม KMO สำหรับ Honda CRF300RALLY รายการ: อื่นๆ (กระเป๋าหลัง Shad tr50),assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-other-011,อื่นๆ (พักเท้าคนซ้อน) - Honda Crf300rally,0,accessory,งานคัสตอม KMO สำหรับ Honda Crf300rally รายการ: อื่นๆ (พักเท้าคนซ้อน),assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-other-012,อื่นๆ (พักเท้าหน้า) - Honda Lead125,0,accessory,งานคัสตอม KMO สำหรับ Honda Lead125 รายการ: อื่นๆ (พักเท้าหน้า),assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-other-013,อื่นๆ (คำท้าย NX500 แบบใหม่) - Honda NX500,0,accessory,งานคัสตอม KMO สำหรับ Honda NX500 รายการ: อื่นๆ (คำท้าย NX500 แบบใหม่),assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-other-014,อื่นๆ (ชิวหน้าพร้อมบาร์ยึด) - Honda WAVE125R,0,accessory,งานคัสตอม KMO สำหรับ Honda WAVE125R รายการ: อื่นๆ (ชิวหน้าพร้อมบาร์ยึด),assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-other-015,อื่นๆ (แคชบาร์ 4 ชุด) - Honda adv350,0,crashbar,งานคัสตอม KMO สำหรับ Honda adv350 รายการ: อื่นๆ (แคชบาร์ 4 ชุด),assets/images/crashbar.jpg,,TRUE,TRUE
+kmo-other-016,อื่นๆ (ปิ๊บหลัง 55 F2Moto สีดำ) - Honda cb650r อีครัช 2024,0,accessory,งานคัสตอม KMO สำหรับ Honda cb650r อีครัช 2024 รายการ: อื่นๆ (ปิ๊บหลัง 55 F2Moto สีดำ),assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-other-017,อื่นๆ (ชิวหน้า) - Honda wave 125 2023,0,accessory,งานคัสตอม KMO สำหรับ Honda wave 125 2023 รายการ: อื่นๆ (ชิวหน้า),assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-other-018,พักเท้าจีออโน่ - Honda จีออโน่,0,accessory,งานคัสตอม KMO สำหรับ Honda จีออโน่ รายการ: พักเท้าจีออโน่,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-other-019,พักเท้าหน้า 1 ชุด - Honda จีออโน่,0,accessory,งานคัสตอม KMO สำหรับ Honda จีออโน่ รายการ: พักเท้าหน้า 1 ชุด,assets/images/spotlight.jpg,,TRUE,TRUE
+kmo-other-020,แคชบาร์ข้าง! ฟอซ่า - Honda ฟอซ่า 350,0,crashbar,งานคัสตอม KMO สำหรับ Honda ฟอซ่า 350 รายการ: แคชบาร์ข้าง! ฟอซ่า,assets/images/crashbar.jpg,,TRUE,TRUE
