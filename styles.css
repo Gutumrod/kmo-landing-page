@@ -2,35 +2,41 @@
    KMO RACK BAR CUSTOM - Industrial Kinetic Design System
    ------------------------------------------------------------- */
 
-/* Import Google Fonts (Anton: display/headline, Archivo Narrow: body, JetBrains Mono: labels) */
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Narrow:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&display=swap');
+/* Import Google Fonts - Prompt (Thai Web Font) */
+@import url('https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,400;0,600;1,600&display=swap');
 
 :root {
-  /* Color Palette (Industrial Kinetic — black/safety-yellow) */
-  --bg-color: #121414;
-  --surface-color: #1a1c1c;
-  --surface-secondary: #282a2b;
-  --border-color: #333535;
+  --font-display: 'Prompt', sans-serif;
+  --font-body: 'Prompt', sans-serif;
 
-  --accent-color: #ffcf07; /* Safety Yellow */
-  --accent-hover: #e6ba00;
-  --accent-glow: rgba(255, 207, 7, 0.2);
+  /* Color Palette (Premium Cyber-Industrial — deep carbon & neon safety gold) */
+  --bg-color: #0b0d0d;
+  --surface-color: #121414;
+  --surface-secondary: #1a1c1c;
+  --border-color: #262929;
 
-  --text-color: #e2e2e2;
-  --text-muted: #9a9078;
+  --accent-color: #ffcf07; /* Safety Yellow / Gold */
+  --accent-hover: #ffd726;
+  --accent-gradient: linear-gradient(135deg, #ffcf07 0%, #f1b400 100%);
+  --accent-gradient-hover: linear-gradient(135deg, #ffd726 0%, #d8a100 100%);
+  --accent-glow: 0 0 15px rgba(255, 207, 7, 0.25);
+  --accent-glow-strong: 0 0 25px rgba(255, 207, 7, 0.45);
+
+  --text-color: #f5f5f5;
+  --text-muted: #8d9292;
 
   /* Status Colors */
-  --color-success: #2ecc71;
-  --color-warning: #ffcf07;
-  --color-danger: #e74c3c;
-  --color-disabled: #1d1d22;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+  --color-disabled: #141617;
 
-  /* Layout Tokens — sharp shapes, 0 roundedness */
-  --radius-sm: 0;
-  --radius-md: 0;
-  --radius-lg: 0;
-  --transition-fast: 0.2s ease;
-  --transition-normal: 0.3s ease;
+  /* Layout Tokens — Premium iOS rounded corners style */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --transition-fast: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-normal: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 
   /* Prevent layout shifts */
   scroll-behavior: smooth;
@@ -46,19 +52,31 @@
 body {
   background-color: var(--bg-color);
   color: var(--text-color);
-  font-family: 'Archivo Narrow', sans-serif;
+  font-family: var(--font-body);
+  font-weight: 400;
   line-height: 1.65; /* Prevents Thai tone overlapping */
   overflow-x: hidden;
+  position: relative;
 }
 
-/* Base heading rule — NEUTRAL on purpose (no uppercase/italic here).
-   Marketing headings (.hero-title, .section-title-main, .section-subtitle,
-   .hero-tag) opt into the Anton/uppercase treatment explicitly below.
-   This prevents the display style from leaking onto .product-title,
-   cart footer titles, and footer headings like it did last round. */
+/* พื้นหลังลายตารางกรันจ์สีเหลือง-ดำแบบเบาๆ จางๆ */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('assets/images/grunge-bg.jpg') center/cover no-repeat;
+  opacity: 0.06; /* เบาๆ จางๆ เพียง 6% ไม่ให้กวนตาและอ่านข้อมูลยาก */
+  z-index: -2;
+  pointer-events: none;
+}
+
+/* Base heading rule — NEUTRAL on purpose (no uppercase/italic here). */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Archivo Narrow', sans-serif;
-  font-weight: 700;
+  font-family: var(--font-body);
+  font-weight: 400;
   color: var(--text-color);
   line-height: 1.35;
 }
@@ -90,44 +108,21 @@ a {
 }
 
 .hazard-separator {
-  height: 16px;
+  height: 12px;
   background: repeating-linear-gradient(
     -45deg,
     var(--accent-color),
-    var(--accent-color) 15px,
-    #000 15px,
-    #000 30px
+    var(--accent-color) 12px,
+    #0b0d0d 12px,
+    #0b0d0d 24px
   );
-  border-top: 2px solid #000;
-  border-bottom: 2px solid #000;
+  border-top: 1px solid rgba(255, 207, 7, 0.2);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.8);
   width: 100%;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.5), 0 2px 10px rgba(0,0,0,0.4);
 }
 
-.brush-highlight {
-  position: relative;
-  display: inline-block;
-  color: #000 !important;
-  padding: 6px 18px;
-  z-index: 1;
-  font-weight: 900;
-}
-.brush-highlight::before {
-  content: "";
-  position: absolute;
-  top: -14%;
-  left: -6%;
-  right: -6%;
-  bottom: -14%;
-  background-color: var(--accent-color);
-  z-index: -1;
-  transform: rotate(-1.5deg);
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 50'%3E%3Cpath d='M7,39 C2,33 1,22 4,15 C7,8 14,11 20,7 C45,-3 62,9 85,3 C110,-4 130,7 152,2 C170,-2 186,4 194,12 C199,17 198,26 195,32 C199,38 197,46 190,45 C178,52 165,42 148,48 C120,57 98,45 72,50 C50,54 30,50 18,46 C10,50 4,46 7,39 Z' fill='black'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 50'%3E%3Cpath d='M7,39 C2,33 1,22 4,15 C7,8 14,11 20,7 C45,-3 62,9 85,3 C110,-4 130,7 152,2 C170,-2 186,4 194,12 C199,17 198,26 195,32 C199,38 197,46 190,45 C178,52 165,42 148,48 C120,57 98,45 72,50 C50,54 30,50 18,46 C10,50 4,46 7,39 Z' fill='black'/%3E%3C/svg%3E");
-  -webkit-mask-size: 100% 100%;
-  mask-size: 100% 100%;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-}
+/* Deleted .brush-highlight styling as requested */
 
 /* Header & Navbar */
 header {
@@ -136,9 +131,10 @@ header {
   left: 0;
   width: 100%;
   z-index: 1000;
-  background-color: rgba(12, 15, 15, 0.85);
-  border-bottom: 1px solid var(--border-color);
-  transition: background-color var(--transition-normal);
+  background-color: rgba(11, 13, 13, 0.75);
+  border-bottom: 1px solid rgba(255, 207, 7, 0.15);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  transition: background-color var(--transition-normal), border-color var(--transition-normal);
 }
 
 .navbar {
@@ -154,16 +150,15 @@ header {
   gap: 12px;
 }
 
-.logo-icon {
-  width: 42px;
-  height: 42px;
-  background-color: var(--accent-color);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Anton', sans-serif;
-  font-size: 22px;
-  color: #000;
+.logo-img {
+  height: 52px;
+  width: auto;
+  object-fit: contain;
+  transition: transform var(--transition-fast);
+}
+
+.logo:hover .logo-img {
+  transform: scale(1.05) rotate(-2deg);
 }
 
 .logo-text {
@@ -172,13 +167,16 @@ header {
 }
 
 .logo-main {
-  font-family: 'Anton', sans-serif;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-style: italic;
   font-size: 20px;
   letter-spacing: 0.5px;
 }
 
 .logo-sub {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-body);
+  font-weight: 400;
   font-size: 11px;
   color: var(--text-muted);
   text-transform: uppercase;
@@ -193,8 +191,8 @@ header {
 }
 
 .nav-links a {
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 500;
+  font-family: var(--font-body);
+  font-weight: 400;
   font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -240,7 +238,7 @@ header {
   right: -4px;
   background-color: var(--accent-color);
   color: #000;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-body);
   font-size: 12px;
   font-weight: 600;
   min-width: 20px;
@@ -255,37 +253,60 @@ header {
 /* Hero Section */
 .hero-section {
   position: relative;
-  min-height: 100vh;
+  min-height: 60vh; /* บีบความสูงแนวดิ่งลงเหลือ 60% ของจอ (ลดลงเกือบครึ่งหนึ่ง) */
   display: flex;
   align-items: center;
-  padding-top: 80px;
+  padding: 120px 0 80px 0; /* เคลียร์และปรับระยะห่างของขอบบนและล่าง */
   background: linear-gradient(rgba(12, 14, 14, 0.55), rgba(12, 14, 14, 0.96)),
               url('assets/images/hero-bg.jpg') center/cover no-repeat;
+  overflow: hidden;
+}
+
+/* ปลดล็อกขอบ 1200px ที่ยึดตัวหนังสือไว้ตรงกลางจอภาพ */
+.hero-section .container {
+  max-width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: auto !important;
+  padding-left: 8% !important; /* จัดชิดซ้ายให้ห่างจากขอบจอภาพจริงเพียง 8% เพื่อความสวยงาม */
+  width: 100%;
 }
 
 .hero-content {
-  max-width: 650px;
+  max-width: 780px; /* ขยายจาก 650px เดิมเพื่อให้กล่องข้อความแผ่กว้างขึ้น */
+  animation: slideInLeft 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .hero-tag {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-body);
   display: inline-block;
   border: 1px solid var(--accent-color);
   color: var(--accent-color);
   padding: 6px 16px;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 400;
   margin-bottom: 24px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .hero-title {
-  font-family: 'Anton', sans-serif;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-style: italic;
   text-transform: uppercase;
   letter-spacing: 0.02em;
   font-size: 32px;
-  font-weight: 400;
   line-height: 1.5;
   margin-bottom: 20px;
   text-shadow: 0 4px 20px rgba(0,0,0,0.9);
@@ -302,37 +323,78 @@ header {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Anton', sans-serif;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-style: italic;
   font-size: 15px;
-  font-weight: 400;
   text-transform: uppercase;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
   padding: 14px 28px;
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all var(--transition-fast);
   border: 2px solid transparent;
   gap: 8px;
+  position: relative;
+  overflow: hidden;
+  /* iOS style rounded borders */
+  border-radius: var(--radius-sm);
 }
 
 .btn-primary {
-  background-color: var(--accent-color);
+  background: var(--accent-gradient);
   color: #000;
+  box-shadow: 0 4px 14px rgba(255, 207, 7, 0.2);
+}
+
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transform: skewX(-25deg);
+  transition: none;
 }
 
 .btn-primary:hover {
-  background-color: var(--accent-hover);
+  background: var(--accent-gradient-hover);
+  box-shadow: var(--accent-glow-strong);
+  transform: translateY(-2px);
+}
+
+.btn-primary:hover::after {
+  left: 120%;
+  transition: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn-secondary {
-  background-color: transparent;
+  background-color: rgba(255, 207, 7, 0.02);
   border: 2px solid var(--accent-color);
   color: var(--accent-color);
+  box-shadow: inset 0 0 10px rgba(255, 207, 7, 0.05);
 }
 
 .btn-secondary:hover {
-  background-color: var(--accent-color);
+  background: var(--accent-gradient);
   color: #000;
+  box-shadow: var(--accent-glow);
+  transform: translateY(-2px);
+}
+
+.btn-booking-main,
+.btn-booking-sub {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-style: italic;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 14px 28px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: 2px solid transparent;
 }
 
 .hero-actions {
@@ -352,9 +414,9 @@ section {
 }
 
 .section-subtitle {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-body);
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 400;
   color: var(--accent-color);
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -362,11 +424,12 @@ section {
 }
 
 .section-title-main {
-  font-family: 'Anton', sans-serif;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-style: italic;
   text-transform: uppercase;
   letter-spacing: 0.02em;
   font-size: 32px;
-  font-weight: 400;
   margin-bottom: 16px;
 }
 
@@ -375,17 +438,46 @@ section {
 }
 
 /* Catalog / Products Section */
+.catalog-section {
+  padding: 120px 0;
+}
+.catalog-section .container {
+  max-width: 100% !important; /* ปลดล็อกขอบจำกัด ให้ขยายเต็มหน้าจอ */
+  padding-left: 8% !important; /* จัดช่องไฟซ้ายขวาเท่ากับหน้า Hero เพื่อความสมดุล */
+  padding-right: 8% !important;
+  width: 100%;
+}
+
+/* ปรับสเกลขนาดหัวข้อ Catalog (ลดลง 10% จากตัวเลือกก่อนหน้า) */
+.catalog-section .section-subtitle {
+  font-size: 25px !important;
+  margin-bottom: 16px;
+}
+
+.catalog-section .section-title-main {
+  font-size: 58px !important;
+  line-height: 1.25;
+  margin-bottom: 24px;
+}
+
+.catalog-section .section-desc {
+  font-size: 21px !important;
+  line-height: 1.6;
+  max-width: 1000px;
+  margin: 0 auto 50px auto;
+}
+
 .catalog-search {
-  max-width: 620px;
-  margin: -20px auto 24px;
+  max-width: 750px; /* ขยายจาก 620px ขึ้น 20% */
+  margin: 0 auto 30px; /* ปรับ margin-top ออกเพื่อรองรับขนาดหัวข้อใหม่ */
 }
 
 .catalog-search-label {
   display: block;
-  margin-bottom: 8px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
-  font-weight: 500;
+  margin-bottom: 10px;
+  font-family: var(--font-body);
+  font-size: 16px; /* ขยายจาก 13px ขึ้น 20% */
+  font-weight: 400;
   color: var(--accent-color);
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -393,15 +485,15 @@ section {
 
 .catalog-search-input {
   width: 100%;
-  min-height: 48px;
+  min-height: 58px; /* ขยายจาก 48px ขึ้น 20% */
   background-color: var(--surface-color);
   border: none;
   border-bottom: 2px solid var(--border-color);
   border-radius: 0;
   color: var(--text-color);
-  font-family: 'Archivo Narrow', sans-serif;
-  font-size: 16px;
-  padding: 0 16px;
+  font-family: var(--font-body);
+  font-size: 19px; /* ขยายจาก 16px ขึ้น 20% */
+  padding: 0 20px;
   outline: none;
   transition: border-color var(--transition-fast);
 }
@@ -422,15 +514,15 @@ section {
 }
 
 .filter-btn {
-  background-color: transparent;
+  background-color: rgba(255, 207, 7, 0.02);
   border: 1px solid var(--border-color);
   color: var(--text-muted);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
-  font-weight: 500;
+  font-family: var(--font-body);
+  font-size: 16px; /* ขยายจาก 13px ขึ้น 20% */
+  font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.03em;
-  padding: 10px 20px;
+  padding: 12px 24px; /* ขยายจาก 10px 20px ขึ้น 20% */
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all var(--transition-fast);
@@ -438,10 +530,11 @@ section {
 
 .filter-btn:hover,
 .filter-btn.active {
-  background-color: var(--accent-color);
+  background: var(--accent-gradient);
   border-color: var(--accent-color);
   color: #000;
   font-weight: 600;
+  box-shadow: 0 4px 12px rgba(255, 207, 7, 0.15);
 }
 
 .product-grid {
@@ -462,7 +555,7 @@ section {
 }
 
 .catalog-empty-title {
-  font-family: 'Archivo Narrow', sans-serif;
+  font-family: var(--font-display);
   font-size: 20px;
   font-weight: 700;
   margin-bottom: 8px;
@@ -491,9 +584,9 @@ section {
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
   color: var(--text-color);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-body);
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 400;
   text-transform: uppercase;
   text-decoration: none;
   transition: all var(--transition-fast);
@@ -506,18 +599,39 @@ section {
   color: #000;
 }
 .product-card {
-  background-color: var(--surface-color);
-  border: 1px solid var(--border-color);
+  background-color: rgba(18, 20, 20, 0.7); /* กระจกฝ้าโปร่งแสง 70% */
+  backdrop-filter: blur(12px); /* เอฟเฟกต์กระจกเบลอ */
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 207, 7, 0.15); /* ขอบสีทองบางเบา */
   border-radius: var(--radius-md);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   height: 100%;
-  transition: border-color var(--transition-normal);
+  transition: border-color var(--transition-normal), background-color var(--transition-normal), box-shadow var(--transition-normal), transform var(--transition-normal);
+  position: relative;
+}
+
+.product-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 2px;
+  background: var(--accent-gradient);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--transition-normal);
 }
 
 .product-card:hover {
-  border-color: var(--accent-color);
+  background-color: rgba(255, 207, 7, 0.04); /* เพิ่มสีทองสะท้อนเข้ามาในเนื้อกระจกฝ้าเมื่อ hover */
+  border-color: rgba(255, 207, 7, 0.45);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 207, 7, 0.1);
+  transform: translateY(-8px) scale(1.015);
+}
+
+.product-card:hover::before {
+  transform: scaleX(1);
 }
 
 .product-img-wrapper {
@@ -551,7 +665,7 @@ section {
   color: var(--accent-color);
   padding: 4px 10px;
   border-radius: var(--radius-sm);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-body);
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
@@ -568,11 +682,11 @@ section {
    the Anton/uppercase marketing-heading treatment (this was the bug
    from the previous theme round: a global h1-h6 rule leaked here). */
 .product-title {
-  font-family: 'Archivo Narrow', sans-serif;
+  font-family: var(--font-body);
   text-transform: none;
   font-style: normal;
   letter-spacing: normal;
-  font-size: 14px;
+  font-size: 17px; /* ขยายจาก 14px ขึ้น 20% */
   font-weight: 600;
   margin-bottom: 8px;
   color: var(--text-color);
@@ -589,16 +703,18 @@ section {
 
 .product-footer {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
   margin-top: 16px;
   padding-top: 16px;
   border-top: 1px solid var(--border-color);
+  width: 100%;
 }
 
 .product-price {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 15px;
+  font-family: var(--font-body);
+  font-size: 18px; /* ขยายจาก 15px ขึ้น 20% */
   font-weight: 600;
   color: var(--accent-color);
 }
@@ -627,8 +743,11 @@ section {
   width: 400px;
   height: 100vh;
   z-index: 2000;
-  background-color: var(--surface-color);
-  border-left: 1px solid var(--border-color);
+  background-color: rgba(18, 20, 20, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-left: 1px solid rgba(255, 207, 7, 0.15);
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
   transition: right var(--transition-normal);
@@ -649,7 +768,7 @@ section {
 /* .cart-title is a functional UI label, not a marketing headline — keep
    it in body font, not Anton/uppercase. */
 .cart-title {
-  font-family: 'Archivo Narrow', sans-serif;
+  font-family: var(--font-body);
   text-transform: none;
   font-style: normal;
   font-size: 20px;
@@ -699,7 +818,7 @@ section {
 }
 
 .cart-item-section-title {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-body);
   font-size: 14px;
   font-weight: 600;
   text-transform: uppercase;
@@ -735,14 +854,14 @@ section {
 }
 
 .cart-item-name {
-  font-family: 'Archivo Narrow', sans-serif;
+  font-family: var(--font-body);
   font-size: 15px;
   font-weight: 600;
   margin-bottom: 4px;
 }
 
 .cart-item-price {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-body);
   color: var(--accent-color);
   font-weight: 600;
   font-size: 14px;
@@ -781,7 +900,7 @@ section {
 }
 
 .quantity-val {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-body);
   width: 30px;
   text-align: center;
   font-size: 14px;
@@ -814,7 +933,7 @@ section {
 /* .cart-footer-title (h3) — body font, not marketing Anton style
    (same bug class as .product-title / .cart-title above). */
 .cart-footer-title {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-body);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   font-style: normal;
@@ -833,7 +952,7 @@ section {
 }
 
 .cart-total-price {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-body);
   font-size: 20px;
   font-weight: 700;
   color: var(--accent-color);
@@ -856,20 +975,30 @@ section {
 
 /* Booking Section */
 .booking-section {
-  background-color: var(--surface-color);
+  background-color: transparent;
 }
 
 /* Booking Card and Dual CTA Styles */
 .booking-card-premium {
   max-width: 800px;
   margin: 0 auto;
-  background: var(--bg-color);
-  border: 2px solid var(--accent-color);
-  border-radius: var(--radius-sm);
-  padding: 40px 30px;
+  background-color: rgba(18, 20, 20, 0.75); /* กระจกฝ้าโปร่งแสง 75% */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 207, 7, 0.25); /* ขอบสีทองบางเบา */
+  border-radius: var(--radius-lg); /* ขอบมนหรูหรา 24px */
+  padding: 50px 35px;
   text-align: center;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7), inset 0 0 30px rgba(255, 207, 7, 0.01);
+  transition: border-color var(--transition-normal), background-color var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.booking-card-premium:hover {
+  background-color: rgba(18, 20, 20, 0.8);
+  border-color: rgba(255, 207, 7, 0.5);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 207, 7, 0.08);
 }
 
 .booking-card-premium::before {
@@ -878,13 +1007,13 @@ section {
   top: 0;
   left: 0;
   width: 100%;
-  height: 8px;
+  height: 6px;
   background: repeating-linear-gradient(
     45deg,
     var(--accent-color),
-    var(--accent-color) 8px,
-    #000 8px,
-    #000 16px
+    var(--accent-color) 10px,
+    #000 10px,
+    #000 20px
   );
 }
 
@@ -911,16 +1040,20 @@ section {
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  border: 1px solid var(--border-color);
+  border: 1px solid rgba(255, 207, 7, 0.1); /* ขอบทองจางพิเศษ */
   padding: 20px;
-  background-color: var(--surface-color);
-  border-radius: var(--radius-sm);
+  background-color: rgba(26, 28, 28, 0.45); /* กระจกฝ้าโปร่งแสงแบบกล่องย่อย */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: var(--radius-md); /* iOS style rounded corners 16px */
   position: relative;
-  transition: border-color var(--transition-fast);
+  transition: border-color var(--transition-fast), background-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .rule-item:hover {
-  border-color: var(--accent-color);
+  background-color: rgba(255, 207, 7, 0.03);
+  border-color: rgba(255, 207, 7, 0.45);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
 }
 
 .rule-icon {
@@ -936,9 +1069,9 @@ section {
 }
 
 .rule-text strong {
-  font-family: 'Archivo Narrow', sans-serif;
+  font-family: var(--font-body);
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-color);
 }
 
@@ -964,48 +1097,74 @@ section {
 
 .btn-booking-main,
 .btn-booking-sub {
-  font-family: 'Anton', sans-serif;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-style: italic;
   font-size: 15px;
-  font-weight: 400;
   text-transform: uppercase;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.05em;
   padding: 14px 32px;
   border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: all var(--transition-normal);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
   min-width: 220px;
   border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
 }
 
 .btn-booking-main {
-  background-color: var(--accent-color);
+  background: var(--accent-gradient);
   color: #000;
+  box-shadow: 0 4px 15px rgba(255, 207, 7, 0.2);
+}
+
+.btn-booking-main::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transform: skewX(-25deg);
+  transition: none;
 }
 
 .btn-booking-main:hover {
-  background-color: var(--accent-hover);
+  background: var(--accent-gradient-hover);
+  box-shadow: var(--accent-glow-strong);
+  transform: translateY(-2px);
+}
+
+.btn-booking-main:hover::after {
+  left: 120%;
+  transition: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn-booking-sub {
-  background-color: transparent;
+  background-color: rgba(255, 207, 7, 0.02);
   border: 2px solid var(--accent-color);
   color: var(--accent-color);
+  box-shadow: inset 0 0 10px rgba(255, 207, 7, 0.05);
 }
 
 .btn-booking-sub:hover {
-  background-color: var(--accent-color);
+  background: var(--accent-gradient);
   color: #000;
+  box-shadow: var(--accent-glow);
+  transform: translateY(-2px);
 }
 
 /* Footer Section */
 footer {
-  background-color: #0c0f0f;
-  border-top: 1px solid var(--border-color);
-  padding: 60px 0 30px;
+  background-color: rgba(12, 15, 15, 0.7); /* กระจกฝ้าโปร่งแสง 70% */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 207, 7, 0.15); /* ขอบสีทองบางเบา */
+  padding: 80px 0 40px; /* เพิ่มระยะบนล่างให้ดูโปร่งและพรีเมียมขึ้น */
 }
 
 .footer-grid {
@@ -1024,7 +1183,7 @@ footer {
 /* footer h3 — body font, not marketing Anton style (same bug class as
    .product-title / .cart-title / .cart-footer-title above). */
 .footer-col h3 {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-body);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   font-style: normal;
@@ -1158,11 +1317,11 @@ footer {
 .product-actions .btn-add-cart,
 .product-actions .btn-order {
   flex: 1;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
+  font-family: var(--font-body);
+  font-size: 13px; /* ขยายจาก 11px ขึ้น 20% */
   font-weight: 500;
   text-transform: uppercase;
-  padding: 8px 4px;
+  padding: 10px 5px; /* ขยายจาก 8px 4px ขึ้น 20% */
   border-radius: var(--radius-sm);
   text-align: center;
   cursor: pointer;
@@ -1218,25 +1377,25 @@ footer {
   }
 
   .product-grid {
-    gap: 20px;
+    gap: 24px; /* เพิ่มขึ้น 20% */
   }
 
   .product-info {
-    padding: 16px;
+    padding: 19px; /* เพิ่มขึ้น 20% */
   }
 
   .product-title {
-    font-size: 16px;
+    font-size: 19px; /* เพิ่มขึ้น 20% */
   }
 
   .product-price {
-    font-size: 17px;
+    font-size: 20px; /* เพิ่มขึ้น 20% */
   }
 
   .product-actions .btn-add-cart,
   .product-actions .btn-order {
-    font-size: 12px;
-    padding: 9px 6px;
+    font-size: 14px; /* เพิ่มขึ้น 20% */
+    padding: 11px 8px; /* เพิ่มขึ้น 20% */
   }
 }
 
@@ -1247,25 +1406,25 @@ footer {
   }
 
   .product-grid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); /* ขยายขนาดขั้นต่ำการ์ดจาก 280px เป็น 340px */
+    gap: 36px; /* เพิ่มขึ้น 20% */
   }
 
   .product-info {
-    padding: 20px;
+    padding: 24px; /* เพิ่มขึ้น 20% */
   }
 
   .product-title {
-    font-size: 18px;
+    font-size: 22px; /* เพิ่มขึ้น 20% */
   }
 
   .product-price {
-    font-size: 19px;
+    font-size: 23px; /* เพิ่มขึ้น 20% */
   }
 
   .product-actions .btn-add-cart,
   .product-actions .btn-order {
-    font-size: 13px;
-    padding: 10px 8px;
+    font-size: 16px; /* เพิ่มขึ้น 20% */
+    padding: 12px 10px; /* เพิ่มขึ้น 20% */
   }
 }
