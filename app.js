@@ -664,6 +664,33 @@ function formatBaht(amount) {
   return `฿${amount.toLocaleString('th-TH', { minimumFractionDigits: 2 })}`;
 }
 
+function encodeCartMeta(cartItems, flow) {
+  const estimatedTotal = getCartItemsSubtotal(cartItems);
+  const meta = {
+    version: 1,
+    flow,
+    source_page: window.location.href.split('#')[0],
+    estimated_total: estimatedTotal,
+    currency: 'THB',
+    items: cartItems.map(item => ({
+      id: item.product.id,
+      name: item.product.name,
+      category: item.product.category,
+      type: item.type,
+      quantity: item.quantity,
+      unit_price: Number(item.product.price || 0),
+      subtotal: Number(item.product.price || 0) * item.quantity
+    }))
+  };
+
+  try {
+    const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(meta))));
+    return encoded.length <= 6000 ? encoded : '';
+  } catch (error) {
+    return '';
+  }
+}
+
 function buildBookingCheckoutUrl() {
   const bookingItems = cart.filter(item => item.type === 'booking');
   if (bookingItems.length === 0) return BOOKING_URL;
@@ -681,6 +708,8 @@ function buildBookingCheckoutUrl() {
     services,
     note
   });
+  const cartMeta = encodeCartMeta(bookingItems, 'booking');
+  if (cartMeta) params.set('cart_meta', cartMeta);
 
   return `${BOOKING_URL}?${params.toString()}`;
 }
@@ -718,6 +747,8 @@ function buildOrderCheckoutUrl() {
     products: Array.from(productIds).join(','),
     other_text: otherText
   });
+  const cartMeta = encodeCartMeta(orderItems, 'order');
+  if (cartMeta) params.set('cart_meta', cartMeta);
 
   return `${CUSTOMER_ORDER_URL}?${params.toString()}`;
 }
