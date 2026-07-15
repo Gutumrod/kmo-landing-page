@@ -1,125 +1,198 @@
-# Project Context: KMO RACK BAR CUSTOM - Landing Page & Booking System
+# Project Context: KMO RACK BAR CUSTOM - Landing Catalog
 
-**Last Updated:** 2026-07-14
-**Current Phase:** Phase D1 prefill complete + pushed (booking + order)
-**Progress:** ~96% (ตะกร้า booking/order ส่งรายการ+ราคาอ้างอิงไปพรีฟิล production forms แล้ว)
-**Next Session:** ตรวจ live GitHub Pages หลัง deploy แล้ววาง Phase D2 แยกรอบ
-
----
-
-## 🎯 เป้าหมายโปรเจกต์ (ยืนยันแล้ว 2026-07-10 — สำคัญ อ่านก่อนแก้อะไร)
-
-**โปรเจกต์นี้ไม่ได้มาแทน production (`kmorackbarcustom.github.io`)** เป็นช่องทางขายตรงแยกต่างหาก
-เป้าหมายหลัก: สร้างช่องขายของร้านเองที่ไม่โดนหักค่าคอมจากแพลตฟอร์ม (Shopee หักเกือบ 30%/ชิ้น)
-ลูกค้าเห็นแคตตาล็อกสวยๆ แบบ Shopee, กดสั่ง/จอง, จ่ายมัดจำ, จบ — ลดเวลาคุยไปมากับร้าน
-
-**โครงสร้าง**: สินค้าแต่ละชิ้นมี 2 ปุ่มอิสระต่อกัน
-- **จองคิว (booking)** — ลูกค้าเอารถเข้ามาคัสตอมที่ร้านจริง → ลิงก์ออกไป production
-  (`https://kmorackbarcustom.github.io/booking.html`, `/calendar.html`)
-- **สั่งซื้อ (order)** — 2 ทางเลือกในตัว: (1) สั่งตรงกับร้าน (กรอกข้อมูล+มัดจำ+เลือกส่ง/มารับเอง)
-  ผ่าน `CustomerOrder.html` บน production, หรือ (2) ลิงก์ไป Shopee เดิม (ไม่ทิ้งเพราะลูกค้าบางคนติดแพลตฟอร์ม)
-
-**หลักการสำคัญ**: kmo-landing-page **ไม่ maintain ไฟล์ booking/calendar/order ของตัวเอง**
-ทุกอย่างที่เป็น transaction จริง (จอง/สั่งซื้อ) ต้องลิงก์ออกไป production ที่เดียว —
-กันปัญหาไฟล์หลุด sync (เคยเกิดมาแล้ว 2026-07-10: booking.html/calendar.html ในนี้ตกรุ่นไม่มี
-capacity model ใหม่ที่แก้ที่ production) โปรเจกต์นี้โฟกัสแค่ **แคตตาล็อก + ตะกร้า + UX หน้าแรก**
-
-**Repo map สำคัญสำหรับ agent รอบต่อไป**
-- Main landing repo: `D:\AI-Workspace\projects\kmo-landing-page\` → remote `Gutumrod/kmo-landing-page`
-- Production transaction repo: `D:\AI-Workspace\projects\kmorackbarcustom.github.io\` → remote `kmorackbarcustom/kmorackbarcustom.github.io`
-- ห้ามแตะ clone เก่า: `D:\AI-Workspace\projects\landing page\KMO\`
+**Last Updated:** 2026-07-15
+**Current Phase:** D1 + D2 metadata/prefill complete, catalog import complete, mobile polish in progress
+**Progress:** ~98% สำหรับ landing catalog และ handoff ไป production forms
+**Live URL:** `https://gutumrod.github.io/kmo-landing-page/`
 
 ---
 
-## 🎯 สถานะปัจจุบัน
+## เป้าหมายโปรเจกต์
 
-### เสร็จแล้ว (Completed)
-| Phase | Tasks | เสร็จเมื่อ | หมายเหตุ |
-|-------|-------|-----------|----------|
-| Phase 1-4 | โครงหน้าเว็บ, catalog, cart, dark theme, dual CTA | 2026-07-07~09 | ดูรายละเอียดเดิมด้านล่าง (ประวัติก่อนหน้า) |
-| Phase 5 | Discovery interview เป้าหมายโปรเจกต์ใหม่ | 2026-07-10 | พบว่าเข้าใจสโคปผิดมาตลอด (คิดว่าจะมาแทน production) แก้ความเข้าใจแล้ว |
-| Phase 5 | ลบ `booking.html`/`calendar.html` ที่ตกรุ่น เปลี่ยนเป็นลิงก์ออก production | 2026-07-10 | commit `c1c2523` push แล้ว |
-| Phase 0 | Repo/file gate สำหรับงาน landing page | 2026-07-11 | ยืนยันทำงานที่ `D:\AI-Workspace\projects\kmo-landing-page\`, remote `Gutumrod/kmo-landing-page`, ไม่แตะ clone เก่า/production repo |
-| Phase A | ต่อ Google Sheets CSV จริงเข้า catalog | 2026-07-11 | `app.js` ใช้ CSV export URL จริงแล้ว และยัง fallback ไป `FALLBACK_PRODUCTS` 7 ชิ้นเมื่อ fetch fail |
-| Phase E | ปิด XSS จาก field สินค้าใน catalog/cart render | 2026-07-11 | เปลี่ยน render path สำคัญจาก `innerHTML` เป็น DOM + `textContent`, guard dangerous URL protocol และ loader เก่าที่ไม่มี element แล้ว |
-| Phase B | ช่องค้นหา + fallback ปรึกษาแอดมิน | 2026-07-11 | เพิ่ม search input เหนือ filter เดิม, filter แบบ AND กับหมวดหมู่, และแสดง LINE/Facebook fallback เมื่อไม่พบสินค้า |
-| Phase C | ตะกร้าแบ่ง 2 กลุ่ม | 2026-07-11 | cart item มี `type` booking/order, ปุ่มสั่งผลิตกับร้านเข้าตะกร้า order, Shopee ยังลิงก์ตรง, checkout แยกไป booking/CustomerOrder |
-| Category taxonomy | ขยายหมวดสินค้าเป็น 6 กลุ่ม | 2026-07-11 | ยกเลิก `other`, เพิ่ม `accessory`/`gear`/`service`, ย้าย fallback ไฟสปอร์ตไลท์ไป `gear` และบริการติดตั้งไป `service` |
-| Mobile layout | แก้ hero text + product grid บนมือถือ | 2026-07-12 | hero title ลดขนาด/เพิ่ม line-height บนมือถือ, product grid บังคับ 2 คอลัมน์บนจอแคบ และคืน layout desktop ที่ 768px |
-| Phase D1 | ส่งข้อมูลตะกร้าไปพรีฟิล booking form | 2026-07-13 | landing ส่ง `services`/`note` จาก booking cart ผ่าน query string, production `booking.html` อ่านมาเติมช่องรายการและแสดงราคาอ้างอิงเป็นข้อความ |
-| Phase D1 | ส่งข้อมูลตะกร้าไปพรีฟิล CustomerOrder form | 2026-07-14 | pushed แล้ว: landing commit `19bbc8a`, production commit `d746ca3`; ส่ง `products`/`other_text` จาก order cart ไป `CustomerOrder.html` โดยไม่แตะ DB/RPC |
+`kmo-landing-page` เป็นหน้าร้านแคตตาล็อกขายตรงของ KMO RACK BAR CUSTOM ไม่ใช่ระบบ transaction หลัก และไม่ใช่ตัวแทน production repo
 
-### กำลังทำ (In Progress)
-| Phase | Tasks | เริ่มเมื่อ | คาดว่าเสร็จ |
-|-------|-------|----------|-------------|
+หน้าที่ของ repo นี้:
 
-### ยังไม่ได้ทำ (Pending — เรียงตามที่คุยไว้)
-| Task | Priority | หมายเหตุ |
-|------|----------|----------|
-| Validate ไฟล์อัปโหลด (สลิป) ฝั่ง server ไม่ใช่แค่ client JS | Medium | มาจากรีวิวความปลอดภัยรอบแรก |
-| ราคาจริงใน DB/RPC/dashboard (D2) | Medium | Scope ใหญ่กว่า D1 ต้องวางแผนแยกรอบหลัง D1 พิสูจน์แล้ว |
+- หน้าแรก / hero / branding
+- catalog สินค้าจากไฟล์ CSV local
+- search / filter / load more
+- cart drawer แบ่ง booking และ order
+- ส่งข้อมูลสินค้าในตะกร้าไป production forms ผ่าน query string
+
+ธุรกรรมจริงยังอยู่ที่ production repo:
+
+- `booking.html`
+- `calendar.html`
+- `CustomerOrder.html`
+- dashboard / Supabase / RPC
+
+หลักการสำคัญ: repo นี้ไม่ควร copy หรือ maintain transaction forms เอง ให้ลิงก์ออกไป production เท่านั้น
 
 ---
 
-## 📝 Last Session Summary
+## Repo Map
 
-**Session Date:** 2026-07-10 (ช่วงบ่าย-เย็น)
-**Model Used:** Claude Sonnet 5
+| Purpose | Path | Remote |
+|---|---|---|
+| Landing catalog | `D:\AI-Workspace\projects\kmo-landing-page\` | `https://github.com/Gutumrod/kmo-landing-page.git` |
+| Production transaction | `D:\AI-Workspace\projects\kmorackbarcustom.github.io\` | `https://github.com/kmorackbarcustom/kmorackbarcustom.github.io.git` |
+| Old clone, do not edit | `D:\AI-Workspace\projects\landing page\KMO\` | stale |
 
-### ทำอะไรเสร็จไปบ้าง
-- ✅ รีวิวความปลอดภัยรอบแรก พบช่องโหว่ใหญ่ในระบบที่ยืมมา (RLS เปิดโล่งบน Supabase) — แก้ที่ต้นทาง (production repo) ไม่ใช่ในนี้ เพราะเป็น backend ร่วมกัน
-- ✅ ทำ Discovery Interview เป้าหมายโปรเจกต์ (5 หัวข้อตามสกิล `discovery-interview`) — ทำถึงหัวข้อ 3 ครบ, หัวข้อ 4-5 เริ่มแล้วแต่ยังไม่จบ
-- ✅ พบว่า `CustomerOrder.html` (production) ทำงานสมบูรณ์แล้วจริง ไม่ใช่ mockup อย่างที่เข้าใจตอนแรก (mockup คือแค่รายการสินค้าหน้าแรกที่รอ CSV จริง)
-- ✅ พบ gap สำคัญ: ตะกร้าที่มีราคาจริงเชื่อมแค่ booking.html เท่านั้น ไม่เชื่อมกับ CustomerOrder.html เลย — ตกลงแนวทางแก้แล้ว (ดูด้านล่าง)
-- ✅ ลบ `booking.html`/`calendar.html` ที่ตกรุ่น เปลี่ยนปุ่มในหน้าแรก+ตะกร้าให้ลิงก์ออกไป production ตรงๆ (commit `c1c2523`, pushed)
-
-### เจอปัญหาอะไร
-- เข้าใจผิดมาตลอดว่าโปรเจกต์นี้จะ "แทน" production — จริงๆ แค่เป็นหน้าร้านแคตตาล็อกที่ยิงปุ่มออกไปหา production
-- `booking.html`/`calendar.html` ที่ copy มาไว้ในนี้ตกรุ่น ไม่มี capacity model 2 พูลที่เพิ่งแก้ที่ production — สาเหตุคือ maintain ไฟล์ซ้ำ 2 ที่
-
-### บทเรียนที่ได้
-- 💡 โปรเจกต์ที่ "ยืม" ฟีเจอร์จากระบบอื่น ควร**ลิงก์ออก ไม่ copy ไฟล์มาไว้เอง** กันปัญหาหลุด sync ตั้งแต่แรก — ใช้หลักการนี้กับปุ่มออเดอร์อยู่แล้ว (ลิงก์ไป CustomerOrder.html) แต่ตอน booking/calendar ไม่ได้ทำแบบเดียวกันตั้งแต่ต้น
+ก่อนแก้ไฟล์ทุกครั้งให้เช็ก `git remote -v`, `git status`, และ branch ให้ตรง repo
 
 ---
 
-## 🚀 Next Steps
+## สถานะล่าสุดจากโค้ดจริง
 
-### ต้องทำอะไรต่อ (ลำดับความสำคัญ)
-1. ตรวจ live GitHub Pages ว่า D1 booking/order prefill ทำงานหลัง deploy แล้ว
-2. ปิดช่องโหว่ upload validation ฝั่ง server ใน production repo แยกรอบ ไม่ใช่ scope ของ landing page รอบนี้
-3. วาง Phase D2 แยกรอบเมื่อ D1 ใช้งานจริงแล้ว: ราคาจริงใน DB/RPC/dashboard
+### Catalog
+
+- Source of truth ปัจจุบันคือ `assets/product_catalog_template.csv`
+- จำนวนสินค้าใน CSV ล่าสุด: 195 รายการ
+- Schema ปัจจุบัน:
+  `id,brand,model,name,price,category,description,image_url,shopee_url,allow_booking,allow_order`
+- จำนวนตามหมวดล่าสุด:
+  - `accessory`: 84
+  - `crashbar`: 55
+  - `rear`: 30
+  - `side`: 25
+  - `service`: 1
+- ยังไม่มี `gear` ใน CSV ล่าสุด แม้ปุ่ม filter ยังรองรับอยู่
+- มี fallback products 7 รายการใน `app.js` ถ้า CSV โหลดไม่ได้
+
+### Product actions
+
+ปุ่มในการ์ดสินค้าขึ้นตามข้อมูล CSV:
+
+- `allow_booking=TRUE` แสดงปุ่ม `นัดคิวคัสตอมงาน`
+- `allow_order=TRUE` แสดงปุ่ม `สั่งตรงกับร้าน`
+- `shopee_url` ไม่ว่าง แสดงปุ่ม `ซื้อผ่าน Shopee`
+
+Shopee เป็นช่องทางเสริมเท่านั้น ไม่ตัดปุ่มสั่งตรงกับร้านออก
+
+### Cart / Prefill
+
+- Cart แบ่งเป็น 2 กลุ่ม:
+  - booking items
+  - order items
+- ถ้า cart items มี `brand/model` เดียวกัน จะส่ง `brand` และ `model` ไป production forms เพื่อ prefill รุ่นรถ
+- ส่ง structured metadata ผ่าน `cart_meta`
+- ส่ง `estimated_total` และ `source_page`
+- Production repo รองรับคอลัมน์ / metadata แล้ว
+
+### Catalog UX
+
+- Search รองรับ `brand`, `model`, `name`, `description`, `category`
+- Filter รองรับ `all`, `rear`, `side`, `crashbar`, `accessory`, `gear`, `service`
+- Catalog แสดงเริ่มต้น 24 รายการ
+- ปุ่ม `ดูเพิ่มเติม` โหลดเพิ่มครั้งละ 24 รายการ
+- เปลี่ยน search/filter แล้ว reset กลับไป 24 รายการแรก
+
+### Mobile / Visual
+
+- ใช้ industrial black + safety yellow theme
+- แก้ mobile header/nav ให้ไม่ชนกันแล้ว
+- แก้ heading mobile ด้วย `.mobile-title-break`
+- script cache ล่าสุดใน `index.html`: `app.js?v=11.4`
+- CSS cache ล่าสุด: `styles.css?v=11.2`
 
 ---
 
-## ❓ Open Questions / Decisions Needed
+## Completed
 
-| คำถาม | สถานะ | รายละเอียด |
-|-------|-------|-----------|
-| ตะกร้าแบ่ง 2 กลุ่มยังไง เวลามีทั้งสินค้าสั่งซื้อ+จองคิวปนกัน | ✅ ตกลงแล้ว | แบ่งเป็น 2 ส่วนในตะกร้าเดียว แต่ละส่วนมียอดรวม+ปุ่มเช็คเอาต์แยกกัน (ไปคนละหน้า production) ไม่พยายามยัดรวม flow เดียว |
-| มัดจำ/ราคาที่ลูกค้าเห็นตอนสั่งซื้อ มาจากตะกร้าหรือคุยทีหลังทาง LINE | ✅ ตกลงแนว D1 แล้ว | รอบแรกส่งเป็น note ผ่าน URL param ไป production form เท่านั้น ยังไม่คำนวณราคาใน DB |
-| CSV ต้องมีคอลัมน์อะไรบ้างให้ตรงกับที่ `parseCSV()` ใน app.js รองรับ | ✅ ตกลงแล้ว | ใช้ `id,name,price,category,description,image_url,shopee_url,allow_booking,allow_order`; category ใช้ `rear`/`side`/`crashbar`/`accessory`/`gear`/`service` |
-
----
-
-## 📁 ไฟล์สำคัญในโปรเจกต์
-
-| ไฟล์ | หน้าที่ |
-|------|--------|
-| PRD.md | Master blueprint เดิม (อาจต้อง revise ตามเป้าหมายที่ชัดเจนขึ้นรอบนี้) |
-| PROJECT_CONTEXT.md | ไฟล์นี้ — ความคืบหน้าล่าสุด |
-| index.html + app.js + styles.css | หน้าแรก, catalog, cart — **นี่คือขอบเขตจริงของโปรเจกต์นี้** |
-| ~~booking.html~~ / ~~calendar.html~~ | **ลบแล้ว** ลิงก์ออกไป production แทน |
+| Area | Status | Notes |
+|---|---|---|
+| Repo scope clarification | Done | Landing ไม่ maintain transaction forms |
+| Industrial redesign import | Done | ใช้ภาพ/ดีไซน์ที่ผู้ใช้ออกแบบเป็นฐาน |
+| Favicon | Done | ใช้ไฟล์ profile image เป็น favicon |
+| D1 booking prefill | Done | Landing ส่ง `services`/`note` ไป production `booking.html` |
+| D1 order prefill | Done | Landing ส่ง `products`/`other_text` ไป production `CustomerOrder.html` |
+| D2 metadata | Done | `cart_meta`, `estimated_total`, `source_page` ใน production DB/RPC |
+| Brand/model prefill | Done | CSV + landing + production forms รองรับ `brand/model` |
+| Local CSV catalog | Done | ใช้ `assets/product_catalog_template.csv` แทน Google Sheet runtime |
+| Shopee/direct order logic | Done | Shopee ไม่แทนปุ่มสั่งตรง |
+| Load more | Done | 24 รายการแรก + ปุ่มเพิ่มครั้งละ 24 |
+| Product booking label | Done | `จองติดตั้ง` เปลี่ยนเป็น `นัดคิวคัสตอมงาน` |
+| Mobile nav/heading fix | Done | Live Pages verified หลัง bump cache |
 
 ---
 
-## 📞 Contact & Roles
+## Important Commits
 
-| บทบาท | ใคร | ติดต่อ |
-|-------|-----|--------|
-| CEO / Project Owner | คุณฟรี | Telegram: @craftbikelabceo |
-| Commander | Claude | - |
+Landing repo:
+
+- `3b2b19e feat: import custom landing page design`
+- `0647889 fix: add site favicon`
+- `d4d0961 feat: pass structured cart metadata`
+- `b9330e1 feat: load local KMO product catalog`
+- `7339be3 feat: add brand model catalog fields`
+- `e8b9bbb feat: keep direct order alongside Shopee`
+- `f0b24a1 fix: clean up mobile hero header layout`
+- `28a80e6 fix: restore mobile nav and tame headings`
+- `d39cf76 feat: add catalog load more`
+- `c3dd634 fix: bust catalog script cache`
+- `6183c53 fix: rename booking product action`
+- `30b6403 fix: bust product action label cache`
+
+Production repo:
+
+- `44cae9e feat: prefill booking services from query`
+- `d746ca3 feat: prefill customer order from query`
+- `963ffb3 feat: store landing cart metadata`
+- `bf1b4e1 feat: prefill vehicle from landing catalog`
 
 ---
 
-**Template Version:** 1.1
-**Last Edited By:** Claude Sonnet 5
+## Pending / Next Work
+
+| Task | Priority | Notes |
+|---|---|---|
+| เติมข้อมูลสินค้า/รูปจริงที่เหลือ | High | CSV พร้อมแล้ว ผู้ใช้จะช่วยเติมข้อมูลต่อ |
+| เพิ่ม section สินค้าขายดี | High | ควรอยู่ต้น catalog และเด่นกว่าการ์ดทั่วไป แต่ยังไม่ได้ implement |
+| ตรวจ UX หลังสินค้า 195 รายการบนมือถือจริง | Medium | load-more ทำแล้ว แต่ยังควรดู spacing/card density |
+| Server-side slip/upload validation ใน production | Medium | เป็น production scope ไม่ใช่ landing |
+| ราคา/สถานะจริงใน dashboard เพิ่มเติม | Low-Medium | metadata รองรับแล้ว ถ้าจะทำ workflow หลังบ้านเพิ่มค่อยวางรอบใหม่ |
+| Deploy custom domain | Pending | ยังไม่พร้อมจนกว่าสินค้า/รูป/โดเมนจะ final |
+
+---
+
+## Open Decisions
+
+| Decision | Current stance |
+|---|---|
+| Google Sheet ยังใช้เป็น runtime source ไหม | ไม่ใช้ตอนนี้ เว็บใช้ local CSV เพื่อคุม encoding/deploy ให้นิ่ง |
+| Brand/model ต้องตรง form production ไหม | ใช่ ตอนนี้ส่ง query prefill แล้ว |
+| Shopee item ควรมีปุ่มสั่งตรงด้วยไหม | ใช่ ลูกค้าที่ไม่อยากจ่ายค่าบวก platform ต้องสั่งตรงได้ |
+| Catalog จำนวนเยอะควรใช้ pagination หรือ load more | ใช้ load more ก่อน เหมาะกับ mobile มากกว่า |
+
+---
+
+## Files
+
+| File | Purpose |
+|---|---|
+| `index.html` | Landing page structure, catalog container, cart drawer, cache-busted script/style refs |
+| `app.js` | Catalog loader/parser, search/filter, product cards, cart, checkout URL building |
+| `styles.css` | Industrial KMO visual system, responsive fixes, catalog/card/cart styles |
+| `assets/product_catalog_template.csv` | Product source of truth for landing catalog |
+| `PRD.md` | Updated high-level product requirements |
+| `implementation_plan.md` | Current implementation roadmap/status |
+| `CODEX_HANDOFF.md` | Local handoff summary for future agents; currently untracked unless intentionally added |
+| `DESIGN_BRIEF.md` | Industrial design requirements and JS-bound IDs/classes |
+
+---
+
+## Verification Snapshot
+
+Latest checks done 2026-07-15:
+
+- `git fetch --all --prune` in landing repo passed
+- landing remote confirmed as `Gutumrod/kmo-landing-page`
+- production remote confirmed as `kmorackbarcustom/kmorackbarcustom.github.io`
+- `node --check app.js` passed after latest app changes
+- live Pages served `app.js?v=11.4`
+- live app script contains `นัดคิวคัสตอมงาน`
+- live app script no longer contains old product-card label `จองติดตั้ง`
+
+---
+
+**Last Edited By:** Codex

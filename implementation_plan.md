@@ -1,104 +1,198 @@
 # Implementation Plan — KMO Landing Page
 
-**สร้างจาก:** Discovery Interview (5/5 หัวข้อ) เสร็จสมบูรณ์ 2026-07-11
-**อ้างอิงพื้นฐาน:** `PROJECT_CONTEXT.md` (เป้าหมายโปรเจกต์ + ประวัติ phase 1-5)
+**Last Updated:** 2026-07-15
+**Source of truth:** `PROJECT_CONTEXT.md` + current repo files
+**Current live page:** `https://gutumrod.github.io/kmo-landing-page/`
 
 ---
 
-## สรุปเป้าหมาย (ย้ำจาก PROJECT_CONTEXT.md)
+## Current Objective
 
-kmo-landing-page คือหน้าร้านแคตตาล็อกขายตรง (ลดค่าคอม Shopee ~30%) **ไม่ใช่ตัวแทน production**
-ดูแลแค่ `index.html + app.js + styles.css` (แคตตาล็อก/ตะกร้า/ค้นหา) — ธุรกรรมจริง (จอง/สั่งซื้อ)
-ลิงก์ออกไป production (`kmorackbarcustom.github.io`) เสมอ ไม่ copy ไฟล์มาไว้เอง
+`kmo-landing-page` คือหน้าร้านแคตตาล็อกขายตรงสำหรับ KMO RACK BAR CUSTOM:
 
----
+- ให้ลูกค้าเห็นรายการสินค้า/งานคัสตอม
+- ค้นหาด้วยชื่อสินค้า ยี่ห้อ รุ่นรถ หรือหมวด
+- กดเก็บลงตะกร้า
+- แยก flow ระหว่างนัดคิวคัสตอมงานกับสั่งตรงกับร้าน
+- ส่งข้อมูลสินค้าไป production forms ให้ลูกค้าไม่ต้องกรอกซ้ำทั้งหมด
 
-## ประเภทสินค้า (ยืนยันแล้ว)
-
-| ประเภท | รูป/ราคา | ต้องเอารถมาไหม | ปุ่ม | CSV row |
-|---|---|---|---|---|
-| 1. คัสตอมเต็มรูปแบบ | ❌ | ต้องคุยหน้างาน/แชท | ปรึกษาแอดมิน (LINE/FB) | ไม่ต้องมีแถวใน CSV |
-| 2. มีแบบ+ราคาแล้ว ต้องขึ้นงานกับรถจริง | ✅ | ✅ | จองคิว → `booking.html` | `allow_booking=TRUE, allow_order=FALSE` |
-| 3. มีแบบสำเร็จ ไม่ต้องใช้รถ | ✅ | ❌ | สั่งซื้อ → `CustomerOrder.html` | `allow_booking=FALSE, allow_order=TRUE` |
-
-CSV จริงอยู่ที่ `assets/product_catalog_template.csv` คอลัมน์ตรงกับ `parseCSV()` ใน `app.js` แล้ว 100%:
-`id,name,price,category,description,image_url,shopee_url,allow_booking,allow_order`
+Repo นี้ไม่ใช่ production transaction system และไม่ควร maintain `booking.html`, `calendar.html`, หรือ `CustomerOrder.html` เอง
 
 ---
 
-## Phase 0 — Repo/File Gate (บังคับ ทำก่อนแตะไฟล์ทุกครั้ง)
+## Mandatory Gate Before Editing
 
-เกิดปัญหาซ้ำมาแล้ว 2 รอบจากการแก้ผิด repo/ผิดไฟล์ (booking.html/calendar.html ตกรุ่นในโฟลเดอร์ clone เก่า)
-ก่อนเริ่ม Phase ไหนก็ตามที่จะแก้ไฟล์ ต้องเช็คครบ 4 ข้อนี้ก่อนเสมอ ข้ามไม่ได้:
+ทำทุกครั้งก่อนแก้ไฟล์:
 
-1. **เช็ค path** — งาน landing page ต้องอยู่ที่ `D:\AI-Workspace\projects\kmo-landing-page\` เท่านั้น
-   ห้ามแตะ `D:\AI-Workspace\projects\landing page\KMO\` (clone เก่า ค้างอยู่)
-2. **เช็ค remote** — `git remote -v` ต้องขึ้น repo ที่ตั้งใจแก้จริง:
-   - แก้ landing page → `Gutumrod/kmo-landing-page`
-   - แก้ production (booking.html, CustomerOrder.html, Supabase RPC) → `kmorackbarcustom/kmorackbarcustom.github.io`
-   คนละ repo กันเด็ดขาด ห้ามสลับ
-3. **เช็คว่า pull ล่าสุดแล้ว** — `git status` ต้อง clean และ `git pull` ก่อนแก้ทุกครั้ง กัน diff ทับของเก่า
-4. **แก้ production เสร็จ → verify ก่อนบอกว่าเสร็จ** — curl หรือเปิดเว็บจริงเช็คพฤติกรรม ไม่ใช่แค่ push แล้วจบ (โดยเฉพาะ Phase D1 ที่แก้ทั้ง 2 repo)
-
-ถ้าข้อไหนไม่ผ่าน (path ผิด/remote ผิด/pull ไม่ทัน) → หยุดทันที ห้ามแก้ไฟล์ต่อ
+1. Path ต้องเป็น `D:\AI-Workspace\projects\kmo-landing-page\`
+2. Remote ต้องเป็น `https://github.com/Gutumrod/kmo-landing-page.git`
+3. Fetch/check status ก่อนแก้: `git fetch --all --prune`, `git status --short`
+4. ถ้าต้องแตะ transaction form หรือ Supabase ให้สลับไป production repo:
+   `D:\AI-Workspace\projects\kmorackbarcustom.github.io\`
+5. ห้ามแก้ clone เก่า:
+   `D:\AI-Workspace\projects\landing page\KMO\`
 
 ---
 
-## Phase A — ต่อ CSV จริงเข้าแคตตาล็อก (High priority)
+## Current Data Model
 
-- แก้ `GOOGLE_SHEETS_CSV_URL` ใน `app.js` จาก placeholder เป็น published-CSV URL จริงของ Google Sheet
-- คงพฤติกรรม fallback เดิม (7 สินค้า hardcode) ไว้ตอน fetch fail — แค่เปลี่ยน URL ต้นทาง
-- ทดสอบ: ปิด wifi / URL ผิด → ต้องยัง fallback ได้เงียบๆ เหมือนเดิม
+Catalog source:
 
-## Phase B — ช่องค้นหา + fallback "ปรึกษาแอดมิน" (สินค้าประเภท 1)
+`assets/product_catalog_template.csv`
 
-- เพิ่ม search input เหนือ grid สินค้า, filter แบบ client-side จับคู่ `name` / `description` / `category` (substring match, ไม่ต้อง index/backend แยก)
-- พิมพ์แล้วไม่เจอ (0 results) → โชว์การ์ด "ไม่พบรุ่นนี้ในแคตตาล็อก ปรึกษาแอดมินได้เลย" พร้อม 2 ปุ่ม:
-  - LINE OA: `https://lin.ee/qeCcYUC`
-  - Facebook Inbox: `m.me/215552639006777`
-- ไม่ต้องเพิ่มแถวอะไรใน CSV สำหรับสินค้าประเภท 1 — "หาไม่เจอ" คือ trigger เอง
+Columns:
 
-## Phase C — ตะกร้าแบ่ง 2 กลุ่ม (ตกลงไว้ตั้งแต่ session ก่อน)
+`id,brand,model,name,price,category,description,image_url,shopee_url,allow_booking,allow_order`
 
-- แบ่งตะกร้าเป็น 2 ส่วนในหน้าเดียว: **สั่งซื้อ** (`allow_order` items) / **จองคิว** (`allow_booking` items)
-- แต่ละส่วนมียอดรวม (`฿ subtotal`) + ปุ่มเช็คเอาต์แยกกัน ไปคนละ production URL
+Current count: 195 products
 
-## Phase D — ส่งราคาอ้างอิงไปที่ production form (ทำ 1 → 2 ตามที่ตกลง)
+Supported categories:
 
-### D1 (ทำก่อน — additive, ไม่กระทบของเดิม)
-- ปุ่มเช็คเอาต์ยิง URL param ไปพร้อมลิงก์ เช่น:
-  `CustomerOrder.html?items=แร็คท้าย+Forza+350+Custom&price=2900`
-  `booking.html?items=...&price=...`
-- แก้ **production** (`booking.html` / `CustomerOrder.html`) เพิ่ม logic อ่าน query string ตอนโหลดหน้า:
-  - ถ้ามี param → ต่อท้ายข้อความเข้าไปใน `items` array ที่มีอยู่แล้ว เช่น
-    `["แร็คท้าย", "อ้างอิงจากเว็บ: Forza 350 Custom ₿2,900"]`
-  - ถ้าไม่มี param (ร้านแชร์ลิงก์ตรงให้ลูกค้าแบบเดิม) → ฟอร์มทำงานปกติเป๊ะเหมือนวันนี้ ไม่กระทบอะไร
-  - ราคานี้เป็นแค่ note ให้คนอ่าน ไม่เข้าไปคำนวณ/บวกลบในระบบ
-- **ขอบเขต:** ต้องแก้โค้ด production repo ด้วย ไม่ใช่แค่ landing page ฝ่ายเดียว — คุยกับ CEO ก่อน deploy จริงเพราะกระทบไฟล์ที่ร้านแชร์ตรงให้ลูกค้าอยู่
+- `rear`
+- `side`
+- `crashbar`
+- `accessory`
+- `gear`
+- `service`
 
-### D2 (ทำทีหลัง — ต้องแก้ schema)
-- เพิ่มคอลัมน์ราคาใน Supabase table `orders`/`bookings` + แก้ RPC (`create_customer_order` และเทียบเคียงฝั่ง booking)
-- อัปเดต staff dashboard ให้โชว์ราคาที่ลูกค้าคาดหวังจากเว็บ
-- Scope ใหญ่กว่า D1 — วางแผนแยกรอบเมื่อ D1 เสร็จและใช้งานจริงแล้ว
-
-## Phase E — ปิดช่องโหว่ค้าง (จากรีวิวความปลอดภัยรอบแรก)
-
-- Validate ไฟล์อัปโหลด (สลิป) ฝั่ง server ไม่ใช่แค่ client JS
-- แก้ `innerHTML` ที่ render ชื่อ/รายละเอียดสินค้าให้ escape ก่อนเสมอ (เสี่ยง stored-XSS ทันทีที่ CSV ต่อจริงแล้วมีคนแก้ sheet ใส่ script ได้ — Phase A ทำให้ความเสี่ยงนี้กลายเป็นจริง ต้องทำคู่กัน)
+Note: Latest CSV has no `gear` rows yet, but code and UI still support it.
 
 ---
 
-## ลำดับที่แนะนำ
+## Product Button Rules
 
-0. **Phase 0 เช็คก่อนทุกครั้ง** ที่จะแก้ไฟล์ ไม่ใช่ทำครั้งเดียวจบ — โดยเฉพาะก่อน Phase D1 ที่ต้องสลับไปแก้ repo production ด้วย
-1. **Phase A** (ต่อ CSV จริง) + **Phase E** (escape XSS) — ทำพร้อมกัน เพราะ A ทำให้ E กลายเป็นความเสี่ยงจริง
-2. **Phase B** (ค้นหา + ปรึกษาแอดมิน)
-3. **Phase C** (ตะกร้า 2 กลุ่ม)
-4. **Phase D1** (URL param → note text)
-5. **Phase D2** (ราคาจริงใน DB) — ทำเมื่อ D1 พิสูจน์ว่าเวิร์กแล้วเท่านั้น
+| CSV field | Button | Behavior |
+|---|---|---|
+| `allow_booking=TRUE` | `นัดคิวคัสตอมงาน` | Adds product to booking cart |
+| `allow_order=TRUE` | `สั่งตรงกับร้าน` | Adds product to direct-order cart |
+| `shopee_url` not empty | `ซื้อผ่าน Shopee` | Opens Shopee link in new tab |
+
+Shopee button is additive only. It must not replace direct order.
 
 ---
 
-## ค้างไว้ต่างหาก (ไม่ใช่ scope ของแผนนี้ แต่ต้องจำไว้)
+## Completed Phases
 
-- โฟลเดอร์ซ้ำ `D:\AI-Workspace\projects\landing page\KMO\` เป็น clone เก่าของ repo เดียวกัน (commit ค้างอยู่ก่อนลบ booking.html/calendar.html) — ห้ามแก้ไฟล์ในนั้นอีก จนกว่าจะตัดสินใจว่าจะลบหรือเก็บไว้เฉยๆ
+### Phase A — Catalog Source
+
+Done.
+
+- Replaced runtime Google Sheet dependency with local CSV
+- Added 195 product rows
+- Added brand/model fields
+- Kept fallback hardcoded products for CSV fetch failure
+
+### Phase B — Search / Empty State
+
+Done.
+
+- Search checks brand, model, name, description, category
+- Search combines with category filter
+- Empty state offers admin contact fallback
+
+### Phase C — Split Cart
+
+Done.
+
+- Booking and order items are separated in the same cart drawer
+- Each section has its own checkout action
+- Booking/order URL builders only use the matching item type
+
+### Phase D1 — Prefill Production Forms
+
+Done.
+
+- Booking cart sends `services` and `note` to production `booking.html`
+- Order cart sends `products` and `other_text` to production `CustomerOrder.html`
+- Forms still work when opened without query params
+
+### Phase D2 — Metadata / Brand Model
+
+Done for the current agreed scope.
+
+- Landing sends structured `cart_meta`
+- Landing sends `estimated_total`
+- Landing sends `source_page`
+- Landing sends `brand` and `model` when selected cart items share one vehicle
+- Production repo stores/reads those fields where applicable
+
+### Phase E — Safety / Render Hygiene
+
+Done for landing-controlled catalog/cart rendering.
+
+- CSV-controlled visible fields render through DOM/textContent paths
+- External URLs go through safe URL handling
+- Loader guards prevent missing DOM nodes from breaking init
+
+### Mobile / Catalog UX
+
+Done.
+
+- Restored mobile nav while avoiding overlap
+- Added mobile title breaks
+- Catalog renders first 24 products and uses `ดูเพิ่มเติม` to append 24 more
+- `app.js` cache-busted to `v=11.4`
+
+---
+
+## Next Recommended Work
+
+### Phase F — Featured / Best Sellers
+
+Need design + implementation.
+
+Problem observed by owner: current page lacks a clear `สินค้าขายดี` section.
+
+Recommended direction:
+
+- Add a featured row before the normal catalog grid
+- Use larger cards than normal products
+- Keep JS-bound IDs/classes intact
+- Data source can be simple at first:
+  - either a fixed featured ID list in `app.js`
+  - or a new CSV column such as `featured_rank`
+
+Do not add this until deciding the data source.
+
+### Phase G — Catalog Content Completion
+
+Owner will continue filling product data.
+
+Need to keep:
+
+- same CSV file path
+- same column names
+- UTF-8 encoding
+- duplicate rows can be removed
+
+### Phase H — Production Hardening
+
+Production repo scope:
+
+- server-side slip/upload validation
+- additional dashboard display of metadata/estimated prices if needed
+- any Supabase RPC/schema changes beyond the current metadata columns
+
+---
+
+## Validation Checklist
+
+Before saying done after any future change:
+
+- `node --check app.js`
+- `git diff --check`
+- Confirm no unintended changes to `assets/product_catalog_template.csv`
+- Confirm live Pages has the latest `app.js?v=...`
+- If changing visual/mobile: check iPhone-width layout
+- If changing checkout: test booking and order URLs separately
+- If changing production: test direct production form URL without query params
+
+---
+
+## Known Local State
+
+As of 2026-07-15:
+
+- `AGENTS.md` is untracked
+- `CODEX_HANDOFF.md` is untracked
+- Do not commit untracked files unless the owner explicitly wants them tracked

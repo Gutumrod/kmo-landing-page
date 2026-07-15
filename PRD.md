@@ -1,156 +1,170 @@
-# PRD: KMO RACK BAR CUSTOM - Landing Page & Booking System
+# PRD: KMO RACK BAR CUSTOM - Landing Catalog
 
-**Project Owner:** คุณฟรี (CEO / Project Owner)  
-**Project Orchestrator:** Antigravity Agent  
-**Execution Engine:** OpenClaw (Multi-model Pipeline)  
-**Created:** 2026-07-07  
-**Last Updated:** 2026-07-07
+**Project Owner:** คุณฟรี
+**Created:** 2026-07-07
+**Last Updated:** 2026-07-15
+**Status:** Active, near production polish
 
 ---
 
 ## 1. Objective
 
-**ปัญหาที่ต้องการแก้:**
-- ลูกค้าของร้าน **KMO RACK BAR CUSTOM** ที่ต้องการสั่งทำหรือติดตั้งแร็คท้าย แครชบาร์ หรือแร็คข้าง ต้องติดต่อสื่อสารผ่านทางแชท (Line/Facebook) เป็นหลัก ทำให้การดูรายการสินค้า การประเมินราคา การเช็คคิวงาน และการบันทึกข้อมูลตกหล่นและล่าช้า
-- ปัจจุบันยังไม่มีหน้ารวมศูนย์สินค้า (Catalog) และระบบเช็คคิวงานติดตั้งที่เป็นมิตรต่อผู้ใช้งาน (User-Friendly) ส่งผลให้ร้านเสียโอกาสในการขายและเสียเวลาในการตอบคำถามคิวงานซ้ำๆ
+KMO RACK BAR CUSTOM ต้องมีหน้าร้านแคตตาล็อกที่ลูกค้าเปิดดูสินค้า เลือกรายการ และเริ่มทำรายการได้เองโดยไม่ต้องถามแอดมินทุกขั้นตอน
 
-**เป้าหมาย:**
-- สร้าง **Landing Page** ที่ดูพรีเมียม สวยงาม รวดเร็ว และเป็นมิตรต่ออุปกรณ์มือถือ (Mobile-Responsive) สำหรับร้าน KMO
-- มีแคตตาล็อกแสดงสินค้าพร้อมภาพถ่ายที่แบ่งตามหมวดหมู่ชัดเจน (แร็คท้าย, แร็คข้าง, แครชบาร์ ฯลฯ)
-- มีระบบ **Cart & Manual Checkout** ที่ให้ลูกค้าเลือกสินค้า สรุปรายการคำสั่งซื้อ พร้อมแสดง QR Code บัญชีธนาคารสำหรับโอนเงินและช่องทางติดต่อส่งสลิปหลักฐาน
-- มีหน้า **Interactive Booking Calendar** เชื่อมต่อกับระบบ Google Calendar/Google Sheets (ผ่าน Apps Script) เพื่อให้ลูกค้าเช็คจำนวนคิวที่ยังว่างในแต่ละวัน และส่งจองคิวออนไลน์ด้วยฟอร์มที่สะอาดและเข้าใจง่าย
+เป้าหมายหลัก:
 
-**ขอบเขต:**
-- **อยู่ใน Scope:**
-  - **Premium Dark-Theme UI/UX:** ออกแบบหน้าเว็บสไตล์โมเดิร์น โทนสีทอง/เหลืองเข้มตัดกับสีดำ-เทาเข้ม ตามแบรนด์ KMO ใช้ฟอนต์ Kanit/Sarabun วรรณยุกต์ไม่จม
-  - **Product Showcase & Catalog:** แสดงรายละเอียดสินค้า ราคา และรูปภาพสินค้า แยกหมวดหมู่แร็คท้าย แครชบาร์ แร็คข้าง และบริการเสริม
-  - **Local Cart System:** ระบบตะกร้าสินค้าชั่วคราวบนเบราว์เซอร์ (Local Storage) เพื่อกดสั่งซื้อหลายรายการได้
-  - **Manual Checkout Flow:** สรุปยอดรวมสินค้า แสดงเลขบัญชี/QR Code สำหรับการชำระเงินแบบโอนเงิน พร้อมปุ่มลิงก์ด่วนสำหรับแจ้งแอดมินทาง Line หรือแชทแพลตฟอร์ม
-  - **Booking Calendar & Intake Form:** ดึงข้อมูลปฏิทินคิวว่างรายวันจาก Google Calendar API (ผ่าน Apps Script `doGet`) และส่งข้อมูลจองคิวกลับไปบันทึกที่ Google Sheet (ผ่าน Apps Script `doPost`)
-- **ไม่อยู่ใน Scope (Out of Scope):**
-  - ระบบตัดบัตรเครดิต หรือระบบชำระเงินอัตโนมัติ (Payment Gateway Integration)
-  - ระบบสมัครสมาชิกของลูกค้า (User Authentication)
-  - ระบบควบคุมสต็อกสินค้าและระบบหลังบ้านบริหารงานคลังขั้นสูง (Inventory Management)
+- ลดเวลาคุยซ้ำเรื่องสินค้า/รุ่นรถ/รายการที่ต้องการทำ
+- เพิ่มช่องทางสั่งตรงกับร้าน เพื่อลดผลกระทบจากค่าคอมแพลตฟอร์ม
+- ให้ลูกค้าเลือกสินค้าแล้วส่งข้อมูลต่อไป production forms ได้
+- ทำให้แอดมินเห็นบริบทสินค้า/ราคาอ้างอิง/รุ่นรถจาก landing page
 
 ---
 
-## 2. Full System Architecture
+## 2. Scope
 
-### Communication Flow
-```
-CEO (Telegram) → Antigravity (Manager) → Mailbox → OpenClaw (Worker) → Antigravity → CEO
-```
+### In Scope
 
-### Component Stack
+- Industrial black + safety-yellow landing page
+- Product catalog from local CSV
+- Search by product, brand, model, category, description
+- Category filters
+- Load-more catalog UX for large product list
+- Cart drawer with booking and order groups
+- Direct-order and Shopee coexistence
+- Query prefill into production booking/order forms
+- Structured cart metadata handoff to production
+- Mobile responsive layout
 
-| Component | Technology |
-|-----------|------------|
-| Management | Antigravity Agent (Python / Global config) |
-| Execution | OpenClaw (Node.js) |
-| Tool Pool | Gemini 3.5 Flash (Medium), Custom Skills |
-| Data Store | Google Sheets (ฐานข้อมูลคิว), LocalStorage (ตะกร้าสินค้าชั่วคราว) |
-| Frontend | Vanilla HTML5, Vanilla CSS3 (Custom Grid, CSS Variables), Vanilla JS |
-| Infrastructure | Google Apps Script (Web App endpoints), GitHub Pages |
+### Out of Scope For This Repo
 
----
+- Payment gateway
+- Customer authentication
+- Inventory management
+- Production transaction forms
+- Supabase schema/RPC/dashboard changes
+- Booking calendar implementation inside this landing repo
 
-## 3. Mailbox Structure & Protocol (v2)
-
-**Path:** `D:\AI-Workspace\mailbox\`
-
-| Folder | หน้าที่ |
-|--------|--------|
-| `inbox/hermes/` | งานของ Hermes / Antigravity (รอทำ) |
-| `inbox/openclaw/` | งานของ OpenClaw (รอทำ) |
-| `results/hermes/` | ผลลัพธ์ Hermes / Antigravity (เฉพาะสำเร็จ) |
-| `results/openclaw/` | ผลลัพธ์ OpenClaw (เฉพาะสำเร็จ) |
-| `errors/hermes/` | งาน Hermes / Antigravity ที่ Failed |
-| `errors/openclaw/` | งาน OpenClaw ที่ Failed |
-| `archive/` | งานเก่า (cleanup) |
-
-### Task Format (v2)
-
-```json
-{
-  "task_id": "task_20260707_182500_kmo_landing",
-  "title": "สร้างหน้า Landing Page KMO RACK BAR CUSTOM",
-  "assigned_to": "OpenClaw",
-  "type": "generic",
-  "status": "pending",
-  "message": "สร้างหน้า Landing Page สำหรับร้าน KMO ตามรายละเอียด PRD",
-  "created_at": "2026-07-07T18:25:00+07:00",
-  "claimed_at": null,
-  "completed_at": null,
-  "deadline": "2026-07-07T21:00:00+07:00",
-  "source": "CEO",
-  "priority": "high",
-  "timeout_minutes": 30,
-  "model": "gemini-3.5-flash",
-  "deliverables": [],
-  "context": "",
-  "inputs": {},
-  "expected_outputs": {},
-  "on_success": {
-    "action": "notify_ceo",
-    "next_task": null
-  }
-}
-```
+Transaction forms live in `kmorackbarcustom.github.io`.
 
 ---
 
-## 4. Detailed Implementation Steps
+## 3. System Architecture
 
-### Phase 1: Setup & Design Blueprint (โครงสร้างพื้นฐานและการออกแบบ)
-- [ ] สรุปโทนสี พาเลทสี แบบอักษร (Design Tokens) ลงใน `styles.css`
-- [ ] คัดลอกและสร้างโครงสร้างโฟลเดอร์สำหรับพัฒนาโค้ดจริงใน `D:\AI-Workspace\projects\landing page\KMO`
-- [ ] ออกแบบโมเดลจำลองรูปภาพสินค้า หรือคัดลอกไฟล์รูปจาก Google Drive (`X:\My Drive\workspace\K-MO\รูปสินค้า`) มาเตรียมใช้งานในโปรเจกต์
+| Component | Current implementation |
+|---|---|
+| Frontend | Vanilla HTML, CSS, JavaScript |
+| Catalog data | `assets/product_catalog_template.csv` |
+| Cart storage | Browser localStorage |
+| Transaction destination | Production GitHub Pages repo |
+| Production backend | Supabase-backed production forms |
+| Hosting | GitHub Pages |
 
-### Phase 2: Page Implementation & Frontend (หน้าตาเว็บและระบบตระกร้า)
-- [ ] พัฒนา HTML โครงสร้างหลัก (Header, Hero Section, Catalog, Cart, Booking Section, Footer)
-- [ ] พัฒนา CSS สำหรับ Layout, Grid, Responsive Design และ Micro-animations ที่น่าดึงดูด
-- [ ] พัฒนา JavaScript จัดการ Catalog สไลด์โชว์สินค้า และระบบการเลือกสินค้าใส่ตะกร้า (Cart logic)
-- [ ] พัฒนาขั้นตอนการสั่งจองและ Checkout แบบ Manual พร้อมกล่องข้อความโอนเงินและช่องทางส่งใบเสร็จ
+Landing repo:
 
-### Phase 3: Booking Calendar Integration (เชื่อมต่อระบบจองคิว)
-- [ ] พัฒนาหน้า Calendar Widget ในตัว Landing Page เพื่อแสดงคิวงาน
-- [ ] เชื่อมต่อ API `doGet` จาก Google Apps Script เพื่อดึงปริมาณคิวในแต่ละวันมาแสดงผลแบบ Interactive (แสดงวันเต็ม/วันว่าง)
-- [ ] เชื่อมต่อ API `doPost` จากฟอร์มกรอกข้อมูลลูกค้าแะลการนัดหมายเพื่อบันทึกลง Google Sheet
-- [ ] ทดสอบระบบส่งคิวและเช็คความถูกต้องบนปฏิทิน Google Calendar
+`D:\AI-Workspace\projects\kmo-landing-page\`
 
-### Phase 4: Quality Assurance & Deployment (ตรวจสอบคุณภาพและการติดตั้ง)
-- [ ] ตรวจสอบความถูกต้องของสระภาษาไทยและวรรณยุกต์จม
-- [ ] ทดสอบความเร็วและ Performance บนโทรศัพท์มือถือและอุปกรณ์หน้าจอขนาดต่างๆ
-- [ ] สร้างคู่มือการนำระบบขึ้นติดตั้ง (Deployment SOP) บน GitHub Pages
+Production repo:
+
+`D:\AI-Workspace\projects\kmorackbarcustom.github.io\`
 
 ---
 
-## 5. Success Criteria
+## 4. Product Data Requirements
 
-- [ ] หน้าเว็บโหลดได้เร็ว (ในระยะเวลาต่ำกว่า 2 วินาทีบนเครือข่ายมือถือ 4G/5G)
-- [ ] หน้าตาของเว็บต้องเป็นแบบ Premium Dark-Theme ที่ดูแพง สมกับเป็นร้าน Custom มืออาชีพ
-- [ ] ระบบสั่งซื้อ (Cart) และปฏิทินจองคิวสามารถตอบสนองและส่งข้อมูลไปถึงปลายทางของ Google Sheet ได้สำเร็จ
-- [ ] การแสดงผลภาษาไทยถูกต้อง 100% ไม่มีปัญหาวรรณยุกต์ซ้อนหรือจมลงใต้ฐานอักษร
+CSV file:
 
----
+`assets/product_catalog_template.csv`
 
-## 6. Risks & Mitigation
+Required columns:
 
-| ความเสี่ยง | ผลกระทบ | วิธีแก้ |
-|-----------|----------|----------|
-| ปริมาณการเรียกดูปฏิทินสะสมสูงเกินลิมิตโควตาของ Apps Script | หน้าจองคิวปฏิทินอาจไม่แสดงผลชั่วคราว | ทำระบบ Cache ใน LocalStorage หรือแจ้งเตือนให้ติดต่อจองคิวทางแชทสำรองเมื่อ API ล่ม |
-| ภาพถ่ายจากไฟล์ดิบมีขนาดใหญ่เกินไปทำให้เว็บโหลดช้า | หน้าเว็บช้าและเกิด UX แย่สำหรับผู้ใช้ | นำไฟล์ภาพไปทำการบีบอัดเป็นสกุล `.webp` ที่มีขนาดเบาแต่คุณภาพสูงก่อนนำขึ้นโฮสต์จริง |
-| ข้อมูลใน Google Sheet อาจรั่วไหลหากลูกค้าเดา URL ของ Apps Script | ความเป็นส่วนตัวของลูกค้าถูกเปิดเผย | กำหนดให้ฟังก์ชัน `doGet` คืนค่าเฉพาะจำนวนยอดจองสะสมต่อวัน (จำนวนตัวเลข 1, 2, 3) โดยไม่มีการส่งชื่อ/เบอร์โทรลูกค้าออกมาเด็ดขาด |
+`id,brand,model,name,price,category,description,image_url,shopee_url,allow_booking,allow_order`
 
----
+Rules:
 
-## 7. Related Documents
-
-- `PROJECT_CONTEXT.md` — บันทึกความคืบหน้าการพัฒนาโปรเจกต์
-- `D:\AI-Workspace\mailbox\` — ประวัติงานรับและส่งมอบ
-- `X:\My Drive\workspace\K-MO\` — โฟลเดอร์เก็บทรัพยากร รูปภาพ และไฟล์งานจาก Google Drive
+- `id` must be unique
+- `price` can be `0` when price must be confirmed by admin
+- `brand/model` are used for search and production form prefill
+- `allow_booking=TRUE` means customer can add item to booking cart
+- `allow_order=TRUE` means customer can add item to direct-order cart
+- `shopee_url` adds a Shopee button but does not remove direct order
 
 ---
 
-**สถานะ:** Draft  
-**Priority:** High
+## 5. User Flows
+
+### Browse / Search
+
+1. Customer lands on page
+2. Catalog loads from local CSV
+3. Customer searches by brand/model/product
+4. Customer filters by category
+5. Page shows 24 products first
+6. Customer taps `ดูเพิ่มเติม` to load more products
+
+### Booking Flow
+
+1. Product has `allow_booking=TRUE`
+2. Product card shows `นัดคิวคัสตอมงาน`
+3. Customer adds item to booking cart
+4. Checkout opens production `booking.html`
+5. Landing passes `services`, `note`, `cart_meta`, and shared `brand/model` when possible
+
+### Direct Order Flow
+
+1. Product has `allow_order=TRUE`
+2. Product card shows `สั่งตรงกับร้าน`
+3. Customer adds item to order cart
+4. Checkout opens production `CustomerOrder.html`
+5. Landing passes `products`, `other_text`, `cart_meta`, and shared `brand/model` when possible
+
+### Shopee Flow
+
+1. Product has `shopee_url`
+2. Product card shows `ซื้อผ่าน Shopee`
+3. Customer can open Shopee in a new tab
+4. Direct-order button remains available when `allow_order=TRUE`
+
+---
+
+## 6. Success Criteria
+
+- Catalog loads from CSV reliably
+- Search/filter works with Thai product text and brand/model
+- Mobile layout does not overlap header/nav/headings
+- Product cards show the right buttons from CSV fields
+- Booking and order flows prefill production forms
+- Shopee link is optional and additive
+- Landing page remains fast enough for mobile use
+- Future agents can identify repo boundaries without guessing
+
+---
+
+## 7. Risks
+
+| Risk | Impact | Mitigation |
+|---|---|---|
+| CSV encoding breaks Thai text | Product data unreadable | Keep UTF-8 CSV and verify in browser/GitHub |
+| User edits wrong repo | Production or landing drift | Keep repo map in docs and gate before edits |
+| Browser caches old JS | UI label/logic appears stale | Bump `app.js?v=...` whenever app logic changes |
+| Product count grows too large | Mobile catalog feels long | Use load-more; consider featured/best-seller section |
+| Production forms change separately | Prefill can drift | Test production form direct URLs and query-prefill URLs |
+
+---
+
+## 8. Next Product Decisions
+
+1. Add `สินค้าขายดี` / featured products section
+2. Decide whether featured data is fixed in JS or controlled from CSV
+3. Finish real product images and remaining product descriptions
+4. Decide timing for custom domain
+5. Decide if production dashboard needs richer display of `cart_meta`
+
+---
+
+## 9. Related Documents
+
+- `PROJECT_CONTEXT.md` — latest implementation status
+- `implementation_plan.md` — current roadmap and validation checklist
+- `DESIGN_BRIEF.md` — industrial visual direction and JS-bound IDs/classes
+- `CODEX_TASK.md` — archived D1 task brief
+- `CODEX_HANDOFF.md` — local agent handoff, currently untracked unless intentionally committed

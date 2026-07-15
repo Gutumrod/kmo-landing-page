@@ -28,7 +28,7 @@
 |---|---|
 | Header/Nav | โลโก้ + เมนู (หน้าแรก/แคตตาล็อก/จองคิว) + ปุ่มตะกร้า |
 | Hero | หัวข้อใหญ่ + คำโปรย + ปุ่ม CTA 2 ปุ่ม (ดูสินค้า/เช็คคิว) |
-| Catalog | ช่องค้นหา + ปุ่ม filter หมวดหมู่ (6 หมวด+ทั้งหมด) + grid การ์ดสินค้า (ดึงจาก Google Sheets CSV แบบ real-time) |
+| Catalog | ช่องค้นหา + ปุ่ม filter หมวดหมู่ (6 หมวด+ทั้งหมด) + grid การ์ดสินค้า (ดึงจาก `assets/product_catalog_template.csv`) + ปุ่มดูเพิ่มเติม |
 | Booking Info | บล็อกอธิบายเงื่อนไขจองคิว (เวลาทำการ/มัดจำ/ความสะดวก) + ปุ่ม CTA |
 | Cart Drawer | แผงเลื่อนออกจากขวา แบ่ง 2 กลุ่ม (จองคิวติดตั้ง / สั่งซื้อกับทางร้าน) แยกยอดรวม+ปุ่มเช็คเอาต์ |
 | Footer | เวลาทำการ, ช่องทางติดต่อ (LINE/เบอร์โทร), ลิงก์ GitHub |
@@ -40,6 +40,7 @@
 ดีไซน์ใหม่ปรับหน้าตา/สี/เลย์เอาต์ได้เต็มที่ แต่ **id/class ต่อไปนี้ต้องคงไว้เป๊ะๆ** (เปลี่ยนสไตล์ได้ เปลี่ยนชื่อไม่ได้):
 
 - `#product-grid-container` — ที่ใส่การ์ดสินค้า (JS generate เข้ามาเอง)
+- `#catalog-load-more`, `#catalog-count`, `#catalog-load-more-btn` — ส่วนแสดงจำนวนสินค้าและปุ่ม `ดูเพิ่มเติม`
 - `#catalog-search-input` — ช่องค้นหา
 - `.filter-btn` + attribute `data-category` — ปุ่มกรองหมวด (ต้องมีครบ 7 ปุ่ม: all/rear/side/crashbar/accessory/gear/service)
 - `#cart-toggle`, `#cart-drawer`, `#cart-drawer-backdrop`, `#cart-close` — เปิด/ปิดตะกร้า
