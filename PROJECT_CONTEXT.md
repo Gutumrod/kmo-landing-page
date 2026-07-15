@@ -1,7 +1,7 @@
 # Project Context: KMO RACK BAR CUSTOM - Landing Catalog
 
 **Last Updated:** 2026-07-15
-**Current Phase:** D1 + D2 metadata/prefill complete, catalog import complete, featured products support added
+**Current Phase:** D1 + D2 metadata/prefill complete, catalog moving from CSV snapshot to HR Supabase table
 **Progress:** ~98% สำหรับ landing catalog และ handoff ไป production forms
 **Live URL:** `https://gutumrod.github.io/kmo-landing-page/`
 
@@ -14,7 +14,7 @@
 หน้าที่ของ repo นี้:
 
 - หน้าแรก / hero / branding
-- catalog สินค้าจากไฟล์ CSV local
+- catalog สินค้าจาก Supabase table `products` ใน HR project
 - search / filter / load more
 - cart drawer แบ่ง booking และ order
 - ส่งข้อมูลสินค้าในตะกร้าไป production forms ผ่าน query string
@@ -46,8 +46,9 @@
 
 ### Catalog
 
-- Source of truth ปัจจุบันคือ `assets/product_catalog_template.csv`
-- จำนวนสินค้าใน CSV ล่าสุด: 195 รายการ
+- Runtime source of truth ปัจจุบันคือ Supabase table `public.products` ใน HR project `ybyseaenceyswjnwdmdf`
+- `assets/product_catalog_template.csv` ยังเก็บไว้เป็น snapshot/fallback reference และ seed source
+- จำนวนสินค้าใน CSV snapshot ล่าสุด: 195 รายการ
 - Schema ปัจจุบัน:
   `id,brand,model,name,price,category,description,image_url,shopee_url,allow_booking,allow_order,featured`
 - จำนวนตามหมวดล่าสุด:
@@ -57,12 +58,12 @@
   - `side`: 25
   - `service`: 1
 - ยังไม่มี `gear` ใน CSV ล่าสุด แม้ปุ่ม filter ยังรองรับอยู่
-- มี fallback products 7 รายการใน `app.js` ถ้า CSV โหลดไม่ได้
+- มี fallback products 7 รายการใน `app.js` ถ้า Supabase โหลดไม่ได้
 - คอลัมน์ `featured` เพิ่มแล้ว ค่าเริ่มต้นทุกแถวเป็น `FALSE` จนกว่า owner จะ mark สินค้าขายดีเอง
 
 ### Product actions
 
-ปุ่มในการ์ดสินค้าขึ้นตามข้อมูล CSV:
+ปุ่มในการ์ดสินค้าขึ้นตามข้อมูล Supabase:
 
 - `allow_booking=TRUE` แสดงปุ่ม `นัดคิวคัสตอมงาน`
 - `allow_order=TRUE` แสดงปุ่ม `สั่งตรงกับร้าน`
@@ -93,7 +94,7 @@ Shopee เป็นช่องทางเสริมเท่านั้น 
 - ใช้ industrial black + safety yellow theme
 - แก้ mobile header/nav ให้ไม่ชนกันแล้ว
 - แก้ heading mobile ด้วย `.mobile-title-break`
-- script cache ล่าสุดใน `index.html`: `app.js?v=11.5`
+- script cache ล่าสุดใน `index.html`: `app.js?v=11.6`
 - CSS cache ล่าสุด: `styles.css?v=11.3`
 
 ---
@@ -110,6 +111,7 @@ Shopee เป็นช่องทางเสริมเท่านั้น 
 | D2 metadata | Done | `cart_meta`, `estimated_total`, `source_page` ใน production DB/RPC |
 | Brand/model prefill | Done | CSV + landing + production forms รองรับ `brand/model` |
 | Local CSV catalog | Done | ใช้ `assets/product_catalog_template.csv` แทน Google Sheet runtime |
+| Supabase catalog migration prep | In progress | runtime fetch เปลี่ยนไปอ่าน HR Supabase `products`; SQL/function/seed ต้องให้ operator run/deploy จริง |
 | Shopee/direct order logic | Done | Shopee ไม่แทนปุ่มสั่งตรง |
 | Load more | Done | 24 รายการแรก + ปุ่มเพิ่มครั้งละ 24 |
 | Product booking label | Done | `จองติดตั้ง` เปลี่ยนเป็น `นัดคิวคัสตอมงาน` |
@@ -148,8 +150,9 @@ Production repo:
 
 | Task | Priority | Notes |
 |---|---|---|
-| เติมข้อมูลสินค้า/รูปจริงที่เหลือ | High | CSV พร้อมแล้ว ผู้ใช้จะช่วยเติมข้อมูลต่อ |
-| Mark สินค้าขายดีใน CSV | High | owner จะเปลี่ยน `featured` จาก `FALSE` เป็น `TRUE` เองตาม id reference |
+| Run HR Supabase SQL + deploy products-proxy | High | ต้อง run `supabase-hr/products_setup.sql`, `products_seed.sql`, deploy function กับ project `ybyseaenceyswjnwdmdf` |
+| เติมข้อมูลสินค้า/รูปจริงที่เหลือ | High | หลัง migration ให้แก้ผ่าน `admin-products.html`; CSV เป็น snapshot/seed ไม่ใช่ runtime source |
+| Mark สินค้าขายดี | High | owner เปลี่ยน `featured` ผ่าน Supabase/admin page |
 | ตรวจ UX หลังสินค้า 195 รายการบนมือถือจริง | Medium | load-more ทำแล้ว แต่ยังควรดู spacing/card density |
 | Server-side slip/upload validation ใน production | Medium | เป็น production scope ไม่ใช่ landing |
 | ราคา/สถานะจริงใน dashboard เพิ่มเติม | Low-Medium | metadata รองรับแล้ว ถ้าจะทำ workflow หลังบ้านเพิ่มค่อยวางรอบใหม่ |
@@ -161,7 +164,7 @@ Production repo:
 
 | Decision | Current stance |
 |---|---|
-| Google Sheet ยังใช้เป็น runtime source ไหม | ไม่ใช้ตอนนี้ เว็บใช้ local CSV เพื่อคุม encoding/deploy ให้นิ่ง |
+| Google Sheet ยังใช้เป็น runtime source ไหม | ไม่ใช้แล้ว; runtime จะย้ายไป Supabase `products` ใน HR project |
 | Brand/model ต้องตรง form production ไหม | ใช่ ตอนนี้ส่ง query prefill แล้ว |
 | Shopee item ควรมีปุ่มสั่งตรงด้วยไหม | ใช่ ลูกค้าที่ไม่อยากจ่ายค่าบวก platform ต้องสั่งตรงได้ |
 | Catalog จำนวนเยอะควรใช้ pagination หรือ load more | ใช้ load more ก่อน เหมาะกับ mobile มากกว่า |

@@ -7,7 +7,8 @@
 // ==========================================
 let PRODUCTS = [];
 
-const PRODUCT_CATALOG_CSV_URL = 'assets/product_catalog_template.csv';
+const PRODUCT_CATALOG_SUPABASE_URL = 'https://ybyseaenceyswjnwdmdf.supabase.co';
+const PRODUCT_CATALOG_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlieXNlYWVuY2V5c3dqbndkbWRmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM3OTk3MTgsImV4cCI6MjA4OTM3NTcxOH0.NpaB7XrM0MzTknMvFLKkN57WG7_GkCb9zxZQUROz9Ug';
 const BOOKING_URL = 'https://kmorackbarcustom.github.io/booking.html';
 const CUSTOMER_ORDER_URL = 'https://kmorackbarcustom.github.io/CustomerOrder.html';
 const FALLBACK_PRODUCT_IMAGE = 'assets/images/service.jpg';
@@ -108,36 +109,38 @@ let visibleCatalogCount = CATALOG_PAGE_SIZE;
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
   initCart();
-  loadProductsFromCSV().then(() => {
+  loadProductsFromSupabase().then(() => {
     renderCatalog();
   });
   initEventListeners();
 });
 
 // ==========================================
-// 3.5 GOOGLE SHEETS CSV CLIENT-SIDE PARSER
+// 3.5 SUPABASE PRODUCT CATALOG CLIENT
 // ==========================================
-async function loadProductsFromCSV() {
+async function loadProductsFromSupabase() {
   if (isCatalogLoading) return;
   isCatalogLoading = true;
   toggleLoader(true, 'กำลังดึงข้อมูลแคตตาล็อกสินค้า...');
   const startTime = performance.now();
 
   try {
-    const response = await fetch(PRODUCT_CATALOG_CSV_URL);
-    if (!response.ok) throw new Error('Local catalog response failed');
-    const csvText = await response.text();
-    
-    const parsed = parseCSV(csvText);
-    if (parsed && parsed.length > 0) {
-      PRODUCTS = parsed.map(normalizeProduct);
-      const endTime = performance.now();
-      console.log(`Successfully fetched and parsed ${PRODUCTS.length} products from CSV in ${(endTime - startTime).toFixed(2)}ms`);
-    } else {
-      throw new Error('Parsed CSV resulted in 0 products');
-    }
+    const response = await fetch(`${PRODUCT_CATALOG_SUPABASE_URL}/rest/v1/products?select=*&order=created_at.desc,id.asc`, {
+      headers: {
+        apikey: PRODUCT_CATALOG_SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${PRODUCT_CATALOG_SUPABASE_ANON_KEY}`
+      }
+    });
+
+    if (!response.ok) throw new Error(`Supabase catalog response failed (${response.status})`);
+    const products = await response.json();
+    if (!Array.isArray(products) || products.length === 0) throw new Error('Supabase catalog returned 0 products');
+
+    PRODUCTS = products.map(normalizeProduct);
+    const endTime = performance.now();
+    console.log(`Successfully fetched ${PRODUCTS.length} products from Supabase in ${(endTime - startTime).toFixed(2)}ms`);
   } catch (error) {
-    console.warn('Failed to load products from local catalog CSV. Falling back to default list. Error:', error);
+    console.warn('Failed to load products from Supabase. Falling back to default list. Error:', error);
     PRODUCTS = FALLBACK_PRODUCTS.map(normalizeProduct);
   } finally {
     isCatalogLoading = false;
@@ -145,66 +148,13 @@ async function loadProductsFromCSV() {
   }
 }
 
-function parseCSV(text) {
-  const lines = [];
-  let row = [""];
-  let inQuotes = false;
-
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i];
-    const next = text[i+1];
-    if (c === '"') {
-      if (inQuotes && next === '"') {
-        row[row.length - 1] += '"';
-        i++;
-      } else {
-        inQuotes = !inQuotes;
-      }
-    } else if (c === ',' && !inQuotes) {
-      row.push("");
-    } else if ((c === '\r' || c === '\n') && !inQuotes) {
-      if (c === '\r' && next === '\n') {
-        i++;
-      }
-      lines.push(row);
-      row = [""];
-    } else {
-      row[row.length - 1] += c;
-    }
-  }
-  if (row.length > 1 || row[0] !== "") {
-    lines.push(row);
-  }
-
-  if (lines.length < 2) return [];
-  const headers = lines[0].map(h => h.trim().toLowerCase());
-  const products = [];
-
-  for (let i = 1; i < lines.length; i++) {
-    const cells = lines[i];
-    if (cells.length < headers.length) continue;
-    const p = {};
-    headers.forEach((header, index) => {
-      const val = cells[index] ? cells[index].trim() : '';
-      if (header === 'price') {
-        p[header] = parseInt(val) || 0;
-      } else if (header === 'allow_booking' || header === 'allow_order' || header === 'featured') {
-        p[header] = val.toUpperCase() === 'TRUE';
-      } else if (header === 'image_url') {
-        p[header] = val;
-        p['image'] = val; // map alias
-      } else {
-        p[header] = val;
-      }
-    });
-    products.push(p);
-  }
-  return products;
-}
-
 function normalizeProduct(product) {
   return {
     ...product,
+    price: Number(product.price || 0),
+    image: product.image_url || product.image || '',
+    allow_booking: product.allow_booking === true,
+    allow_order: product.allow_order === true,
     featured: product.featured === true
   };
 }

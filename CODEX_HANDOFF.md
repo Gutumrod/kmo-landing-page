@@ -54,7 +54,7 @@ Completed:
 
 - Industrial KMO design import
 - Favicon
-- Local CSV catalog
+- Supabase catalog runtime prep
 - 195 product rows
 - Brand/model fields
 - Search by brand/model/name/description/category
@@ -67,17 +67,22 @@ Completed:
 - Catalog load-more
 - Product booking button label changed to `นัดคิวคัสตอมงาน`
 - Featured products section support; hidden until CSV has `featured=TRUE`
+- Landing `app.js` reads runtime products from HR Supabase table `public.products`; CSV remains as snapshot/seed reference
 
 Current cache refs:
 
 - CSS: `styles.css?v=11.3`
-- JS: `app.js?v=11.5`
+- JS: `app.js?v=11.6`
 
 ---
 
-## Product CSV
+## Product Catalog Source
 
-Source:
+Runtime source:
+
+`public.products` in HR Supabase project `ybyseaenceyswjnwdmdf`
+
+Snapshot / seed source:
 
 `assets/product_catalog_template.csv`
 
@@ -133,11 +138,11 @@ Latest checks:
 
 ## Next Work
 
-1. Owner marks `featured=TRUE` rows in CSV for `สินค้าขายดี`
-2. Continue filling product images/descriptions in CSV
-3. Recheck mobile layout after content is fuller
-4. Production hardening: server-side slip/upload validation
-5. Custom domain after content is final
+1. Run HR Supabase setup/seed SQL and deploy `products-proxy`
+2. Verify `admin-products.html` can create products through `products-proxy`
+3. Owner marks `featured=TRUE` rows in Supabase/admin page for `สินค้าขายดี`
+4. Continue filling product images/descriptions through admin page
+5. Recheck mobile layout after content is fuller
 
 ---
 
