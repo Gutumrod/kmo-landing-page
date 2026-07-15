@@ -642,7 +642,7 @@ function createProductCardElement(product) {
     const bookingBtn = document.createElement('button');
     bookingBtn.className = 'btn-add-cart';
     bookingBtn.type = 'button';
-    bookingBtn.textContent = 'จองติดตั้ง';
+    bookingBtn.textContent = 'นัดคิวคัสตอมงาน';
     bookingBtn.addEventListener('click', () => addToCart(product.id, 'booking'));
     actions.appendChild(bookingBtn);
   }
