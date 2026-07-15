@@ -666,6 +666,48 @@ section {
   gap: 12px;
 }
 
+.featured-products {
+  margin: 0 auto 42px;
+  padding: 24px;
+  background: rgba(18, 20, 20, 0.76);
+  border: 1px solid rgba(255, 207, 7, 0.4);
+  border-radius: var(--radius-md);
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.35);
+}
+
+.featured-products-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 207, 7, 0.18);
+}
+
+.featured-products-kicker {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--accent-color);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.featured-products-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 600;
+  font-style: italic;
+  line-height: 1.25;
+  color: var(--text-color);
+}
+
+.featured-products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+}
+
 .catalog-empty-state {
   grid-column: 1 / -1;
   max-width: 560px;
@@ -788,6 +830,11 @@ section {
   transform: translateY(-8px) scale(1.015);
 }
 
+.product-card-featured {
+  border-color: rgba(255, 207, 7, 0.82);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.34), var(--accent-glow);
+}
+
 .product-card:hover::before {
   transform: scaleX(1);
 }
@@ -827,6 +874,25 @@ section {
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
+}
+
+.product-featured-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  padding: 5px 10px;
+  background: var(--accent-gradient);
+  color: #050505;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
 }
 
 .product-info {
@@ -1753,6 +1819,26 @@ footer {
 
   .catalog-search-input {
     font-size: 15px;
+  }
+
+  .featured-products {
+    margin-bottom: 30px;
+    padding: 18px;
+  }
+
+  .featured-products-header {
+    display: block;
+    margin-bottom: 14px;
+  }
+
+  .featured-products-title {
+    margin-top: 4px;
+    font-size: 21px;
+  }
+
+  .featured-products-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
   }
 
   .booking-card-premium {

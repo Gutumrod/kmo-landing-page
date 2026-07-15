@@ -1,7 +1,7 @@
 # Project Context: KMO RACK BAR CUSTOM - Landing Catalog
 
 **Last Updated:** 2026-07-15
-**Current Phase:** D1 + D2 metadata/prefill complete, catalog import complete, mobile polish in progress
+**Current Phase:** D1 + D2 metadata/prefill complete, catalog import complete, featured products support added
 **Progress:** ~98% สำหรับ landing catalog และ handoff ไป production forms
 **Live URL:** `https://gutumrod.github.io/kmo-landing-page/`
 
@@ -49,7 +49,7 @@
 - Source of truth ปัจจุบันคือ `assets/product_catalog_template.csv`
 - จำนวนสินค้าใน CSV ล่าสุด: 195 รายการ
 - Schema ปัจจุบัน:
-  `id,brand,model,name,price,category,description,image_url,shopee_url,allow_booking,allow_order`
+  `id,brand,model,name,price,category,description,image_url,shopee_url,allow_booking,allow_order,featured`
 - จำนวนตามหมวดล่าสุด:
   - `accessory`: 84
   - `crashbar`: 55
@@ -58,6 +58,7 @@
   - `service`: 1
 - ยังไม่มี `gear` ใน CSV ล่าสุด แม้ปุ่ม filter ยังรองรับอยู่
 - มี fallback products 7 รายการใน `app.js` ถ้า CSV โหลดไม่ได้
+- คอลัมน์ `featured` เพิ่มแล้ว ค่าเริ่มต้นทุกแถวเป็น `FALSE` จนกว่า owner จะ mark สินค้าขายดีเอง
 
 ### Product actions
 
@@ -92,8 +93,8 @@ Shopee เป็นช่องทางเสริมเท่านั้น 
 - ใช้ industrial black + safety yellow theme
 - แก้ mobile header/nav ให้ไม่ชนกันแล้ว
 - แก้ heading mobile ด้วย `.mobile-title-break`
-- script cache ล่าสุดใน `index.html`: `app.js?v=11.4`
-- CSS cache ล่าสุด: `styles.css?v=11.2`
+- script cache ล่าสุดใน `index.html`: `app.js?v=11.5`
+- CSS cache ล่าสุด: `styles.css?v=11.3`
 
 ---
 
@@ -113,6 +114,7 @@ Shopee เป็นช่องทางเสริมเท่านั้น 
 | Load more | Done | 24 รายการแรก + ปุ่มเพิ่มครั้งละ 24 |
 | Product booking label | Done | `จองติดตั้ง` เปลี่ยนเป็น `นัดคิวคัสตอมงาน` |
 | Mobile nav/heading fix | Done | Live Pages verified หลัง bump cache |
+| Featured products support | Done | section ซ่อนอัตโนมัติจนกว่า CSV จะมี `featured=TRUE` |
 
 ---
 
@@ -147,7 +149,7 @@ Production repo:
 | Task | Priority | Notes |
 |---|---|---|
 | เติมข้อมูลสินค้า/รูปจริงที่เหลือ | High | CSV พร้อมแล้ว ผู้ใช้จะช่วยเติมข้อมูลต่อ |
-| เพิ่ม section สินค้าขายดี | High | ควรอยู่ต้น catalog และเด่นกว่าการ์ดทั่วไป แต่ยังไม่ได้ implement |
+| Mark สินค้าขายดีใน CSV | High | owner จะเปลี่ยน `featured` จาก `FALSE` เป็น `TRUE` เองตาม id reference |
 | ตรวจ UX หลังสินค้า 195 รายการบนมือถือจริง | Medium | load-more ทำแล้ว แต่ยังควรดู spacing/card density |
 | Server-side slip/upload validation ใน production | Medium | เป็น production scope ไม่ใช่ landing |
 | ราคา/สถานะจริงใน dashboard เพิ่มเติม | Low-Medium | metadata รองรับแล้ว ถ้าจะทำ workflow หลังบ้านเพิ่มค่อยวางรอบใหม่ |
@@ -176,7 +178,7 @@ Production repo:
 | `assets/product_catalog_template.csv` | Product source of truth for landing catalog |
 | `PRD.md` | Updated high-level product requirements |
 | `implementation_plan.md` | Current implementation roadmap/status |
-| `CODEX_HANDOFF.md` | Local handoff summary for future agents; currently untracked unless intentionally added |
+| `CODEX_HANDOFF.md` | Local handoff summary for future agents; tracked in repo as of `3cf03b2` |
 | `DESIGN_BRIEF.md` | Industrial design requirements and JS-bound IDs/classes |
 
 ---
@@ -189,9 +191,9 @@ Latest checks done 2026-07-15:
 - landing remote confirmed as `Gutumrod/kmo-landing-page`
 - production remote confirmed as `kmorackbarcustom/kmorackbarcustom.github.io`
 - `node --check app.js` passed after latest app changes
-- live Pages served `app.js?v=11.4`
-- live app script contains `นัดคิวคัสตอมงาน`
-- live app script no longer contains old product-card label `จองติดตั้ง`
+- local browser check passed: with all CSV rows `featured=FALSE`, featured section stays hidden
+- local browser check passed: temporary in-memory `featured=TRUE` rows render in `สินค้าขายดี` and remain in main grid
+- live Pages deploy was not rechecked after the featured-products local changes
 
 ---
 

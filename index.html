@@ -11,7 +11,7 @@
   <link rel="icon" type="image/png" href="assets/images/favicon.png">
   
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="styles.css?v=11.2">
+  <link rel="stylesheet" href="styles.css?v=11.3">
 </head>
 <body>
 
@@ -97,6 +97,14 @@
         <button class="filter-btn" data-category="service">บริการ</button>
       </div>
       
+      <section class="featured-products" id="featured-products-section" hidden>
+        <div class="featured-products-header">
+          <span class="featured-products-kicker">Best Sellers</span>
+          <h3 class="featured-products-title">สินค้าขายดี</h3>
+        </div>
+        <div id="featured-products-container" class="featured-products-grid"></div>
+      </section>
+
       <div id="product-grid-container" class="product-grid">
         <!-- Products will be generated dynamically by JavaScript -->
       </div>
@@ -266,6 +274,6 @@
   <div class="toast-container" id="toast-wrapper"></div>
 
   <!-- JavaScript App Logic -->
-  <script src="app.js?v=11.4"></script>
+  <script src="app.js?v=11.5"></script>
 </body>
 </html>

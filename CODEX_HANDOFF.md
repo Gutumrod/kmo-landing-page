@@ -66,11 +66,12 @@ Completed:
 - Mobile nav/header/title fixes
 - Catalog load-more
 - Product booking button label changed to `นัดคิวคัสตอมงาน`
+- Featured products section support; hidden until CSV has `featured=TRUE`
 
 Current cache refs:
 
-- CSS: `styles.css?v=11.2`
-- JS: `app.js?v=11.4`
+- CSS: `styles.css?v=11.3`
+- JS: `app.js?v=11.5`
 
 ---
 
@@ -82,13 +83,14 @@ Source:
 
 Columns:
 
-`id,brand,model,name,price,category,description,image_url,shopee_url,allow_booking,allow_order`
+`id,brand,model,name,price,category,description,image_url,shopee_url,allow_booking,allow_order,featured`
 
 Rules:
 
 - `allow_booking=TRUE` shows `นัดคิวคัสตอมงาน`
 - `allow_order=TRUE` shows `สั่งตรงกับร้าน`
 - `shopee_url` shows `ซื้อผ่าน Shopee`
+- `featured=TRUE` shows the product in the `สินค้าขายดี` section while keeping it in the main catalog grid
 - Shopee is additive; do not remove direct-order button because a Shopee link exists
 
 ---
@@ -122,15 +124,16 @@ Latest checks:
 - Landing remote verified: `Gutumrod/kmo-landing-page`
 - Production remote verified: `kmorackbarcustom/kmorackbarcustom.github.io`
 - Production repo clean at `bf1b4e1`
-- Landing live page served `app.js?v=11.4`
-- Live app script contains `นัดคิวคัสตอมงาน`
-- Live app script no longer contains old product-card label `จองติดตั้ง`
+- `node --check app.js` passed for featured-products changes
+- Local browser check passed: with all CSV rows `featured=FALSE`, featured section stays hidden
+- Local browser check passed: temporary in-memory `featured=TRUE` rows render in `สินค้าขายดี` and remain in the main grid
+- Landing live Pages deploy was not rechecked after these local changes
 
 ---
 
 ## Next Work
 
-1. Add `สินค้าขายดี` / featured products section
+1. Owner marks `featured=TRUE` rows in CSV for `สินค้าขายดี`
 2. Continue filling product images/descriptions in CSV
 3. Recheck mobile layout after content is fuller
 4. Production hardening: server-side slip/upload validation
@@ -140,4 +143,4 @@ Latest checks:
 
 ## Local Git Note
 
-At the time of this handoff, `AGENTS.md` and this `CODEX_HANDOFF.md` may be untracked in the landing repo. Do not commit them unless the owner explicitly wants repo-local agent docs tracked.
+`AGENTS.md` and `CODEX_HANDOFF.md` are tracked in the landing repo as of commit `3cf03b2`.
