@@ -721,6 +721,41 @@ section {
   border-color: var(--accent-color);
   color: #000;
 }
+
+.catalog-load-more {
+  margin: 44px auto 0;
+  text-align: center;
+}
+
+.catalog-count {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-bottom: 14px;
+}
+
+.catalog-load-more-btn {
+  appearance: none;
+  border: 2px solid var(--accent-color);
+  background: rgba(255, 207, 7, 0.04);
+  color: var(--accent-color);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 13px 24px;
+  transition: all var(--transition-fast);
+}
+
+.catalog-load-more-btn:hover {
+  background: var(--accent-gradient);
+  color: #000;
+  box-shadow: var(--accent-glow);
+  transform: translateY(-1px);
+}
+
 .product-card {
   background-color: rgba(18, 20, 20, 0.7); /* กระจกฝ้าโปร่งแสง 70% */
   backdrop-filter: blur(12px); /* เอฟเฟกต์กระจกเบลอ */

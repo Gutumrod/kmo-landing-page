@@ -100,6 +100,8 @@ let cart = [];
 let isCatalogLoading = false;
 let activeCatalogCategory = 'all';
 let catalogSearchTerm = '';
+const CATALOG_PAGE_SIZE = 24;
+let visibleCatalogCount = CATALOG_PAGE_SIZE;
 
 // ==========================================
 // 3. INITIALIZATION
@@ -214,6 +216,7 @@ function initEventListeners() {
       filterBtns.forEach(b => b.classList.remove('active'));
       e.target.classList.add('active');
       activeCatalogCategory = e.target.dataset.category || 'all';
+      visibleCatalogCount = CATALOG_PAGE_SIZE;
       renderCatalog();
     });
   });
@@ -222,6 +225,15 @@ function initEventListeners() {
   if (catalogSearchInput) {
     catalogSearchInput.addEventListener('input', (e) => {
       catalogSearchTerm = e.target.value.trim().toLowerCase();
+      visibleCatalogCount = CATALOG_PAGE_SIZE;
+      renderCatalog();
+    });
+  }
+
+  const catalogLoadMoreBtn = document.getElementById('catalog-load-more-btn');
+  if (catalogLoadMoreBtn) {
+    catalogLoadMoreBtn.addEventListener('click', () => {
+      visibleCatalogCount += CATALOG_PAGE_SIZE;
       renderCatalog();
     });
   }
@@ -407,15 +419,40 @@ function renderCatalog(category = activeCatalogCategory) {
 
   activeCatalogCategory = category || 'all';
   const filteredProducts = getFilteredProducts(activeCatalogCategory, catalogSearchTerm);
+  const visibleProducts = filteredProducts.slice(0, visibleCatalogCount);
 
   if (filteredProducts.length === 0) {
     productGridContainer.appendChild(createCatalogEmptyStateElement());
+    updateCatalogLoadMore(0, 0);
     return;
   }
 
-  filteredProducts.forEach(product => {
+  visibleProducts.forEach(product => {
     productGridContainer.appendChild(createProductCardElement(product));
   });
+  updateCatalogLoadMore(visibleProducts.length, filteredProducts.length);
+}
+
+function updateCatalogLoadMore(visibleCount, totalCount) {
+  const loadMoreEl = document.getElementById('catalog-load-more');
+  const countEl = document.getElementById('catalog-count');
+  const buttonEl = document.getElementById('catalog-load-more-btn');
+  if (!loadMoreEl || !countEl || !buttonEl) return;
+
+  if (totalCount === 0) {
+    loadMoreEl.hidden = true;
+    return;
+  }
+
+  loadMoreEl.hidden = false;
+  countEl.textContent = `แสดง ${visibleCount.toLocaleString('th-TH')} จาก ${totalCount.toLocaleString('th-TH')} รายการ`;
+
+  const hasMore = visibleCount < totalCount;
+  buttonEl.hidden = !hasMore;
+  if (hasMore) {
+    const nextCount = Math.min(CATALOG_PAGE_SIZE, totalCount - visibleCount);
+    buttonEl.textContent = `ดูเพิ่มเติมอีก ${nextCount.toLocaleString('th-TH')} รายการ`;
+  }
 }
 
 function getFilteredProducts(category, searchTerm) {
