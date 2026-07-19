@@ -1,6 +1,6 @@
 # CODEX HANDOFF — KMO Landing Page
 
-Updated: 2026-07-15
+Updated: 2026-07-19
 
 ---
 
@@ -124,7 +124,15 @@ Production:
 
 ## Verification Snapshot
 
-Latest checks:
+Checks from 2026-07-19 (live site, `https://gutumrod.github.io/kmo-landing-page/`):
+
+- Console confirms Supabase catalog fetch works on production: "Successfully fetched 195 products from Supabase" — commit `5cd0658` (CSV → Supabase switch) is live and working, not just local
+- No console errors on load
+- Catalog, category filters, per-product buttons (`สอบถามราคา` / `นัดคิวคัสตอมงาน` / `สั่งตรงกับร้าน`), cart, and booking form all render correctly
+- Featured (`สินค้าขายดี`) section correctly stays hidden — expected, since no one has marked `featured=TRUE` in Supabase/admin yet
+- Not yet checked: whether `admin-products.html` can create products through `products-proxy` (still open from prior snapshot)
+
+Prior checks (2026-07-15):
 
 - Landing remote verified: `Gutumrod/kmo-landing-page`
 - Production remote verified: `kmorackbarcustom/kmorackbarcustom.github.io`
@@ -132,7 +140,6 @@ Latest checks:
 - `node --check app.js` passed for featured-products changes
 - Local browser check passed: with all CSV rows `featured=FALSE`, featured section stays hidden
 - Local browser check passed: temporary in-memory `featured=TRUE` rows render in `สินค้าขายดี` and remain in the main grid
-- Landing live Pages deploy was not rechecked after these local changes
 
 ---
 
