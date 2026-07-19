@@ -8,11 +8,15 @@
 
 ---
 
-## Day 1 — เช็ค products-proxy ให้จบ (ปลดล็อกทุก phase ถัดไป)
-- [ ] (Claude/Codex) clone/เปิด production repo (`kmorackbarcustom.github.io`) เช็คว่า edge function `products-proxy` deploy จริงกับ project `ybyseaenceyswjnwdmdf` แล้วหรือยัง
-- [ ] (Claude/Codex) ทดสอบ `admin-products.html` เพิ่ม/แก้สินค้า 1 รายการจริง ยืนยันเขียนเข้า Supabase ได้จบ end-to-end
-- [ ] ถ้ายังไม่จบ: สเปก/แก้ proxy ให้ทำงานได้ก่อน ค่อยไป Day 2
+## Day 1 — เช็ค products-proxy + เพิ่มปุ่มอัปโหลดรูป (ปลดล็อกทุก phase ถัดไป)
+- [x] (Claude) เช็คโค้ด `products-proxy` — ยืนยันว่า deploy แล้วจริง เป็น generic proxy เช็ค staff passcode แล้ว forward ด้วย service-role key ไป Supabase REST — 2026-07-19
+- [ ] (CEO) ทดสอบ `admin-products.html` เพิ่ม/แก้สินค้า 1 รายการจริงบนเว็บจริง ยืนยันจบ end-to-end
+- [x] (Claude) สร้าง Supabase Storage bucket `product-images` (public) บน HR project — 2026-07-19
+- [x] (Claude) ขยาย `products-proxy` ให้ forward ไป `storage/v1/object/product-images/*` ด้วย (auth model เดิม), deploy แล้ว — 2026-07-19
+- [x] (Claude) เพิ่มปุ่ม "เลือกไฟล์รูป" ใน `admin-products.html`, เทส end-to-end ผ่านแล้ว (upload/reject-wrong-type/auto-fill image_url), commit+push แล้ว (`fcf388c`) — 2026-07-19
+- [ ] (CEO) ลองกดอัปโหลดรูปจริงด้วยตัวเองผ่านหน้าเว็บจริง ยืนยันขึ้นหน้าเว็บ
 
+> ยังเป็น 1 สินค้า = 1 รูป เหมือนเดิม (schema ไม่เปลี่ยน) — แค่ทำให้ใส่รูปง่ายขึ้น ไม่ต้องหา URL เอง
 > ถ้า Day 1 ติด ห้ามข้ามไปทำ Day 2/3 เพราะทั้งสอง phase ต้องพึ่งช่องเขียนข้อมูลนี้
 
 ## Day 2 — Featured products (data-only)

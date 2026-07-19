@@ -31,12 +31,28 @@ The catalog visually reads as "195 products" but only shows 5 recycled category 
 
 ## Phase 3 — Confirm `products-proxy` deployment status (cross-repo check)
 
-This repo can't answer it alone. Needs a look at the production repo
-(`kmorackbarcustom/kmorackbarcustom.github.io` — not cloned on this Mac yet) to confirm:
-- Is `products-proxy` edge function actually deployed against `ybyseaenceyswjnwdmdf`?
-- Does `admin-products.html` there actually work end-to-end for staff to add/edit products (incl. photos)?
+Update 2026-07-19 (PC session, repo now cloned locally): confirmed by reading source —
+`products-proxy` (`kmorackbarcustom.github.io/supabase-hr/supabase/functions/products-proxy/index.ts`)
+is a generic REST proxy: checks `x-staff-key` against `STAFF_PASSCODE` secret, then forwards to
+`${SUPABASE_URL}/rest/v1/{path}` using the service-role key. `admin-products.html` wires create/edit/delete
+through it correctly. Still open: never confirmed live against the actual deployed function (only read
+source + client code) — a real add/edit/delete through the live page hasn't been run yet.
 
-If not cloned yet, worth pulling that repo next specifically to unblock Phases 1/2 above (owner needs a working write path before they can act on either).
+## Phase 3b — Add photo upload to `admin-products.html` (new, 2026-07-19)
+
+Gap found: `image_url` in the admin form is a plain text box (path/URL you have to already have), there's
+no file upload and no gallery — schema is one `image_url` column per product, one photo per product only.
+CEO asked to move this to Day 1 priority since it's what actually unblocks Phase 2 (real photos) being easy
+enough for non-technical day-to-day use.
+
+Plan (approved before implementing):
+1. Create a public Supabase Storage bucket (`product-images`) on the HR project (`ybyseaenceyswjnwdmdf`)
+2. Extend `products-proxy` to also allow forwarding to `storage/v1/object/product-images/*` (same
+   `x-staff-key` gate, same service-role forwarding pattern already used for `products` — no new auth model)
+3. Add a file `<input type="file">` in `admin-products.html`; on change, upload the file through the proxy,
+   get back the public object URL, and auto-fill it into `image_url`
+4. Still one photo per product (schema unchanged) — multi-photo gallery is a separate, bigger ask, not in
+   this pass unless CEO asks for it explicitly
 
 ## Phase 4 — Mobile density pass (low priority, per docs)
 
