@@ -8,7 +8,7 @@ Updated: 2026-07-15
 
 Landing repo:
 
-`D:\AI-Workspace\projects\kmo-landing-page\`
+`D:\AI-Workspace\projects\kmo-landing-page\` (Windows) / `/Users/wachirayachankhonkan/AI-Workspace/projects/kmo-landing-page/` (Mac)
 
 Remote:
 
@@ -16,7 +16,7 @@ Remote:
 
 Production repo:
 
-`D:\AI-Workspace\projects\kmorackbarcustom.github.io\`
+`D:\AI-Workspace\projects\kmorackbarcustom.github.io\` (Windows) / `/Users/wachirayachankhonkan/AI-Workspace/projects/kmorackbarcustom.github.io/` (Mac)
 
 Remote:
 
@@ -24,7 +24,7 @@ Remote:
 
 Do not edit stale clone:
 
-`D:\AI-Workspace\projects\landing page\KMO\`
+`D:\AI-Workspace\projects\landing page\KMO\` (Windows-only, not present on Mac — do not recreate it there)
 
 ---
 

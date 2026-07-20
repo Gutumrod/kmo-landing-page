@@ -1,7 +1,7 @@
 # Project Context: KMO RACK BAR CUSTOM - Landing Catalog
 
-**Last Updated:** 2026-07-15
-**Current Phase:** D1 + D2 metadata/prefill complete, catalog moving from CSV snapshot to HR Supabase table
+**Last Updated:** 2026-07-19
+**Current Phase:** Landing catalog runtime on HR Supabase; remaining work is product data/photos and production write-path verification
 **Progress:** ~98% สำหรับ landing catalog และ handoff ไป production forms
 **Live URL:** `https://gutumrod.github.io/kmo-landing-page/`
 
@@ -32,11 +32,11 @@
 
 ## Repo Map
 
-| Purpose | Path | Remote |
-|---|---|---|
-| Landing catalog | `D:\AI-Workspace\projects\kmo-landing-page\` | `https://github.com/Gutumrod/kmo-landing-page.git` |
-| Production transaction | `D:\AI-Workspace\projects\kmorackbarcustom.github.io\` | `https://github.com/kmorackbarcustom/kmorackbarcustom.github.io.git` |
-| Old clone, do not edit | `D:\AI-Workspace\projects\landing page\KMO\` | stale |
+| Purpose | Windows Path | Mac Path | Remote |
+|---|---|---|---|
+| Landing catalog | `D:\AI-Workspace\projects\kmo-landing-page\` | `/Users/wachirayachankhonkan/AI-Workspace/projects/kmo-landing-page/` | `https://github.com/Gutumrod/kmo-landing-page.git` |
+| Production transaction | `D:\AI-Workspace\projects\kmorackbarcustom.github.io\` | `/Users/wachirayachankhonkan/AI-Workspace/projects/kmorackbarcustom.github.io/` | `https://github.com/kmorackbarcustom/kmorackbarcustom.github.io.git` |
+| Old clone, do not edit | `D:\AI-Workspace\projects\landing page\KMO\` | not present on Mac (stale, do not recreate) | stale |
 
 ก่อนแก้ไฟล์ทุกครั้งให้เช็ก `git remote -v`, `git status`, และ branch ให้ตรง repo
 
@@ -111,7 +111,7 @@ Shopee เป็นช่องทางเสริมเท่านั้น 
 | D2 metadata | Done | `cart_meta`, `estimated_total`, `source_page` ใน production DB/RPC |
 | Brand/model prefill | Done | CSV + landing + production forms รองรับ `brand/model` |
 | Local CSV catalog | Done | ใช้ `assets/product_catalog_template.csv` แทน Google Sheet runtime |
-| Supabase catalog migration prep | In progress | runtime fetch เปลี่ยนไปอ่าน HR Supabase `products`; SQL/function/seed ต้องให้ operator run/deploy จริง |
+| Supabase catalog runtime | Done | `app.js` โหลด runtime products จาก HR Supabase `public.products`; CSV เป็น snapshot/seed |
 | Shopee/direct order logic | Done | Shopee ไม่แทนปุ่มสั่งตรง |
 | Load more | Done | 24 รายการแรก + ปุ่มเพิ่มครั้งละ 24 |
 | Product booking label | Done | `จองติดตั้ง` เปลี่ยนเป็น `นัดคิวคัสตอมงาน` |
@@ -150,9 +150,9 @@ Production repo:
 
 | Task | Priority | Notes |
 |---|---|---|
-| Run HR Supabase SQL + deploy products-proxy | High | ต้อง run `supabase-hr/products_setup.sql`, `products_seed.sql`, deploy function กับ project `ybyseaenceyswjnwdmdf` |
-| เติมข้อมูลสินค้า/รูปจริงที่เหลือ | High | หลัง migration ให้แก้ผ่าน `admin-products.html`; CSV เป็น snapshot/seed ไม่ใช่ runtime source |
-| Mark สินค้าขายดี | High | owner เปลี่ยน `featured` ผ่าน Supabase/admin page |
+| Confirm `products-proxy` + `admin-products.html` write path | High | ต้องเช็กใน production repo ว่า edge function/admin page ใช้งานจริงกับ project `ybyseaenceyswjnwdmdf` ได้หรือยัง |
+| เติมข้อมูลสินค้า/รูปจริงที่เหลือ | High | CSV snapshot ยังใช้รูป placeholder 5 รูปซ้ำกันทั้ง 195 รายการ; runtime ควรแก้ผ่าน Supabase/admin write path |
+| Mark สินค้าขายดี | High | frontend พร้อมแล้ว แต่ snapshot ล่าสุดมี `featured=FALSE` ทั้ง 195 รายการ; owner ต้องเลือกสินค้าแล้ว flip ใน Supabase |
 | ตรวจ UX หลังสินค้า 195 รายการบนมือถือจริง | Medium | load-more ทำแล้ว แต่ยังควรดู spacing/card density |
 | Server-side slip/upload validation ใน production | Medium | เป็น production scope ไม่ใช่ landing |
 | ราคา/สถานะจริงใน dashboard เพิ่มเติม | Low-Medium | metadata รองรับแล้ว ถ้าจะทำ workflow หลังบ้านเพิ่มค่อยวางรอบใหม่ |
@@ -164,7 +164,7 @@ Production repo:
 
 | Decision | Current stance |
 |---|---|
-| Google Sheet ยังใช้เป็น runtime source ไหม | ไม่ใช้แล้ว; runtime จะย้ายไป Supabase `products` ใน HR project |
+| Google Sheet ยังใช้เป็น runtime source ไหม | ไม่ใช้แล้ว; runtime อยู่ที่ Supabase `products` ใน HR project |
 | Brand/model ต้องตรง form production ไหม | ใช่ ตอนนี้ส่ง query prefill แล้ว |
 | Shopee item ควรมีปุ่มสั่งตรงด้วยไหม | ใช่ ลูกค้าที่ไม่อยากจ่ายค่าบวก platform ต้องสั่งตรงได้ |
 | Catalog จำนวนเยอะควรใช้ pagination หรือ load more | ใช้ load more ก่อน เหมาะกับ mobile มากกว่า |
@@ -178,7 +178,7 @@ Production repo:
 | `index.html` | Landing page structure, catalog container, cart drawer, cache-busted script/style refs |
 | `app.js` | Catalog loader/parser, search/filter, product cards, cart, checkout URL building |
 | `styles.css` | Industrial KMO visual system, responsive fixes, catalog/card/cart styles |
-| `assets/product_catalog_template.csv` | Product source of truth for landing catalog |
+| `assets/product_catalog_template.csv` | CSV snapshot/seed reference; runtime source อยู่ที่ Supabase |
 | `PRD.md` | Updated high-level product requirements |
 | `implementation_plan.md` | Current implementation roadmap/status |
 | `CODEX_HANDOFF.md` | Local handoff summary for future agents; tracked in repo as of `3cf03b2` |
@@ -188,15 +188,14 @@ Production repo:
 
 ## Verification Snapshot
 
-Latest checks done 2026-07-15:
+Latest checks done 2026-07-19:
 
-- `git fetch --all --prune` in landing repo passed
+- landing repo clean on `main...origin/main`
 - landing remote confirmed as `Gutumrod/kmo-landing-page`
-- production remote confirmed as `kmorackbarcustom/kmorackbarcustom.github.io`
-- `node --check app.js` passed after latest app changes
-- local browser check passed: with all CSV rows `featured=FALSE`, featured section stays hidden
-- local browser check passed: temporary in-memory `featured=TRUE` rows render in `สินค้าขายดี` and remain in main grid
-- live Pages deploy was not rechecked after the featured-products local changes
+- code confirmed loading products from `https://ybyseaenceyswjnwdmdf.supabase.co/rest/v1/products`
+- CSV snapshot parsed as 195 product rows, 12 columns, `featured=FALSE` for all rows
+- CSV snapshot references only 5 distinct image files, so real per-product images remain the biggest content gap
+- cache refs confirmed: `styles.css?v=11.3`, `app.js?v=11.6`
 
 ---
 

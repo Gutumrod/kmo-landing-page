@@ -31,7 +31,7 @@ The production repo owns:
 
 Landing repo:
 
-`D:\AI-Workspace\projects\kmo-landing-page\`
+`D:\AI-Workspace\projects\kmo-landing-page\` (Windows) / `/Users/wachirayachankhonkan/AI-Workspace/projects/kmo-landing-page/` (Mac)
 
 Remote:
 
@@ -39,7 +39,7 @@ Remote:
 
 Production repo:
 
-`D:\AI-Workspace\projects\kmorackbarcustom.github.io\`
+`D:\AI-Workspace\projects\kmorackbarcustom.github.io\` (Windows) / `/Users/wachirayachankhonkan/AI-Workspace/projects/kmorackbarcustom.github.io/` (Mac)
 
 Remote:
 
@@ -47,7 +47,7 @@ Remote:
 
 Do not edit stale clone:
 
-`D:\AI-Workspace\projects\landing page\KMO\`
+`D:\AI-Workspace\projects\landing page\KMO\` (Windows-only, not present on Mac — do not recreate it there)
 
 ---
 
@@ -107,7 +107,7 @@ Additional JS-bound IDs added after the brief:
 
 Before changing code:
 
-1. Confirm path is `D:\AI-Workspace\projects\kmo-landing-page\`
+1. Confirm path is `D:\AI-Workspace\projects\kmo-landing-page\` (Windows) / `/Users/wachirayachankhonkan/AI-Workspace/projects/kmo-landing-page/` (Mac)
 2. Confirm remote is `Gutumrod/kmo-landing-page`
 3. Run/check `git status --short`
 4. Fetch before larger work: `git fetch --all --prune`
@@ -145,11 +145,11 @@ Before changing code:
 
 KMO assets on Google Drive:
 
-`X:\My Drive\workspace\K-MO\`
+`X:\My Drive\workspace\K-MO\` (Windows) — **On Mac, do not use this Google Drive path at all (decision 2026-07-19): Drive sync never stops on this machine (known v126 CPU-loop bug), so this Mac no longer uses Drive as a working folder for any project.** If an asset from here is genuinely needed on Mac, copy the specific file into the repo once and stop relying on the live Drive path.
 
 Local agent handoff folder:
 
-`D:\AI-Workspace\agents\codex\handoff\`
+`D:\AI-Workspace\agents\codex\handoff\` (Windows-only, no equivalent folder exists on this Mac)
 
 Primary docs:
 

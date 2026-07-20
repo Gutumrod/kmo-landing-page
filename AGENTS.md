@@ -18,7 +18,7 @@
 
 ### คลังทรัพยากรร้าน KMO ใน Google Drive:
 - **Windows Path:** `X:\My Drive\workspace\K-MO\`
-- **Mac Path (คาดการณ์):** `~/Library/CloudStorage/GoogleDrive-titazmth@gmail.com/My Drive/workspace/K-MO/` หรือ `/Volumes/GoogleDrive/My Drive/workspace/K-MO/` (โปรดใช้คำสั่งค้นหาไดเรกทอรีจริงบนเครื่อง Mac เพื่ออัปเดต)
+- **Mac: เลิกใช้ Google Drive แล้ว (ตัดสินใจ 2026-07-19)** — sync ค้างไม่ยอมหยุดทั้งวันบนเครื่องนี้ (บั๊ก Drive v126 CPU loop) เครื่อง Mac นี้จึงไม่ใช้ Drive เป็นพื้นที่ทำงานของโปรเจกต์ใดๆ อีกต่อไป ถ้าจำเป็นต้องใช้ asset จากโฟลเดอร์นี้จริงๆ ให้ copy ไฟล์ที่ต้องใช้เข้า repo ครั้งเดียวแล้วเลิกอ้างอิง path บน Drive
 - **ไฟล์สำคัญใน Drive:**
   - รูปภาพสินค้าสำหรับนำมาใช้: `ลง Online/`
   - ตัวอย่างโค้ดระบบจองคิวเดิม (Apps Script & HTML): `KMO-Booking-System/project1_booking/`
@@ -26,7 +26,7 @@
 ### คลังข้อมูลความทรงจำสะสมเอเจนต์ (Antigravity Vault):
 - **ข้อมูลส่วนตัวและการตั้งค่า:** ซิงค์ผ่าน Google Drive ที่โฟลเดอร์ `workspace/AI-Project/Vault/AGY-Vualt/`
 - **Windows Path:** `D:\AI-Workspace\agents\antigravity\AGY-Vualt\` (ทำเป็น Junction Link ชี้ไปที่ `X:\My Drive\workspace\AI-Project\Vault\AGY-Vualt\`)
-- **Mac Path (คาดการณ์):** `~/Library/CloudStorage/GoogleDrive-titazmth@gmail.com/My Drive/workspace/AI-Project/Vault/AGY-Vualt/` หรือ `/Volumes/GoogleDrive/My Drive/workspace/AI-Project/Vault/AGY-Vualt/`
+- **Mac Path (ยืนยันแล้ว 2026-07-19):** `/Users/wachirayachankhonkan/AI-Workspace/vault/second-brain-vault/AGY-Vualt/` — บนเครื่องนี้วอลต์ย้ายออกจาก Google Drive มาอยู่ใน git repo แล้ว (ดู `05-Agent-Memory/Hermes-macOS/environment.md`) จึงไม่ใช่ path บน Drive แบบฝั่ง Windows
 - **คำแนะนำสำหรับ Mac Agent:** โปรดอ่านไฟล์ `00_START_HERE.md` และ `AI/Memory/User_Preferences.md` ในโฟลเดอร์นี้เพื่อเข้าใจบริบทและข้อกำหนดการสื่อสารของคุณฟรีทันที
 
 ---

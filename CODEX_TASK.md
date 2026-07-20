@@ -13,11 +13,11 @@ The task is now complete and no longer represents current pending work.
 
 Landing repo:
 
-`D:\AI-Workspace\projects\kmo-landing-page\`
+`D:\AI-Workspace\projects\kmo-landing-page\` (Windows) / `/Users/wachirayachankhonkan/AI-Workspace/projects/kmo-landing-page/` (Mac)
 
 Production repo:
 
-`D:\AI-Workspace\projects\kmorackbarcustom.github.io\`
+`D:\AI-Workspace\projects\kmorackbarcustom.github.io\` (Windows) / `/Users/wachirayachankhonkan/AI-Workspace/projects/kmorackbarcustom.github.io/` (Mac)
 
 D1 behavior completed:
 
@@ -68,4 +68,4 @@ Before future edits:
 
 1. Confirm landing repo remote is `Gutumrod/kmo-landing-page`
 2. Confirm production repo remote is `kmorackbarcustom/kmorackbarcustom.github.io` before touching transaction files
-3. Do not edit stale clone `D:\AI-Workspace\projects\landing page\KMO\`
+3. Do not edit stale clone `D:\AI-Workspace\projects\landing page\KMO\` (Windows-only, not present on Mac — do not recreate it there)
